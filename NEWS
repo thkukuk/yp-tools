@@ -7,6 +7,7 @@ Please send bug reports, questions and suggestions to <kukuk@suse.de>.
 Version 2.7
 * Add option to ypcat to query specific NIS server
 * Fix building of manual pages
+* Add yptest
 
 Version 2.6
 * Update to new automake, autoconf and gettext
