@@ -4,6 +4,9 @@ Copyright (C) 1998, 1999, 2001 Thorsten Kukuk
 
 Please send bug reports, questions and suggestions to <kukuk@suse.de>.
 
+Version 2.6
+* Update to new automake, autoconf and gettext
+
 Version 2.5
 * Bug fixes for wrong buffer handling
 * Minor bug fixes
