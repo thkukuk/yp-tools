@@ -48,7 +48,7 @@ Use the map
 .I map
 for the tests instead of
 .I passwd.byname.
-This option should be used if the default map does not exists.
+This option should be used if the default map does not exist.
 .TP
 .BI \-u " user"
 Use the account
@@ -57,11 +57,11 @@ instead of
 .I nobody.
 This option should be used if the
 .I nobody
-account does not exists in the map used for testing (
-.I passwd.byname
+account does not exist in the map used for testing
+.RI ( passwd.byname
 or the one given with the
-.B \-u
-option.
+.B \-m
+option).
 .SH "SEE ALSO"
 .BR domainname (8),
 .BR ypbind (8),
