@@ -1,11 +1,10 @@
-/* Copyright (C) 1998, 1999 Thorsten Kukuk
+/* Copyright (C) 1998, 1999, 2001 Thorsten Kukuk
    This file is part of the yp-tools.
    Author: Thorsten Kukuk <kukuk@suse.de>
 
    This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2, or (at your option)
-   any later version.
+   it under the terms of the GNU General Public License version 2 as 
+   published by the Free Software Foundation.
 
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -605,7 +604,7 @@ main (int argc, char **argv)
       int tries = 0;
       time_t tm;
 
-      buf = (char *) malloc (130);
+      buf = (char *) malloc (129);
 
       printf (_("Changing NIS password for %s on %s.\n"), pwd->pw_name,
 	      master);
@@ -627,7 +626,8 @@ main (int argc, char **argv)
 	      return 1;
 	    }
 
-	  strcpy (buf, p);
+	  strncpy (buf, p, 128);
+	  buf[128] = '\0';
 
 #ifdef USE_CRACKLIB
 	  error_msg = FascistCheck (buf, CRACKLIB_DICTPATH);
@@ -662,6 +662,7 @@ main (int argc, char **argv)
     {
       char gecos[1024], *sp, new_gecos[1024];
       char name[254], location[254], office[254], phone[254];
+      char oname[254], olocation[254], ooffice[254], ophone[254];
 
       printf (_("\nChanging full name for %s on %s.\n"
 	     "To accept the default, simply press return. To enter an empty\n"
@@ -669,20 +670,20 @@ main (int argc, char **argv)
 	      pwd->pw_name, master);
 
       strncpy (gecos, pwd->pw_gecos, sizeof (gecos));
-      sp = getfield (gecos, name, sizeof (name));
-      if (newfield (progname, _("Name"), strtok (gecos, ","), name,
+      sp = getfield (gecos, oname, sizeof (oname));
+      if (newfield (progname, _("Name"), oname, name,
 		    sizeof (name)))
 	return 1;
-      sp = getfield (sp, location, sizeof (location));
-      if (newfield (progname, _("Location"), location, location,
+      sp = getfield (sp, olocation, sizeof (olocation));
+      if (newfield (progname, _("Location"), olocation, location,
 		    sizeof (location)))
 	return 1;
-      sp = getfield (sp, office, sizeof (office));
-      if (newfield (progname, _("Office Phone"), office, office,
+      sp = getfield (sp, ooffice, sizeof (ooffice));
+      if (newfield (progname, _("Office Phone"), ooffice, office,
 		    sizeof (office)))
 	return 1;
-      sp = getfield (sp, phone, sizeof (phone));
-      if (newfield (progname, _("Home Phone"), phone, phone, sizeof (phone)))
+      sp = getfield (sp, ophone, sizeof (ophone));
+      if (newfield (progname, _("Home Phone"), ophone, phone, sizeof (phone)))
 	return 1;
       sprintf (new_gecos, "%s,%s,%s,%s", name, location, office, phone);
       sp = new_gecos + strlen (new_gecos);
