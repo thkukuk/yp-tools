@@ -238,7 +238,7 @@ ypgetpw (char *master, char *domainname, char *name, int uid)
   struct ypreq_key key;
   enum clnt_stat res;
   struct ypresp_val resp;
-  char buffer[1024], uidbuf[8], *ptr, *keyval;
+  char *buffer, uidbuf[256], *ptr, *keyval;
   static struct passwd pwd;
   char *map;
   CLIENT *clnt;
@@ -248,7 +248,9 @@ ypgetpw (char *master, char *domainname, char *name, int uid)
 
   if (name == NULL)
     {
-      sprintf (uidbuf, "%d", uid);
+      if (snprintf (uidbuf, sizeof (uidbuf), "%d", uid) > sizeof (uidbuf))
+	abort ();
+
       keyval = strdup (uidbuf);
       map = strdup ("passwd.byuid");
     }
@@ -257,6 +259,7 @@ ypgetpw (char *master, char *domainname, char *name, int uid)
       keyval = strdup (name);
       map = strdup ("passwd.byname");
     }
+
   /* Fill in values. */
   memset (&resp, 0, sizeof (struct ypresp_val));
   key.domain = strdup (domainname);
@@ -283,6 +286,7 @@ ypgetpw (char *master, char *domainname, char *name, int uid)
       return NULL;
     }
 
+  buffer = alloca (resp.valdat.valdat_len + 1);
   strncpy (buffer, resp.valdat.valdat_val, resp.valdat.valdat_len);
   buffer[resp.valdat.valdat_len] = '\0';
   free (resp.valdat.valdat_val);
@@ -443,6 +447,13 @@ main (int argc, char **argv)
   else
     progname = argv[0];
 
+  if ((strcmp (progname, "ypchsh") == 0) ||
+      (strcmp (progname, "chsh") == 0))
+    l_flag = 1;
+  else if ((strcmp (progname, "ypchfn") == 0) ||
+	   (strcmp (progname, "chfn") == 0))
+    f_flag = 1;
+
   while (1)
     {
       int c;
@@ -456,7 +467,7 @@ main (int argc, char **argv)
       };
 
       c = getopt_long (argc, argv,
-		       (strcmp ("yppasswd", progname) == 0) ? "flp?" : "?",
+		       (l_flag == 0 && f_flag == 0) ? "flp?" : "?",
 		       long_options, &option_index);
       if (c == (-1))
         break;
@@ -472,9 +483,9 @@ main (int argc, char **argv)
 	  p_flag = 1;
 	  break;
 	case '?':
-	  if (strcmp (progname, "ypchsh") == 0)
+	  if (l_flag)
 	    print_help_chsh ();
-	  else if (strcmp (progname, "ypchfn") == 0)
+	  else if (f_flag)
 	    print_help_chfn ();
 	  else
 	    print_help_pwd ();
@@ -483,17 +494,17 @@ main (int argc, char **argv)
 	  print_version (progname);
 	  return 0;
 	case '\254':
-	  if (strcmp (progname, "ypchsh") == 0)
+	  if (l_flag)
 	    print_usage_chsh (stdout);
-	  else if (strcmp (progname, "ypchfn") == 0)
+	  else if (f_flag)
 	    print_usage_chfn (stdout);
 	  else
 	    print_usage_pwd (stdout);
 	  return 0;
 	default:
-	  if (strcmp (progname, "ypchsh") == 0)
+	  if (l_flag)
 	    print_usage_chsh (stderr);
-	  else if (strcmp (progname, "ypchfn") == 0)
+	  else if (f_flag)
 	    print_usage_chfn (stderr);
 	  else
 	    print_usage_pwd (stderr);
@@ -503,11 +514,6 @@ main (int argc, char **argv)
 
   argc -= optind;
   argv += optind;
-
-  if (strcmp (progname, "ypchsh") == 0)
-    l_flag = 1;
-  else if (strcmp (progname, "ypchfn") == 0)
-    f_flag = 1;
 
   if (f_flag == 0 && l_flag == 0)
     p_flag = 1;
@@ -569,7 +575,7 @@ main (int argc, char **argv)
   if ((pwd->pw_passwd != NULL && strlen (pwd->pw_passwd) > 0) ||
       (pwd->pw_uid != uid))
     {
-      char prompt[40];
+      char prompt[130];
 
       if (pwd->pw_uid != uid)
         sprintf (prompt, _("Please enter root password:"));
@@ -599,7 +605,7 @@ main (int argc, char **argv)
       int tries = 0;
       time_t tm;
 
-      buf = (char *) malloc (30);
+      buf = (char *) malloc (130);
 
       printf (_("Changing NIS password for %s on %s.\n"), pwd->pw_name,
 	      master);

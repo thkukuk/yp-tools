@@ -1,3 +1,13 @@
+1999-12-07  Thorsten Kukuk  <kukuk@suse.de>
+
+	* src/yppasswd.c: Fix size of static buffers.
+	  Add patch from Lars R. Clausen <lrclause@www1.tam.uiuc.edu>
+	  to make chsh and chfn work.
+
+1999-11-21  Thorsten Kukuk  <kukuk@suse.de>
+
+	* lib/nicknames.c: Don't include malloc.h.
+
 1999-10-22  Thorsten Kukuk  <kukuk@suse.de>
 
 	* release version 2.4
