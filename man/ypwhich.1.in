@@ -1,0 +1,108 @@
+.\" -*- nroff -*-
+.\" Copyright (C) 1998 Thorsten Kukuk
+.\" This file is part of the yp-tools.
+.\" Author: Thorsten Kukuk <kukuk@vt.uni-paderborn.de>
+.\"
+.\" This program is free software; you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation; either version 2, or (at your option)
+.\" any later version.
+.\"
+.\" This program is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with this program; if not, write to the Free Software Foundation,
+.\" Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+.\"
+.TH ypwhich 1 "May 1998" "YP Tools @PK_VERSION@"
+.SH NAME
+ypwhich - return name of NIS server or map master
+.SH SYNOPSYS
+.B ypwhich
+[
+.BI \-d " domain"
+]
+[
+.BR \-V "n"
+]
+[
+.I hostname
+]
+.br
+.B ypwhich
+[
+.BI \-d " domain"
+]
+[
+.B \-t
+]
+.B \-m
+[
+.I mname
+]
+.br
+.B ypwhich
+.B \-x
+.LP
+.SH DESCRIPTION
+.B ypwhich
+returns the name of the NIS server that supplies the NIS
+services to a NIS client, or which is the master for a map.
+If invoked without arguments, it gives the NIS server for
+the local machine. If
+.I hostname
+is specified, that machine is queried to find out which NIS
+master it is using.
+.SH OPTIONS
+.TP
+.BI \-d " domain"
+Specify a domain other than the default domain.
+.TP
+.B \-t
+This option inhibits map nickname translation.
+.TP
+.BI \-m " mname"
+Find the master NIS server for a map.
+No
+.I hostname
+can be specified with the
+.B \-m
+option.
+.I mname
+can be a mapname or nickname for a map.
+If
+.I mname
+is omitted,
+.B ypwhich
+will produce a list of available maps.
+.TP
+.B \-x
+Display the map nickname translation table.
+.TP
+.B \-Vn
+Version of
+.BR ypbind (8),
+V2 is default.
+
+.SH FILES
+.TP
+.B /var/yp/nicknames
+map nickname translation table.
+.SH "SEE ALSO"
+.BR domainname (8),
+.BR nicknames (5),
+.BR ypbind (8),
+.BR ypcat (1),
+.BR ypmatch (1),
+.BR yppoll (8),
+.BR ypserv (8),
+.BR yset (8)
+.LP
+.SH AUTHOR
+.B ypwhich
+is part of the
+.B yp-tools
+package, which was written by Thorsten Kukuk <kukuk@vt.uni-paderborn.de>.

@@ -1,0 +1,13 @@
+# List of source files containing translatable strings.
+# Copyright (C) 1997 Thorsten Kukuk
+
+# NIS Source files
+lib/nicknames.c
+lib/ypbinderr_string.c
+src/domainname.c
+src/ypcat.c
+src/ypmatch.c
+src/yppasswd.c
+src/yppoll.c
+src/ypset.c
+src/ypwhich.c

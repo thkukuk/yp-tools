@@ -1,0 +1,31 @@
+yp-tools NEWS -- history of user-visible changes.
+
+Copyright (C) 1998 Thorsten Kukuk
+
+Please send bug reports, questions and suggestions to
+<kukuk@vt.uni-paderborn.de>.
+
+Version 2.2
+* Fix inclusion of local header files
+* Fix compiler warnings
+
+Version 2.1
+* Minor bug fix release
+
+Version 2.0
+* domainname uses getdomainname, ypdomainname yp_get_default_domain
+* Add domainname, nisdomainname, ypdomainname and manual pages 
+* Rewrite remaining tools 
+* Include our own yp header files for compiling on old Linux libcs
+* Rewrite most of the tools to fix a lot of problems and bugs
+
+Version 1.4.1
+* Bug fix release
+
+Version 1.4
+* A lot of bug fixes
+* Add ypchfn, ypchsh and manual pages
+
+Version 1.3
+* Add german locale
+* Use automake

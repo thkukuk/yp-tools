@@ -1,0 +1,66 @@
+.\" -*- nroff -*-
+.\" Copyright (C) 1998 Thorsten Kukuk
+.\" This file is part of the yp-tools.
+.\" Author: Thorsten Kukuk <kukuk@vt.uni-paderborn.de>
+.\"
+.\" This program is free software; you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation; either version 2, or (at your option)
+.\" any later version.
+.\"
+.\" This program is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with this program; if not, write to the Free Software Foundation,
+.\" Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+.\"
+.TH nicknames 5 "May 1998" "YP Tools @PK_VERSION@"
+.SH NAME
+/var/yp/nicknames - nickname translation table for NIS maps
+.SH DESCRIPTION
+.B nicknames
+contains a list of aliases and the corresponding NIS maps.
+There is one entry per line. The default
+.B nicknames
+table looks like:
+.RS
+.TP 25
+.PD 0
+.TP
+\f3passwd
+\f3passwd.byname
+.TP
+\f3group
+\f3group.byname
+.TP
+\f3networks
+\f3networks.byaddr
+.TP
+\f3hosts
+\f3hosts.byaddr
+.TP
+\f3protocols
+\f3protocols.bynumber
+.TP
+\f3services
+\f3services.byname
+.TP
+\f3aliases
+\f3mail.aliases
+.TP
+\3ethers
+\f3ethers.byname
+.LP
+.SH "SEE ALSO"
+.BR ypcat (1),
+.BR ypmatch (1),
+.BR ypserv (8),
+.BR ypwhich (1)
+.LP
+.SH AUTHOR
+The
+.B yp-tools
+package was written by Thorsten Kukuk <kukuk@vt.uni-paderborn.de>.

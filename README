@@ -1,0 +1,30 @@
+
+This is version 2.2 of a collection of NIS client tools.
+
+See the file COPYING for copying restrictions.
+
+This package contains ypcat, ypmatch, ypset, ypwhich, yppasswd,
+domainname, nisdomainname and ypdomainname. It is a complete
+rewrite of the old yp-tools 1.4.x package. It fixes a lot of bugs
+and problems with the old version.
+
+This package should work with every Linux libc 5 and glibc 2,
+and is a replacement of the yp-clients 2.2 and yp-tools 1.4.x
+
+This version contains locale support. German locales are included.
+
+You could get the latest version from:
+
+http://www-vt.uni-paderborn.de/~kukuk/linux/nis.html
+
+or from the main ftp server:
+
+ftp://ftp.kernel.org/pub/linux/utils/net/NIS/yp-tools-2.2.tar.gz
+
+You should use ypbind 3.3 with the ypbind-3.3-glibc4.diff patch
+from ftp.kernel.org or ypbind-mt 1.4 or greater.
+
+Don't forget to edit /etc/nsswitch.conf, or install the version
+from the etc directory for NIS.
+
+  Thorsten Kukuk <kukuk@vt.uni-paderborn.de>

@@ -1,0 +1,637 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR Free Software Foundation, Inc.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"POT-Creation-Date: 1999-02-28 21:21+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: ENCODING\n"
+
+#: lib/nicknames.c:64
+#, c-format
+msgid "nickname file %s does not exist.\n"
+msgstr ""
+
+#: lib/nicknames.c:96 lib/nicknames.c:105
+#, c-format
+msgid "Bogus entry in line %d: %s\n"
+msgstr ""
+
+#: lib/nicknames.c:153
+#, c-format
+msgid "Use \"%s\"\tfor map \"%s\"\n"
+msgstr ""
+
+#: lib/ypbinderr_string.c:38
+msgid "Success"
+msgstr ""
+
+#: lib/ypbinderr_string.c:40
+msgid "Internal ypbind error"
+msgstr ""
+
+#: lib/ypbinderr_string.c:42
+msgid "Domain not bound"
+msgstr ""
+
+#: lib/ypbinderr_string.c:44
+msgid "System resource allocation failure"
+msgstr ""
+
+#: lib/ypbinderr_string.c:46
+msgid "Unknown ypbind error"
+msgstr ""
+
+#: src/domainname.c:46 src/ypcat.c:44 src/ypmatch.c:45 src/yppasswd.c:67
+#: src/yppoll.c:48 src/ypset.c:54 src/ypwhich.c:49
+#, c-format
+msgid ""
+"Copyright (C) %s Thorsten Kukuk.\n"
+"This is free software; see the source for copying conditions.  There is NO\n"
+"warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n"
+msgstr ""
+
+#: src/domainname.c:57
+#, c-format
+msgid "Usage: %s [domain]\n"
+msgstr ""
+
+#: src/domainname.c:64
+msgid ""
+"domainname - set or display name of current domain\n"
+"\n"
+msgstr ""
+
+#: src/domainname.c:66 src/domainname.c:79 src/ypcat.c:72 src/ypmatch.c:72
+#: src/yppasswd.c:102 src/yppasswd.c:113 src/yppasswd.c:125 src/yppoll.c:73
+#: src/ypset.c:77 src/ypwhich.c:78
+msgid "  -?, --help     Give this help list\n"
+msgstr ""
+
+#: src/domainname.c:67 src/domainname.c:80 src/ypcat.c:73 src/ypmatch.c:73
+#: src/yppasswd.c:103 src/yppasswd.c:114 src/yppasswd.c:126 src/yppoll.c:74
+#: src/ypset.c:78 src/ypwhich.c:79
+msgid "      --usage    Give a short usage message\n"
+msgstr ""
+
+#: src/domainname.c:68 src/domainname.c:81 src/ypcat.c:74 src/ypmatch.c:74
+#: src/yppasswd.c:104 src/yppasswd.c:115 src/yppasswd.c:127 src/yppoll.c:75
+#: src/ypset.c:79 src/ypwhich.c:80
+msgid "      --version  Print program version\n"
+msgstr ""
+
+#: src/domainname.c:76
+#, c-format
+msgid ""
+"%s - set or display name of current NIS domain\n"
+"\n"
+msgstr ""
+
+#: src/domainname.c:89 src/ypcat.c:83 src/ypmatch.c:84 src/yppasswd.c:141
+#: src/yppoll.c:85 src/ypset.c:89 src/ypwhich.c:90
+#, c-format
+msgid "Try `%s --help' or `%s --usage' for more information.\n"
+msgstr ""
+
+#: src/ypcat.c:49
+#, c-format
+msgid "Written by %s.\n"
+msgstr ""
+
+#: src/ypcat.c:55
+msgid "Usage: ypcat [-kt] [-d domain] mapname | -x\n"
+msgstr ""
+
+#: src/ypcat.c:63
+msgid ""
+"ypcat - print values of all keys in a NIS database\n"
+"\n"
+msgstr ""
+
+#: src/ypcat.c:65 src/ypmatch.c:66 src/yppoll.c:71 src/ypset.c:74
+#: src/ypwhich.c:70
+msgid "  -d domain      Use 'domain' instead of the default domain\n"
+msgstr ""
+
+#: src/ypcat.c:67 src/ypmatch.c:68
+msgid "  -k             Display map keys\n"
+msgstr ""
+
+#: src/ypcat.c:69 src/ypmatch.c:69 src/ypwhich.c:74
+msgid "  -t             Inhibits map nickname translation\n"
+msgstr ""
+
+#: src/ypcat.c:70 src/ypmatch.c:70 src/ypwhich.c:76
+msgid "  -x             Display the map nickname translation table\n"
+msgstr ""
+
+#: src/ypcat.c:201 src/ypmatch.c:172 src/yppasswd.c:514 src/yppoll.c:161
+#: src/ypset.c:224 src/ypwhich.c:258
+#, c-format
+msgid "%s: can't get local yp domain: %s\n"
+msgstr ""
+
+#: src/ypcat.c:221 src/ypmatch.c:204 src/ypwhich.c:286
+msgid "No running ypbind\n"
+msgstr ""
+
+#: src/ypcat.c:224
+#, c-format
+msgid "No such map %s. Reason: %s\n"
+msgstr ""
+
+#: src/ypmatch.c:56
+msgid "Usage: ypmatch [-d domain] [-kt] key ... mapname | -x\n"
+msgstr ""
+
+#: src/ypmatch.c:64
+msgid ""
+"ypmatch - print the values of one or more keys from a NIS map\n"
+"\n"
+msgstr ""
+
+#: src/ypmatch.c:207
+#, c-format
+msgid "Can't match key %s in map %s. Reason: %s\n"
+msgstr ""
+
+#: src/yppasswd.c:78
+msgid "Usage: yppasswd [-f] [-l] [-p] [User]\n"
+msgstr ""
+
+#: src/yppasswd.c:84
+msgid "Usage: ypchsh [User]\n"
+msgstr ""
+
+#: src/yppasswd.c:90
+msgid "Usage: ypchfn [User]\n"
+msgstr ""
+
+#: src/yppasswd.c:97
+msgid ""
+"yppasswd - change your password in the NIS database\n"
+"\n"
+msgstr ""
+
+#: src/yppasswd.c:99
+msgid "  -f             Change GECOS field information\n"
+msgstr ""
+
+#: src/yppasswd.c:100
+msgid "  -l             Change the login shell\n"
+msgstr ""
+
+#: src/yppasswd.c:101
+msgid "  -p             Change the password\n"
+msgstr ""
+
+#: src/yppasswd.c:111
+msgid ""
+"ypchsh - change the shell in the NIS database\n"
+"\n"
+msgstr ""
+
+#: src/yppasswd.c:122
+msgid ""
+"ypchfn - change the GECOS information in the NIS database\n"
+"\n"
+msgstr ""
+
+#: src/yppasswd.c:153
+#, c-format
+msgid "%s: can't find the master ypserver: %s\n"
+msgstr ""
+
+#: src/yppasswd.c:160
+#, c-format
+msgid "%s: yppasswdd not running on NIS master host\n"
+msgstr ""
+
+#: src/yppasswd.c:166
+#, c-format
+msgid "%s: yppasswd daemon running on illegal port.\n"
+msgstr ""
+
+#: src/yppasswd.c:183
+msgid "No more"
+msgstr ""
+
+#: src/yppasswd.c:186
+msgid "True"
+msgstr ""
+
+#: src/yppasswd.c:189
+msgid "False"
+msgstr ""
+
+#: src/yppasswd.c:192
+msgid "No such map"
+msgstr ""
+
+#: src/yppasswd.c:195
+msgid "No such domain"
+msgstr ""
+
+#: src/yppasswd.c:198
+msgid "Bad operation"
+msgstr ""
+
+#: src/yppasswd.c:201
+msgid "Database bad"
+msgstr ""
+
+#: src/yppasswd.c:204
+msgid "Bad arguments"
+msgstr ""
+
+#: src/yppasswd.c:207
+msgid "Version Mismatch"
+msgstr ""
+
+#: src/yppasswd.c:210
+msgid "Unknown error"
+msgstr ""
+
+#: src/yppasswd.c:326
+#, c-format
+msgid "%s: no colons allowed in GECOS field... sorry.\n"
+msgstr ""
+
+#: src/yppasswd.c:362
+msgid "The password must have at least 6 characters.\n"
+msgstr ""
+
+#: src/yppasswd.c:376
+msgid ""
+"The password must have both upper and lowercase letters, or non-letters.\n"
+msgstr ""
+
+#: src/yppasswd.c:385
+msgid "You cannot reuse the old password.\n"
+msgstr ""
+
+#: src/yppasswd.c:407
+msgid "Please don't use something like your username as password.\n"
+msgstr ""
+
+#: src/yppasswd.c:527
+#, c-format
+msgid "%s: unknown user (uid=%d).\n"
+msgstr ""
+
+#: src/yppasswd.c:536
+#, c-format
+msgid "%s: Only root may change account information for others\n"
+msgstr ""
+
+#: src/yppasswd.c:553
+#, c-format
+msgid "Changing NIS account information for %s on %s.\n"
+msgstr ""
+
+#: src/yppasswd.c:563
+msgid "Please enter root password:"
+msgstr ""
+
+#: src/yppasswd.c:565
+#, c-format
+msgid "Please enter %spassword:"
+msgstr ""
+
+#: src/yppasswd.c:566
+msgid "old "
+msgstr ""
+
+#: src/yppasswd.c:574
+msgid "Sorry.\n"
+msgstr ""
+
+#: src/yppasswd.c:592
+#, c-format
+msgid "Changing NIS password for %s on %s.\n"
+msgstr ""
+
+#: src/yppasswd.c:600
+msgid ""
+"Too many tries. Aborted.\n"
+"Password unchanged.\n"
+msgstr ""
+
+#: src/yppasswd.c:605
+msgid "Please enter new password:"
+msgstr ""
+
+#: src/yppasswd.c:608
+msgid "Password unchanged.\n"
+msgstr ""
+
+#: src/yppasswd.c:618
+#, c-format
+msgid "Not a valid password: %s.\n"
+msgstr ""
+
+#: src/yppasswd.c:626
+msgid "Please retype new password:"
+msgstr ""
+
+#: src/yppasswd.c:631
+msgid "Mismatch - password unchanged.\n"
+msgstr ""
+
+#: src/yppasswd.c:648
+#, c-format
+msgid ""
+"\n"
+"Changing full name for %s on %s.\n"
+"To accept the default, simply press return. To enter an empty\n"
+"field, type the word \"none\".\n"
+msgstr ""
+
+#: src/yppasswd.c:655
+msgid "Name"
+msgstr ""
+
+#: src/yppasswd.c:659
+msgid "Location"
+msgstr ""
+
+#: src/yppasswd.c:663
+msgid "Office Phone"
+msgstr ""
+
+#: src/yppasswd.c:667
+msgid "Home Phone"
+msgstr ""
+
+#: src/yppasswd.c:681
+#, c-format
+msgid ""
+"\n"
+"Changing login shell for %s on %s.\n"
+"To accept the default, simply press return. To use the\n"
+"system's default shell, type the word \"none\".\n"
+msgstr ""
+
+#: src/yppasswd.c:686
+msgid "Login shell"
+msgstr ""
+
+#: src/yppasswd.c:708
+msgid "Error while changing the NIS password."
+msgstr ""
+
+#: src/yppasswd.c:710
+#, c-format
+msgid ""
+"\n"
+"The NIS password has not been changed on %s.\n"
+"\n"
+msgstr ""
+
+#: src/yppasswd.c:714
+#, c-format
+msgid ""
+"\n"
+"The NIS password has been changed on %s.\n"
+"\n"
+msgstr ""
+
+#: src/yppasswd.c:723
+msgid "Error while changing the GECOS information."
+msgstr ""
+
+#: src/yppasswd.c:725
+#, c-format
+msgid ""
+"\n"
+"The GECOS information has not been changed on %s.\n"
+"\n"
+msgstr ""
+
+#: src/yppasswd.c:729
+#, c-format
+msgid ""
+"\n"
+"The GECOS information has been changed on %s.\n"
+"\n"
+msgstr ""
+
+#: src/yppasswd.c:738
+msgid "Error while changing the login shell."
+msgstr ""
+
+#: src/yppasswd.c:740
+#, c-format
+msgid ""
+"\n"
+"The login shell has not been changed on %s.\n"
+"\n"
+msgstr ""
+
+#: src/yppasswd.c:744
+#, c-format
+msgid ""
+"\n"
+"The login shell has been changed on %s.\n"
+"\n"
+msgstr ""
+
+#: src/yppasswd.c:752
+msgid "Error while changing the NIS account information."
+msgstr ""
+
+#: src/yppasswd.c:755
+#, c-format
+msgid ""
+"\n"
+"The NIS account information has not been changed on %s.\n"
+"\n"
+msgstr ""
+
+#: src/yppasswd.c:759
+#, c-format
+msgid ""
+"\n"
+"The NIS account information has been changed on %s.\n"
+"\n"
+msgstr ""
+
+#: src/yppoll.c:59
+msgid "Usage: yppoll [-h host] [-d domain] mapname\n"
+msgstr ""
+
+#: src/yppoll.c:67
+msgid ""
+"yppoll - return version and master server of a NIS map\n"
+"\n"
+msgstr ""
+
+#: src/yppoll.c:70
+msgid "  -h host        Ask ypserv process at 'host'\n"
+msgstr ""
+
+#: src/yppoll.c:180 src/yppoll.c:190 src/yppoll.c:200
+msgid "Couldn't get NIS server"
+msgstr ""
+
+#: src/yppoll.c:181
+msgid " - ypbind not running ?\n"
+msgstr ""
+
+#: src/yppoll.c:231
+#, c-format
+msgid "Unknown host: %s\n"
+msgstr ""
+
+#: src/yppoll.c:234
+msgid "Host name lookup failure\n"
+msgstr ""
+
+#: src/yppoll.c:237
+#, c-format
+msgid "No address associated with name: %s\n"
+msgstr ""
+
+#: src/yppoll.c:241
+msgid "Unknown server error\n"
+msgstr ""
+
+#: src/yppoll.c:244
+msgid "gethostbyname: Unknown error\n"
+msgstr ""
+
+#: src/yppoll.c:262 src/yppoll.c:271
+#, c-format
+msgid "Can't create connection to %s.\n"
+msgstr ""
+
+#: src/yppoll.c:273 src/ypset.c:149
+msgid "Reason"
+msgstr ""
+
+#: src/yppoll.c:279
+#, c-format
+msgid "Domain %s is not supported by %s.\n"
+msgstr ""
+
+#: src/yppoll.c:308
+msgid "Can't get any map parameter information.\n"
+msgstr ""
+
+#: src/yppoll.c:310
+#, c-format
+msgid "Domain %s is supported.\n"
+msgstr ""
+
+#: src/yppoll.c:314
+#, c-format
+msgid "Can't get order number for map %s.\n"
+msgstr ""
+
+#: src/yppoll.c:315 src/yppoll.c:329
+#, c-format
+msgid "\tReason: %s\n"
+msgstr ""
+
+#: src/yppoll.c:322
+#, c-format
+msgid "Map %s has order number %d. [%s]\n"
+msgstr ""
+
+#: src/yppoll.c:328
+#, c-format
+msgid "Can't get master for map %s.\n"
+msgstr ""
+
+#: src/yppoll.c:332
+#, c-format
+msgid "The master server is %s.\n"
+msgstr ""
+
+#: src/ypset.c:65
+msgid "Usage: ypset [-d domain] [-h hostname] server\n"
+msgstr ""
+
+#: src/ypset.c:72
+msgid ""
+"ypset - bind ypbind to a particular NIS server\n"
+"\n"
+msgstr ""
+
+#: src/ypset.c:76
+msgid "  -h hostname    Set ypbind's binding on ´hostname´\n"
+msgstr ""
+
+#: src/ypset.c:109
+#, c-format
+msgid "%s not running ypserv.\n"
+msgstr ""
+
+#: src/ypset.c:120
+#, c-format
+msgid "can't find address for %s\n"
+msgstr ""
+
+#: src/ypset.c:135 src/ypwhich.c:138
+#, c-format
+msgid "can't yp_bind: Reason: %s\n"
+msgstr ""
+
+#: src/ypset.c:147
+#, c-format
+msgid "Cannot ypset for domain %s on host %s.\n"
+msgstr ""
+
+#: src/ypset.c:241
+#, c-format
+msgid "ypset: host %s unknown\n"
+msgstr ""
+
+#: src/ypwhich.c:60
+msgid "Usage: ypwhich [-d domain] [[-t] -m [mname]|[-Vn] hostname] | -x\n"
+msgstr ""
+
+#: src/ypwhich.c:68
+msgid ""
+"ypwhich - return name of NIS server or map master\n"
+"\n"
+msgstr ""
+
+#: src/ypwhich.c:72
+msgid "  -m mname       Find the master NIS server for the map 'mname'\n"
+msgstr ""
+
+#: src/ypwhich.c:75
+msgid "  -V n           Version of ypbind, V2 is default\n"
+msgstr ""
+
+#: src/ypwhich.c:290
+#, c-format
+msgid "Can't find master for map \"%s\". Reason: %s\n"
+msgstr ""
+
+#: src/ypwhich.c:314
+#, c-format
+msgid "Can't find master for map %s. Reason: %s\n"
+msgstr ""
+
+#: src/ypwhich.c:324
+msgid "No running ypbind.\n"
+msgstr ""
+
+#: src/ypwhich.c:328
+#, c-format
+msgid "Can't get map list for domain %s. Reason: %s\n"
+msgstr ""
+
+#: src/ypwhich.c:348
+#, c-format
+msgid "ypwhich: host %s unknown\n"
+msgstr ""

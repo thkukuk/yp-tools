@@ -1,0 +1,73 @@
+.\" -*- nroff -*-
+.\" Copyright (C) 1998 Thorsten Kukuk
+.\" This file is part of the yp-tools.
+.\" Author: Thorsten Kukuk <kukuk@vt.uni-paderborn.de>
+.\"
+.\" This program is free software; you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License as published by
+.\" the Free Software Foundation; either version 2, or (at your option)
+.\" any later version.
+.\"
+.\" This program is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
+.\"
+.\" You should have received a copy of the GNU General Public License
+.\" along with this program; if not, write to the Free Software Foundation,
+.\" Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+.\"
+.TH ypmatch 1 "May 1998" "YP Tools @PK_VERSION@"
+.SH NAME
+ypmatch - print the values of one or more keys from a NIS map
+.SH SYNOPSYS
+.B ypmatch
+[
+.BR \-kt
+]
+[
+.BI \-d " domain"
+]
+.I key ... mapname
+.br
+.B ypmatch
+.B \-x
+.LP
+.SH DESCRIPTION
+.B ypmatch
+prints the values of one or more keys from the NIS database
+specified by mapname, which may be a map name or a map nickname.
+.SH OPTIONS
+.TP
+.BI \-d " domain"
+Specify a domain other than the default domain as returned by
+.BR domainname (1).
+.TP
+.B \-k
+Display map keys. This option is useful with maps in which the
+values are null or the key is not part of the value.
+.TP
+.B \-t
+This option inhibits map nickname translation.
+.TP
+.B \-x
+Display the map nickname translation table.
+.SH FILES
+.TP
+.B /var/yp/nicknames
+map nickname translation table.
+.SH "SEE ALSO"
+.BR domainname (8),
+.BR nicknames (5),
+.BR ypbind (8),
+.BR ypcat (1),
+.BR yppoll (8),
+.BR ypserv (8),
+.BR yset (8),
+.BR ypwhich (1)
+.LP
+.SH AUTHOR
+.B ypmatch
+is part of the
+.B yp-tools
+package, which was written by Thorsten Kukuk <kukuk@vt.uni-paderborn.de>.

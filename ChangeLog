@@ -1,0 +1,252 @@
+1999-02-28  Thorsten Kukuk  <kukuk@suse.de>
+
+	* src/yppasswd.c: Add prototype for getrpcport if needed.
+	* src/ypset.c: Likewise.
+
+1999-02-17  Thorsten Kukuk  <kukuk@suse.de>
+
+	* src/Makefile.am: Fix rule for installing links for domainname.
+	* po/de.po: Fix typos.
+
+1998-11-11  Thorsten Kukuk  <kukuk@vt.uni-paderborn.de>
+
+	* release version 2.2
+
+	* src/ypwhich.c: Fix inclusion of local header files.
+	* src/domainname.c: Likewise.
+	* src/ypmatch.c: Likewise.
+	* src/ypcat.c: Likewise.
+	* src/yppasswd.c: Likewise.
+	* src/yppoll.c: Likewise.
+	* src/ypset.c: Likewise.
+
+	* src/Makefile.am (INCLUDES): Remove -I$(top_srcdir)/lib, or
+	  we will use the wrong headers on some systems.
+
+	* configure.in (WARNFLAGS): Add much more option to find much more
+	  problems.
+
+1998-05-28  Thorsten Kukuk  <kukuk@vt.uni-paderborn.de>
+
+	* release version 2.1
+
+	* src/ypmatch.c (main): Return 1 if entry not found. Reported by
+	  Klaus Steinberger <Klaus.Steinberger@Physik.Uni-Muenchen.DE>.
+
+1998-05-26  Thorsten Kukuk  <kukuk@vt.uni-paderborn.de>
+
+	* src/domainname.c (main): Don't print `\n` if we set the domainname.
+	  Reported by  Richard Gooch <Richard.Gooch@atnf.csiro.au>
+
+1998-05-19  Thorsten Kukuk  <kukuk@vt.uni-paderborn.de>
+
+	* release version 2.0
+
+	* src/Makefile.am: Rename rootbin to rootexecbin.
+	* src/Makefile.am (install-exec-hook): Fix creating of domainname
+	  links.
+
+	* src/ypwhich.c (main): Move yp_get_default_domain out of
+	  mflag case, so that all cases except -x use it. Reported by
+	  Klaus Steinberger <Klaus.Steinberger@Physik.Uni-Muenchen.DE>.
+
+1998-05-17  Thorsten Kukuk  <kukuk@vt.uni-paderborn.de>
+
+	* man/yppasswd.1.in: Fix to match new yppasswd version.
+
+	* man/nicknames.5.in: Fix AUTHOR section.
+	* man/ypcat.1.in: Likewise.
+	* man/ypmatch.1.in: Likewise.
+	* man/yppoll.8.in: Likewise.
+	* man/ypset.8.in: Likewise.
+	* man/ypwhich.1.in: Likewise.
+
+	* man/domainname.8.in: Add new features of nis-/ypdomainname.
+
+	* src/Makefile.am (install-exec-hook): Use hard link for
+	  nisdoaminname/ypdomainname.
+
+	* src/domainname.c: domainname uses getdomainname,
+	  [nis|yp]domainname uses yp_get_default_domain.
+
+1998-05-12  Thorsten Kukuk  <kukuk@vt.uni-paderborn.de>
+
+	* configure.in: Set MAN_DOMAINNAME
+
+	* man/Makefile.am (man_MANS): Add Manual pages for domainname only,
+	  if we wish to install the program.
+
+1998-05-10  Thorsten Kukuk  <kukuk@vt.uni-paderborn.de>
+
+	* release beta version 1.99.2
+
+	* configure.in: Fix for gettext 0.10.35
+
+	* man/ypcat.1.in: New.
+	* man/ypmatch.1.in: New.
+	* man/yppoll.8.in: New.
+	* man/ypset.8.in: New.
+
+	* man/yppasswd.8: Renamed to ...
+	* man/yppasswd.8.in: ... this.
+
+	* src/yppasswd.c: Complete rewritten.
+
+	* src/ypcat.c (main): Check result from yp_get_default_domain.
+	* src/ypmatch.c (main): Likewise.
+	* src/yppoll.c (main): Likewise.
+	* src/ypset.c (main): Likewise.
+	* src/ypwhich.c (main): Likewise.
+
+1998-05-09  Thorsten Kukuk  <kukuk@vt.uni-paderborn.de>
+
+	* man/Makefile.am: Fix the rules for manual pages
+
+	* src/yppasswd.h: New, from glibc 2.1 snapshot 980509
+	* src/yppasswd_xdr.c: New generated.
+
+	* src/domainname.c (print_error): Change error message.
+	* src/ypcat.c (print_error): Likewise.
+	* src/ypmatch.c (print_error): Likewise.
+	* src/yppoll.c (print_error): Likewise.
+	* src/ypset.c (print_error): Likewise.
+	* src/ypwhich.c (print_error): Likewise.
+
+1998-04-24  Thorsten Kukuk  <kukuk@vt.uni-paderborn.de>
+
+	* src/ypwhich.c (main): Replace inet_addr with inet_aton.
+
+	* src/ypset.c: Complete rewritten.
+
+	* man/Makefile.am: Add domainname.8,nisdomainname.8,ypdomainname.8
+
+	* man/ypwhich.1.in: fix section of domainname
+
+	* src/domainname.c: New.
+
+	* src/Makefile.am: Add rules for domainname with special
+	  install rules
+
+	* configure.in: Add domainname rules, remove tr from LINUGUAS
+
+	* release beta version 1.99.1
+
+	* src/Makefile.am: Use ${DESTDIR} for creating links
+
+	* lib/yp-tools.h: New file.
+
+	* lib/yp_xdr.h: Removed.
+	* lib/ypbinderr_string.h: Removed.
+
+	* lib/yp_xdr.c: Don't include rpcsvc/yp*.h, but yp-tools.h.
+	* lib/ypbinderr_string.c: Likewise.
+	* src/ypcat.c: Likewise.
+	* src/ypmatch.c: Likewise.
+	* src/yppoll.c: Likewise.
+	* src/ypset.c: Likewise.
+	* src/ypwhich.c: Likewise.
+
+1998-04-19  Thorsten Kukuk  <kukuk@vt.uni-paderborn.de>
+
+	* release beta version 1.99.0
+
+	* src/ypcat.c (print_data): Check if invallen is correct.
+
+	* src/yppoll.c: Include <rpc/rpc.h>
+
+1998-04-16  Thorsten Kukuk  <kukuk@vt.uni-paderborn.de>
+
+	* lib/yp_xdr.c: New.
+	* lib/yp_xdr.h: New.
+
+	* lib/Makefile.am (libyptools_a_SOURCES): Add yp_xdr.*
+
+1998-04-15  Thorsten Kukuk  <kukuk@vt.uni-paderborn.de>
+
+	* src/ypcat.c: Complete rewritten, fix keylen problem.
+
+	* src/ypmatch.c: Fix typos.
+
+1998-04-07  Thorsten Kukuk  <kukuk@vt.uni-paderborn.de>
+
+	* src/yppasswd.c (main): Fix version printing.
+
+	* src/ypmatch.c: Complete rewritten.
+
+	* man/nicknames.5.in: New.
+
+	* man/Makefile.am: Add nicknames.5.in
+
+1998-04-06  Thorsten Kukuk  <kukuk@vt.uni-paderborn.de>
+
+	* src/yppoll.c: Complete rewritten.
+
+1998-04-04  Thorsten Kukuk  <kukuk@vt.uni-paderborn.de>
+
+	* lib/Makefile.am: Add noinst_HEADERS.
+
+	* acinclude.m4: New, contains AM_FUNC_GETLINE.
+
+1998-04-03  Thorsten Kukuk  <kukuk@vt.uni-paderborn.de>
+
+	* src/ypwhich.c: Complete rewritten.
+
+	* lib/ypbinderr_string.c: New.
+	* lib/ypbinderr_string.h: New.
+
+	* man/Makefile.am (ypwhich.1): use $(srcdir)
+
+	* configure.in: Add test for getopt_long
+
+	* src/Makefile.am: Lot of bug fixes.
+
+1998-02-06  Thorsten Kukuk  <kukuk@vt.uni-paderborn.de>
+
+	* release version 1.4.1
+
+	* src/ypwhich.c (bind_host): Fix typo
+
+	* src/yppasswd.c (ypgetpw): Clear the responce struct.
+
+1997-12-30  Thorsten Kukuk  <kukuk@vt.uni-paderborn.de>
+
+	* release version 1.4
+
+	* src/ypset.c: Fix typos.
+	* src/yppoll.c: Likewise.
+	* src/ypwhich.c: Likewise.
+
+	* src/yppasswd.c: Include <sys/param.h> for libc5
+
+	* src/Makefile.am: Add LDADD to yppasswd_LDADD
+
+	* configure.in: Create links for libintl.h if necessary
+
+1997-12-21  Thorsten Kukuk  <kukuk@vt.uni-paderborn.de>
+
+	* src/Makefile.am: Create ypchsh and ypchfn links on install
+
+	* man/Makefile.am: Install ypchsh.1 and ypchfn.1
+
+	* yp-tools.spec: Update list of installed files
+
+	* man/ypchsh.1: New
+	* man/ypchfn.1: New
+
+1997-12-2  Thorsten Kukuk  <kukuk@vt.uni-paderborn.de>
+
+	* src/ypwhich.c: Fix error messages
+
+1997-11-29  Thorsten Kukuk  <kukuk@vt.uni-paderborn.de>
+
+	* release version 1.3
+
+	* All files internationalized
+
+	* Use of automake
+
+	* new directory structure
+
+	* src/ypmatch.c: Fix return codes
+
+	* start ChangeLog file
