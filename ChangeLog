@@ -3,6 +3,8 @@
 	* src/yppasswd.c (main): Use strncpy.
 	  Dont't use the same buffer for old and new gecos value.
 
+	* intl: Update to gettext 0.10.35
+
 1999-12-07  Thorsten Kukuk  <kukuk@suse.de>
 
 	* src/yppasswd.c: Fix size of static buffers.
