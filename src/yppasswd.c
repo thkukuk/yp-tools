@@ -21,6 +21,11 @@
 #include "config.h"
 #endif
 
+#define keydat_val dptr
+#define keydat_len dsize
+#define valdat_val dptr
+#define valdat_len dsize
+
 #include <pwd.h>
 #ifdef HAVE_CRYPT_H
 #include <crypt.h>
@@ -31,13 +36,20 @@
 #else
 #include "lib/getopt.h"
 #endif
+#include <netdb.h>
+#include <limits.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdlib.h>
+#include <malloc.h>
 #include <locale.h>
 #include <libintl.h>
 #include <sys/param.h>
 #include <rpcsvc/yp_prot.h>
 #include <rpcsvc/ypclnt.h>
+#ifdef HAVE_RPC_CLNT_SOC_H
+#include <rpc/clnt_soc.h>
+#endif
 
 #include "yppasswd.h"
 
@@ -366,9 +378,9 @@ verifypassword (struct passwd *pwd, char *pwdstr, uid_t uid)
   other = ucase = lcase = 0;
   for (p = pwdstr; *p; p++)
     {
-      ucase = ucase || isupper (*p);
-      lcase = lcase || islower (*p);
-      other = other || !isalpha (*p);
+      ucase = ucase || isupper ((int)*p);
+      lcase = lcase || islower ((int)*p);
+      other = other || !isalpha ((int)*p);
     }
 
   if ((!ucase || !lcase) && !other && uid)
@@ -524,7 +536,8 @@ main (int argc, char **argv)
   uid = getuid ();
   if ((pwd = ypgetpw (master, domainname, user, uid)) == NULL)
     {
-      fprintf (stderr, _("%s: unknown user (uid=%d).\n"), progname, uid);
+      fprintf (stderr, _("%s: unknown user (uid=%ld).\n"), progname,
+	       (long)uid);
       return 1;
     }
 

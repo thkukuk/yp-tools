@@ -29,6 +29,8 @@
 #include <locale.h>
 #include <libintl.h>
 #include <string.h>
+#include <netdb.h>
+#include <stdlib.h>
 #include "lib/yp-tools.h"
 #include "lib/nicknames.h"
 

@@ -89,7 +89,7 @@ load_nicknames (void)
 
       /* Each line contains an alias and the full name */
       cp = line;
-      while (!isspace (*cp) && *cp != '\0')
+      while (!isspace ((int)*cp) && *cp != '\0')
 	++cp;
       if (*cp == '\0')
 	{
@@ -98,7 +98,7 @@ load_nicknames (void)
 	}
       *cp = '\0';
       ++cp;
-      while (isspace (*cp) && *cp != '\0')
+      while (isspace ((int)*cp) && *cp != '\0')
 	++cp;
       if (*cp == '\0')
 	{

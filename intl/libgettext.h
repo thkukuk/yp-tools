@@ -76,7 +76,7 @@ struct _msg_ent
 };
 
 
-#if HAVE_CATGETS
+#ifdef HAVE_CATGETS
 /* These two variables are defined in the automatically by po-to-tbl.sed
    generated file `cat-id-tbl.c'.  */
 extern const struct _msg_ent _msg_tbl[];
@@ -121,7 +121,7 @@ extern char *bindtextdomain PARAMS ((const char *__domainname,
 extern char *bindtextdomain__ PARAMS ((const char *__domainname,
 				    const char *__dirname));
 
-#if ENABLE_NLS
+#ifdef ENABLE_NLS
 
 /* Solaris 2.3 has the gettext function but dcgettext is missing.
    So we omit this optimization for Solaris 2.3.  BTW, Solaris 2.4

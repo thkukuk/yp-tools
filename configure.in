@@ -53,7 +53,7 @@ AC_CHECK_LIB(crypt,crypt,LIBCRYPT="-lcrypt",LIBCRYPT="")
 AC_SUBST(LIBCRYPT)
 
 dnl Checks for header files.
-AC_CHECK_HEADERS(crypt.h getopt.h)
+AC_CHECK_HEADERS(crypt.h getopt.h rpc/clnt_soc.h)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST

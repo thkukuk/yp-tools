@@ -29,12 +29,18 @@
 #include <locale.h>
 #include <libintl.h>
 #include <netdb.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <malloc.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <string.h>
+#include <rpc/rpc.h>
+#ifdef HAVE_RPC_CLNT_SOC_H
+#include <rpc/clnt_soc.h>
+#endif
 #include "lib/yp-tools.h"
 #include "lib/nicknames.h"
-
 
 #ifndef _
 #define _(String) gettext (String)

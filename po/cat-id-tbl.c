@@ -82,7 +82,7 @@ ypchfn - change the GECOS information in the NIS database\n\
 The password must have both upper and lowercase letters, or non-letters.\n", 55},
   {"You cannot reuse the old password.\n", 56},
   {"Please don't use something like your username as password.\n", 57},
-  {"%s: unknown user (uid=%d).\n", 58},
+  {"%s: unknown user (uid=%ld).\n", 58},
   {"%s: Only root may change account information for others\n", 59},
   {"Changing NIS account information for %s on %s.\n", 60},
   {"Please enter root password:", 61},
