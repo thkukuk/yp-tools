@@ -506,6 +506,151 @@ test_ypproc_first_2 (void *v_param __attribute__ ((unused)))
   return NULL;
 }
 
+static enum clnt_stat
+ypproc_next_2 (struct ypreq_key *argp, struct ypresp_key_val *clnt_res, CLIENT *clnt)
+{
+  return (clnt_call(clnt, YPPROC_NEXT,
+		    (xdrproc_t) xdr_ypreq_key, (caddr_t) argp,
+		    (xdrproc_t) xdr_ypresp_key_val, (caddr_t) clnt_res,
+		    TIMEOUT));
+}
+
+static void *
+test_ypproc_next_2 (void *v_param)
+{
+  CLIENT *clnt;
+  char *key = v_param;
+  struct ypreq_key request1 = {domainname, "passwd.byname", {strlen(key), key}};
+  struct ypreq_key request2 = {domainname, "passwd.byname", {5, "nokey"}};
+  struct ypreq_key request3 = {domainname, "passwd.byname", {0, NULL}};
+  struct ypreq_key request4 = {domainname, "passwd-byname", {strlen(key), key}};
+  struct ypreq_key request5 = {"../../etc/", "passwd.byname", {strlen(key), key}};
+  struct ypreq_key request6 = {domainname, "", {strlen(key), key}};
+  struct ypreq_key request7 = {"", "passwd.byname", {strlen(key), key}};
+  struct ypresp_key_val result;
+  unsigned long int count = 0;
+
+  clnt = clnt_create (hostname, YPPROG, YPVERS, "udp");
+  if (clnt == NULL)
+    {
+      int retval = 1;
+      clnt_pcreateerror (hostname);
+      pthread_exit (&retval);
+    }
+
+  do
+    {
+      /* At first, try a correct query.  */
+      memset (&result, 0, sizeof (result));
+      if (ypproc_next_2 (&request1, &result, clnt) != RPC_SUCCESS)
+	{
+	  count++;
+	  clnt_perror (clnt, "ypproc_next_2");
+	}
+      else if (result.status != YP_TRUE)
+	{
+	  count++;
+	  fprintf (stderr,
+		   "ypproc_next_2: ypserv sends %d instead of YP_TRUE\n",
+		   result.status);
+	}
+
+      /* 2: not existing key  */
+      memset (&result, 0, sizeof (result));
+      if (ypproc_next_2 (&request2, &result, clnt) != RPC_SUCCESS)
+	{
+	  count++;
+	  clnt_perror (clnt, "ypproc_next_2");
+	}
+      else if (result.status != YP_NOMORE)
+	{
+	  count++;
+	  fprintf (stderr,
+		   "ypproc_next_2: ypserv sends %d instead of YP_NOMORE\n",
+		   result.status);
+	}
+
+      /* 3: Invalid key  */
+      memset (&result, 0, sizeof (result));
+      if (ypproc_next_2 (&request3, &result, clnt) != RPC_SUCCESS)
+	{
+	  count++;
+	  clnt_perror (clnt, "ypproc_next_2");
+	}
+      else if (result.status != YP_NOMORE)
+	{
+	  count++;
+	  fprintf (stderr,
+		   "ypproc_next_2: ypserv sends %d instead of YP_NOMORE\n",
+		   result.status);
+	}
+
+      /* Fourth try: Invalid map name.  */
+      memset (&result, 0, sizeof (result));
+      if (ypproc_next_2 (&request4, &result, clnt) != RPC_SUCCESS)
+	{
+	  count++;
+	  clnt_perror (clnt, "ypproc_next_2");
+	}
+      else if (result.status != YP_NOMAP)
+	{
+	  count++;
+	  fprintf (stderr,
+		   "ypproc_next_2: ypserv sends %d instead of YP_NOMAP\n",
+		   result.status);
+	}
+
+      /* 5: Invalid domainname name.  */
+      memset (&result, 0, sizeof (result));
+      if (ypproc_next_2 (&request5, &result, clnt) != RPC_SUCCESS)
+	{
+	  count++;
+	  clnt_perror (clnt, "ypproc_next_2");
+	}
+      else if (result.status != YP_NODOM)
+	{
+	  count++;
+	  fprintf (stderr,
+		   "ypproc_next_2: ypserv sends %d instead of YP_NODOM\n",
+		   result.status);
+	}
+
+      /* 6: Invalid domain name.  */
+      memset (&result, 0, sizeof (result));
+      if (ypproc_next_2 (&request6, &result, clnt) != RPC_SUCCESS)
+	{
+	  count++;
+	  clnt_perror (clnt, "ypproc_next_2");
+	}
+      else if (result.status != YP_BADARGS)
+	{
+	  count++;
+	  fprintf (stderr,
+		   "ypproc_next_2: ypserv sends %d instead of YP_BADARGS\n",
+		   result.status);
+	}
+
+      /* 7: Empty map name.  */
+      memset (&result, 0, sizeof (result));
+      if (ypproc_next_2 (&request7, &result, clnt) != RPC_SUCCESS)
+	{
+	  count++;
+	  clnt_perror (clnt, "ypproc_next_2");
+	}
+      else if (result.status != YP_NODOM)
+	{
+	  count++;
+	  fprintf (stderr,
+		   "ypproc_next_2: ypserv sends %d instead of YP_NODOM\n",
+		   result.status);
+	}
+
+
+    } while (do_loop);
+
+  return NULL;
+}
+
 
 int
 main (int argc, char **argv)
@@ -590,13 +735,14 @@ main (int argc, char **argv)
 
   if (do_loop)
     {
-      pthread_t thread1, thread2, thread3, thread4, thread5;
+      pthread_t thread1, thread2, thread3, thread4, thread5, thread6;
 
       pthread_create (&thread1, NULL, &test_ypproc_null_2, NULL);
       pthread_create (&thread2, NULL, &test_ypproc_domain_2, NULL);
       pthread_create (&thread3, NULL, &test_ypproc_domain_nonack_2, NULL);
       pthread_create (&thread4, NULL, &test_ypproc_match_2, key);
       pthread_create (&thread5, NULL, &test_ypproc_first_2, NULL);
+      pthread_create (&thread6, NULL, &test_ypproc_next_2, key);
       sleep (5*60);
     }
   else
@@ -606,6 +752,7 @@ main (int argc, char **argv)
       test_ypproc_domain_nonack_2 (NULL);
       test_ypproc_match_2 (key);
       test_ypproc_first_2 (NULL);
+      test_ypproc_next_2 (key);
     }
 
   return 0;
