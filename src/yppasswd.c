@@ -20,6 +20,8 @@
 #include "config.h"
 #endif
 
+#define _GNU_SOURCE
+
 #define keydat_val dptr
 #define keydat_len dsize
 #define valdat_val dptr
@@ -441,6 +443,7 @@ main (int argc, char **argv)
   uid_t uid;
 
   setlocale (LC_MESSAGES, "");
+  setlocale (LC_CTYPE, "");
   bindtextdomain (PACKAGE, LOCALEDIR);
   textdomain (PACKAGE);
 
@@ -588,7 +591,7 @@ main (int argc, char **argv)
       s = getpass (prompt);
       hashpass = alloca (strlen (pwd->pw_name) + 3);
       cp = stpcpy (hashpass, "##");
-      strcpy (cp, pwd->pw_name)
+      strcpy (cp, pwd->pw_name);
 
       /* We can't check the password with shadow passwords enabled. We
        * leave the checking to yppasswdd */

@@ -2,11 +2,21 @@
 
 	* release version 2.6
 
+	* src/ypset.c (main): Call setlocale for LC_CTYPE
+	* src/ypwhich.c (main): Likewise
+	* src/yppoll.c (main): Likewise
+	* src/yppasswd.c (main): Likewise
+	* src/ypmatch.c (main): Likewise
+	* src/ypcat.c (main): Likewise
+	* src/domainname.c (main): Likewise
+
 	* src/yppoll.c: Include time.h, use time_t for order variable
 	* src/yppasswd.c: Include time.h, don't compare old password
 	  if passwd.adjunct map is used
 
 	* configure.in: Add malloc debug options for dmalloc and efence
+
+	* Makefile.am: Require automake 1.5, add dist-bzip2
 
 2000-10-30  Thorsten Kukuk  <kukuk@suse.de>
 

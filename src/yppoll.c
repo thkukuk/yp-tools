@@ -104,6 +104,7 @@ main (int argc, char **argv)
   struct ypresp_master resp_m;
 
   setlocale (LC_MESSAGES, "");
+  setlocale (LC_CTYPE, "");
   bindtextdomain (PACKAGE, LOCALEDIR);
   textdomain (PACKAGE);
 

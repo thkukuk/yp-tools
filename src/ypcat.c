@@ -1,4 +1,4 @@
-/* Copyright (C) 1998, 1999 Thorsten Kukuk
+/* Copyright (C) 1998, 1999, 2001 Thorsten Kukuk
    This file is part of the yp-tools.
    Author: Thorsten Kukuk <kukuk@suse.de>
 
@@ -118,6 +118,7 @@ main (int argc, char **argv)
   char *domainname = NULL;
 
   setlocale (LC_MESSAGES, "");
+  setlocale (LC_CTYPE, "");
   bindtextdomain (PACKAGE, LOCALEDIR);
   textdomain (PACKAGE);
 
