@@ -1,4 +1,4 @@
-/* Copyright (C) 1998, 1999, 2000, 2001 Thorsten Kukuk
+/* Copyright (C) 1998, 1999, 2000, 2001, 2002 Thorsten Kukuk
    This file is part of the yp-tools.
    Author: Thorsten Kukuk <kukuk@suse.de>
 
@@ -65,6 +65,7 @@ int getrpcport(char *host, int prognum, int versnum, int proto);
 
 /* ok, we're using the crack library */
 #ifdef USE_CRACKLIB
+#include <crack.h>
 #ifndef CRACKLIB_DICTPATH
 #define CRACKLIB_DICTPATH "/usr/lib/cracklib_dict"
 #endif
@@ -363,11 +364,10 @@ getfield (char *gecos, char *field, int size)
   return sp;
 }
 
-#ifndef USE_CRACKLIB
-
+#if ! defined(USE_CRACKLIB) || defined(USE_CRACKLIB_STRICT)
 /* this function will verify the user's password
  * for some silly things.  If we're using cracklib, then
- * this function is unused.
+ * this function is unused unless USE_CRACKLIB_STRICT is set.
  */
 
 static int /* return values: 0 = not ok, 1 = ok */
@@ -531,6 +531,10 @@ main (int argc, char **argv)
   else if (argc == 1)
     user = argv[0];
 
+#ifdef YPPASSWD_IS_DEPRICATED
+
+#else
+
   if ((error = yp_get_default_domain (&domainname)) != 0)
     {
       fprintf (stderr, _("%s: can't get local yp domain: %s\n"),
@@ -647,10 +651,12 @@ main (int argc, char **argv)
 	      fprintf (stderr, _("Not a valid password: %s.\n"), error_msg);
 	      continue;
 	    }
-#else
+#endif
+
+#if ! defined(USE_CRACKLIB) || defined(USE_CRACKLIB_STRICT)
 	  if (verifypassword (pwd, buf, uid) != 1)
 	    continue;
-#endif /* USE_CRACKLIB */
+#endif
 
 	  p = getpass (_("Please retype new password:"));
 	  if (strcmp (buf, p) == 0)
@@ -798,4 +804,5 @@ main (int argc, char **argv)
   clnt_destroy (clnt);
 
   return ((error || status) != 0);
+#endif
 }

@@ -37,8 +37,7 @@ AC_DEFUN(AM_FUNC_GETLINE,
   fi
 
   if test $am_cv_func_working_getline = no; then
-    LIBOBJS="$LIBOBJS getline.o"
-    AC_SUBST(LIBOBJS)dnl
+    AC_LIBOBJ(getline)
   fi
 ])
 ## ---------------------------------- ##

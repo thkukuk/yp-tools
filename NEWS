@@ -1,8 +1,12 @@
 yp-tools NEWS -- history of user-visible changes.
 
-Copyright (C) 1998, 1999, 2001 Thorsten Kukuk
+Copyright (C) 1998-2002 Thorsten Kukuk
 
 Please send bug reports, questions and suggestions to <kukuk@suse.de>.
+
+Version 2.8
+* Update to current gettext, autoconf and automake
+* Fix cracklib support for yppasswd
 
 Version 2.7
 * Add option to ypcat to query specific NIS server

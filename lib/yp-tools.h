@@ -200,4 +200,4 @@ extern  bool_t ytxdr_ypresp_maplist(XDR *, ypresp_maplist*);
 
 #endif
 
-#endif _YP_TOOLS_H
+#endif /* _YP_TOOLS_H */

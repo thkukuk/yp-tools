@@ -9,10 +9,10 @@ MAINT_CHARSET = latin1
 INSTALL_PROGRAM = @INSTALL_PROGRAM@ -s -m 555
 
 CFLAGS = @WARNFLAGS@ @DEFS@ @CFLAGS@
-LDADD = @INTLLIBS@ ../lib/libyptools.a
+LDADD = @LIBINTL@ ../lib/libyptools.a
 
 localedir = $(datadir)/locale
-INCLUDES = -I$(srcdir) -I$(top_srcdir) -I../intl -DLOCALEDIR=\"$(localedir)\"
+INCLUDES = -I$(srcdir) -I$(top_srcdir) -DLOCALEDIR=\"$(localedir)\"
 
 CLEANFILES = *~ domainname
 
@@ -23,10 +23,10 @@ rootexecbin_PROGRAMS = @DOMAINNAME@
 bin_PROGRAMS = ypwhich ypmatch ypcat yppasswd
 sbin_PROGRAMS = yppoll ypset yptest
 
-domainname_LDADD := @INTLLIBS@
+domainname_LDADD := @LIBINTL@
 
 yppasswd_SOURCES = yppasswd.c yppasswd_xdr.c yppasswd.h
-yppasswd_LDADD = ${LDADD} @LIBCRYPT@
+yppasswd_LDADD = ${LDADD} @LIBCRYPT@ @LIBCRACK@
 
 install-exec-hook:
 	ln -f ${DESTDIR}${bindir}/yppasswd ${DESTDIR}${bindir}/ypchsh

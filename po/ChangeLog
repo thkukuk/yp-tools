@@ -1,3 +1,14 @@
+2002-05-13  gettextize  <bug-gnu-gettext@gnu.org>
+
+	* Makefile.in.in: Upgrade to gettext-0.11.2.
+	* Rules-quot: New file, from gettext-0.11.2.
+	* boldquot.sed: New file, from gettext-0.11.2.
+	* en@boldquot.header: New file, from gettext-0.11.2.
+	* en@quot.header: New file, from gettext-0.11.2.
+	* insert-header.sin: New file, from gettext-0.11.2.
+	* quot.sed: New file, from gettext-0.11.2.
+	* remove-potcdate.sin: New file, from gettext-0.11.2.
+
 2001-10-31  Thorsten Kukuk  <kukuk@suse.de>
 
 	* de.po: Adjust translation for new format strings
