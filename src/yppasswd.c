@@ -41,7 +41,6 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <malloc.h>
 #include <locale.h>
 #include <libintl.h>
 #include <sys/param.h>
@@ -738,9 +737,10 @@ main (int argc, char **argv)
 		 _("\nThe GECOS information has not been changed on %s.\n\n"),
 		   master);
 	}
-      fprintf (stdout,
-	       _("\nThe GECOS information has been changed on %s.\n\n"),
-	       master);
+      else
+	fprintf (stdout,
+		 _("\nThe GECOS information has been changed on %s.\n\n"),
+		 master);
       break;
     case 4:
       if (error || status)
@@ -753,8 +753,9 @@ main (int argc, char **argv)
 		   _("\nThe login shell has not been changed on %s.\n\n"),
 		   master);
 	}
-      fprintf (stdout,
-	       _("\nThe login shell has been changed on %s.\n\n"), master);
+      else
+	fprintf (stdout,
+		 _("\nThe login shell has been changed on %s.\n\n"), master);
       break;
     default:
       if (error || status)
@@ -768,9 +769,10 @@ main (int argc, char **argv)
 	   _("\nThe NIS account information has not been changed on %s.\n\n"),
 		   master);
 	}
-      fprintf (stdout,
-	       _("\nThe NIS account information has been changed on %s.\n\n"),
-	       master);
+      else
+	fprintf (stdout,
+		 _("\nThe NIS account information has been changed on %s.\n\n"),
+		 master);
       break;
     }
 

@@ -1,12 +1,12 @@
 Summary: NIS (YP) clients
 Name: yp-tools
-Version: 2.3
-Release: 1
+Version: 2.4
+Release: 0
 Copyright: GPL
 Group: Networking/Utilities
 Source: ftp.kernel.org:/pub/linux/utils/net/NIS/yp-tools-%{PACKAGE_VERSION}.tar.gz
 Packager: Thorsten Kukuk <kukuk@suse.de>
-URL: http://www.suse.de/~kukuk/linux/nis.html
+URL: http://www.suse.de/~kukuk/nis/index.html
 BuildRoot: /var/tmp/yp-tools
 Conflicts: yppasswd
 
@@ -17,7 +17,7 @@ Linux C Library.
 This implementation only provides NIS _clients_. You must already have
 a ypbind daemon running on the same host, and a NIS server running somewhere
 in the net. You can find both for linux on
-http://www.suse.de/~kukuk/linux/nis.html. Please read the NIS-HOWTO, too.
+http://www.suse.de/~kukuk/nis/index.html. Please read the NIS-HOWTO, too.
 
 %prep
 %setup

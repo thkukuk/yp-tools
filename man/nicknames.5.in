@@ -40,7 +40,7 @@ table looks like:
 \f3networks.byaddr
 .TP
 \f3hosts
-\f3hosts.byaddr
+\f3hosts.byname
 .TP
 \f3protocols
 \f3protocols.bynumber

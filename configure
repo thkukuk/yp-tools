@@ -700,7 +700,7 @@ fi
 
 PACKAGE=yp-tools
 
-VERSION=2.3
+VERSION=2.4
 
 if test "`cd $srcdir && pwd`" != "`pwd`" && test -f $srcdir/config.status; then
   { echo "configure: error: source directory already configured; run "make distclean" there first" 1>&2; exit 1; }
@@ -1044,7 +1044,7 @@ else
   fi
 fi
 
-test -n "$GCC" && WARNFLAGS="-W -Wall -Wbad-function-cast -Wcast-align -Winline -Wmissing-declarations -Wmissing-prototypes -Wnested-externs -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef"
+test -n "$GCC" && WARNFLAGS="-W -Wall -Wbad-function-cast -Wcast-align -Winline -Wmissing-declarations -Wmissing-prototypes -Wnested-externs -Wshadow -Wstrict-prototypes -Wundef"
 
 echo $ac_n "checking for POSIXized ISC""... $ac_c" 1>&6
 echo "configure:1051: checking for POSIXized ISC" >&5

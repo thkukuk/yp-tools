@@ -1,3 +1,15 @@
+1999-10-22  Thorsten Kukuk  <kukuk@suse.de>
+
+	* release version 2.4
+
+	* src/ypwhich.c: Don't include malloc.h.
+	* src/yppasswd.c: Likewise.
+
+1999-10-18  Thorsten Kukuk  <kukuk@suse.de>
+
+	* src/yppasswd.c (main): Don't print success if we have printed
+	  an error message earlier.
+
 1999-07-30  Thorsten Kukuk  <kukuk@suse.de>
 
 	* etc/nicknames: Change hosts alias to hosts.byname.
