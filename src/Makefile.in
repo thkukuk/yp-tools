@@ -144,7 +144,7 @@ target_alias = @target_alias@
 AUTOMAKE_OPTIONS = 1.7 gnits
 MAINT_CHARSET = latin1
 
-AM_CFLAGS = @WARNFLAGS@ @DEFS@ @CFLAGS@
+AM_CFLAGS = @WARNFLAGS@
 LDADD = @LIBINTL@ ../lib/libyptools.a
 
 localedir = $(datadir)/locale

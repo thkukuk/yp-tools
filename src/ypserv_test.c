@@ -68,7 +68,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\
 static void
 print_usage (FILE *stream)
 {
-  fputs (_("Usage: yptest [-q] [-d domain] [-h hostname] [-m map] [-u user]\n"),
+  fputs (_("Usage: ypserv_test [-l] [-d domain] [-h hostname] [-m map] [-u user]\n"),
 	 stream);
 }
 
@@ -165,6 +165,7 @@ test_ypproc_domain_2 (void *v_param __attribute__ ((unused)))
   do
     {
       /* At first, try a correct domainname.  */
+      memset (&result, 0, sizeof (result));
       if (ypproc_domain_2 (&domain_ack, &result, clnt) != RPC_SUCCESS)
 	{
 	  count++;
@@ -178,6 +179,7 @@ test_ypproc_domain_2 (void *v_param __attribute__ ((unused)))
 
 
       /* Second try: Invalid domainname.  */
+      memset (&result, 0, sizeof (result));
       if (ypproc_domain_2 (&domain_inv, &result, clnt) != RPC_SUCCESS)
 	{
 	  count++;
@@ -190,6 +192,7 @@ test_ypproc_domain_2 (void *v_param __attribute__ ((unused)))
 	}
 
       /* Third try: Not existing domainname.  */
+      memset (&result, 0, sizeof (result));
       if (ypproc_domain_2 (&domain_nak, &result, clnt) != RPC_SUCCESS)
 	{
 	  count++;
@@ -235,6 +238,7 @@ test_ypproc_domain_nonack_2 (void *v_param __attribute__ ((unused)))
   do
     {
       /* At first, try a correct domainname.  */
+      memset (&result, 0, sizeof (result));
       if (ypproc_domain_nonack_2 (&domain_ack, &result, clnt) != RPC_SUCCESS)
 	{
 	  count++;
@@ -248,7 +252,8 @@ test_ypproc_domain_nonack_2 (void *v_param __attribute__ ((unused)))
 
 
       /* Second try: Invalid domainname.  */
-      if (ypproc_domain_nonack_2 (&domain_inv, &result, clnt) != RPC_SUCCESS)
+      memset (&result, 0, sizeof (result));
+      if (ypproc_domain_nonack_2 (&domain_inv, &result, clnt) != RPC_TIMEDOUT)
 	{
 	  count++;
 	  clnt_perror (clnt, "ypproc_domain_nonack_2");
@@ -260,7 +265,8 @@ test_ypproc_domain_nonack_2 (void *v_param __attribute__ ((unused)))
 	}
 
       /* Third try: Not existing domainname.  */
-      if (ypproc_domain_nonack_2 (&domain_nak, &result, clnt) != RPC_SUCCESS)
+      memset (&result, 0, sizeof (result));
+      if (ypproc_domain_nonack_2 (&domain_nak, &result, clnt) != RPC_TIMEDOUT)
 	{
 	  count++;
 	  clnt_perror (clnt, "ypproc_domain_nonack_2");
@@ -308,6 +314,7 @@ test_ypproc_match_2 (void *v_param)
   do
     {
       /* At first, try a correct query.  */
+      memset (&result, 0, sizeof (result));
       if (ypproc_match_2 (&request1, &result, clnt) != RPC_SUCCESS)
 	{
 	  count++;
@@ -322,6 +329,7 @@ test_ypproc_match_2 (void *v_param)
 	}
 
       /* Second try: Unknown user  */
+      memset (&result, 0, sizeof (result));
       if (ypproc_match_2 (&request2, &result, clnt) != RPC_SUCCESS)
 	{
 	  count++;
@@ -336,6 +344,7 @@ test_ypproc_match_2 (void *v_param)
 	}
 
       /* Third: Invalid map name.  */
+      memset (&result, 0, sizeof (result));
       if (ypproc_match_2 (&request3, &result, clnt) != RPC_SUCCESS)
 	{
 	  count++;
@@ -350,6 +359,7 @@ test_ypproc_match_2 (void *v_param)
 	}
 
       /* Fourth: Invalid domain name.  */
+      memset (&result, 0, sizeof (result));
       if (ypproc_match_2 (&request4, &result, clnt) != RPC_SUCCESS)
 	{
 	  count++;
@@ -364,6 +374,7 @@ test_ypproc_match_2 (void *v_param)
 	}
 
       /* Fifth: Invalid key name.  */
+      memset (&result, 0, sizeof (result));
       if (ypproc_match_2 (&request5, &result, clnt) != RPC_SUCCESS)
 	{
 	  count++;
@@ -374,6 +385,118 @@ test_ypproc_match_2 (void *v_param)
 	  count++;
 	  fprintf (stderr,
 		   "ypproc_match_2: ypserv sends %d instead of YP_BADARGS\n",
+		   result.status);
+	}
+
+
+    } while (do_loop);
+
+  return NULL;
+}
+
+static enum clnt_stat
+ypproc_first_2 (struct ypreq_nokey *argp, struct ypresp_key_val *clnt_res, CLIENT *clnt)
+{
+  return (clnt_call(clnt, YPPROC_FIRST,
+		    (xdrproc_t) xdr_ypreq_nokey, (caddr_t) argp,
+		    (xdrproc_t) xdr_ypresp_key_val, (caddr_t) clnt_res,
+		    TIMEOUT));
+}
+
+static void *
+test_ypproc_first_2 (void *v_param __attribute__ ((unused)))
+{
+  CLIENT *clnt;
+  struct ypreq_nokey request1 = {domainname, "passwd.byname"};
+  struct ypreq_nokey request2 = {domainname, "passwd-byname"};
+  struct ypreq_nokey request3 = {"../../etc/", "passwd.byname"};
+  struct ypreq_nokey request4 = {domainname, ""};
+  struct ypreq_nokey request5 = {"", "passwd.byname"};
+  struct ypresp_key_val result;
+  unsigned long int count = 0;
+
+  clnt = clnt_create (hostname, YPPROG, YPVERS, "udp");
+  if (clnt == NULL)
+    {
+      int retval = 1;
+      clnt_pcreateerror (hostname);
+      pthread_exit (&retval);
+    }
+
+  do
+    {
+      /* At first, try a correct query.  */
+      memset (&result, 0, sizeof (result));
+      if (ypproc_first_2 (&request1, &result, clnt) != RPC_SUCCESS)
+	{
+	  count++;
+	  clnt_perror (clnt, "ypproc_first_2");
+	}
+      else if (result.status != YP_TRUE)
+	{
+	  count++;
+	  fprintf (stderr,
+		   "ypproc_first_2: ypserv sends %d instead of YP_TRUE\n",
+		   result.status);
+	}
+
+      /* Second try: Invalid map name.  */
+      memset (&result, 0, sizeof (result));
+      if (ypproc_first_2 (&request2, &result, clnt) != RPC_SUCCESS)
+	{
+	  count++;
+	  clnt_perror (clnt, "ypproc_first_2");
+	}
+      else if (result.status != YP_NOMAP)
+	{
+	  count++;
+	  fprintf (stderr,
+		   "ypproc_first_2: ypserv sends %d instead of YP_NOMAP\n",
+		   result.status);
+	}
+
+      /* Third: Invalid domainname name.  */
+      memset (&result, 0, sizeof (result));
+      if (ypproc_first_2 (&request3, &result, clnt) != RPC_SUCCESS)
+	{
+	  count++;
+	  clnt_perror (clnt, "ypproc_first_2");
+	}
+      else if (result.status != YP_NODOM)
+	{
+	  count++;
+	  fprintf (stderr,
+		   "ypproc_first_2: ypserv sends %d instead of YP_NODOM\n",
+		   result.status);
+	}
+
+      /* Fourth: Invalid domain name.  */
+      memset (&result, 0, sizeof (result));
+      if (ypproc_first_2 (&request4, &result, clnt) != RPC_SUCCESS)
+	{
+	  count++;
+	  clnt_perror (clnt, "ypproc_first_2");
+	}
+      else if (result.status != YP_BADARGS)
+	{
+	  count++;
+	  fprintf (stderr,
+		   "ypproc_first_2: ypserv sends %d instead of YP_BADARGS\n",
+		   result.status);
+	}
+
+      /* Fifth: Empty map name.  */
+      memset (&result, 0, sizeof (result));
+      if (ypproc_first_2 (&request5, &result, clnt) != RPC_SUCCESS)
+	{
+	  count++;
+	  clnt_perror (clnt, "ypproc_first_2");
+	}
+      else if (result.status != YP_NODOM)
+	{
+	  count++;
+	  fprintf (stderr,
+		   "ypproc_first_2: ypserv sends %d instead of YP_NODOM\n",
 		   result.status);
 	}
 
@@ -408,7 +531,7 @@ main (int argc, char **argv)
         {NULL, 0, NULL, '\0'}
       };
 
-      c = getopt_long (argc, argv, "d:h:m:u:?", long_options, &option_index);
+      c = getopt_long (argc, argv, "d:h:k:lm:?", long_options, &option_index);
       if (c == (-1))
         break;
       switch (c)
@@ -419,10 +542,13 @@ main (int argc, char **argv)
 	case 'h':
 	  hostname = optarg;
 	  break;
+	case 'l':
+	  do_loop = 1;
+	  break;
 	case 'm':
 	  map = optarg;
 	  break;
-	case 'u':
+	case 'k':
 	  key = optarg;
 	  break;
 	case '?':
@@ -462,12 +588,25 @@ main (int argc, char **argv)
   if (domainname == NULL)
     domainname = domain;
 
-  pthread_t thread;
+  if (do_loop)
+    {
+      pthread_t thread1, thread2, thread3, thread4, thread5;
 
-  pthread_create (&thread, NULL, &test_ypproc_null_2, NULL);
-  pthread_create (&thread, NULL, &test_ypproc_domain_2, NULL);
-  pthread_create (&thread, NULL, &test_ypproc_domain_nonack_2, NULL);
-  test_ypproc_match_2 ("kukuk");
+      pthread_create (&thread1, NULL, &test_ypproc_null_2, NULL);
+      pthread_create (&thread2, NULL, &test_ypproc_domain_2, NULL);
+      pthread_create (&thread3, NULL, &test_ypproc_domain_nonack_2, NULL);
+      pthread_create (&thread4, NULL, &test_ypproc_match_2, key);
+      pthread_create (&thread5, NULL, &test_ypproc_first_2, NULL);
+      sleep (5*60);
+    }
+  else
+    {
+      test_ypproc_null_2 (NULL);
+      test_ypproc_domain_2 (NULL);
+      test_ypproc_domain_nonack_2 (NULL);
+      test_ypproc_match_2 (key);
+      test_ypproc_first_2 (NULL);
+    }
 
   return 0;
 }

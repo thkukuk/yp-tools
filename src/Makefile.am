@@ -8,7 +8,7 @@ MAINT_CHARSET = latin1
 #
 INSTALL_PROGRAM = @INSTALL_PROGRAM@ -s -m 555
 
-AM_CFLAGS = @WARNFLAGS@ @DEFS@ @CFLAGS@
+AM_CFLAGS = @WARNFLAGS@
 LDADD = @LIBINTL@ ../lib/libyptools.a
 
 localedir = $(datadir)/locale
