@@ -257,7 +257,7 @@ ypgetpw (char *master, char *domainname, char *name, int uid)
 
   if (name == NULL)
     {
-      if (snprintf (uidbuf, sizeof (uidbuf), "%d", uid) >= sizeof (uidbuf))
+      if (snprintf (uidbuf, sizeof (uidbuf), "%d", uid) >= (int) sizeof (uidbuf))
 	abort ();
 
       keyval = strdup (uidbuf);

@@ -3,12 +3,12 @@
 #
 # Author: Thorsten Kukuk <kukuk@suse.de>
 #
-AUTOMAKE_OPTIONS = 1.4 gnits
+AUTOMAKE_OPTIONS = 1.7 gnits
 MAINT_CHARSET = latin1
 #
 INSTALL_PROGRAM = @INSTALL_PROGRAM@ -s -m 555
 
-CFLAGS = @WARNFLAGS@ @DEFS@ @CFLAGS@
+AM_CFLAGS = @WARNFLAGS@ @DEFS@ @CFLAGS@
 LDADD = @LIBINTL@ ../lib/libyptools.a
 
 localedir = $(datadir)/locale

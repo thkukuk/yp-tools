@@ -1,3 +1,9 @@
+2002-12-05  Thorsten Kukuk  <kukuk@suse.de>
+
+	* release version 2.8
+
+	* src/yppasswd.c (ypgetpw): Cast result of sizeof to int.
+
 2002-05-30  Thorsten Kukuk  <kukuk@suse.de>
 
 	* src/yppasswd.c (main): Make sure strings are NUL terminated

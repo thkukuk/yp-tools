@@ -10,7 +10,7 @@ MAINT_CHARSET = latin1
 
 noinst_LIBRARIES = libyptools.a
 
-CFLAGS = @WARNFLAGS@ @DEFS@ @CFLAGS@
+AM_CFLAGS = @WARNFLAGS@ @DEFS@ @CFLAGS@
 
 EXTRA_DIST = getopt.c getopt1.c getline.c ypbinderr_string.c
 
