@@ -1,5 +1,5 @@
 #
-# Copyright (c) 1997, 1998, 1999, 2001 Thorsten Kukuk, Germany
+# Copyright (c) 1997, 1998, 1999, 2001, 2002 Thorsten Kukuk, Germany
 #
 # Author: Thorsten Kukuk <kukuk@suse.de>
 #
@@ -27,6 +27,8 @@ domainname_LDADD := @LIBINTL@
 
 yppasswd_SOURCES = yppasswd.c yppasswd_xdr.c yppasswd.h
 yppasswd_LDADD = ${LDADD} @LIBCRYPT@ @LIBCRACK@
+yppasswd_CFLAGS = -DPASSWD_PROG=\"${PASSWD_PROG}\" \
+	-DCHFN_PROG=\"${CHFN_PROG}\" -DCHSH_PROG=\"${CHSH_PROG}\"
 
 install-exec-hook:
 	ln -f ${DESTDIR}${bindir}/yppasswd ${DESTDIR}${bindir}/ypchsh

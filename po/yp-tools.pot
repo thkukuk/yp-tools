@@ -1,18 +1,19 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR Free Software Foundation, Inc.
+# This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2001-12-08 22:30+0100\n"
+"POT-Creation-Date: 2002-05-13 15:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=CHARSET\n"
-"Content-Transfer-Encoding: 8-bit\n"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: lib/nicknames.c:64
 #, c-format
@@ -49,8 +50,8 @@ msgstr ""
 msgid "Unknown ypbind error"
 msgstr ""
 
-#: src/domainname.c:45 src/ypcat.c:44 src/ypmatch.c:46 src/yppasswd.c:80
-#: src/yppoll.c:48 src/ypset.c:53 src/ypwhich.c:53
+#: src/domainname.c:45 src/ypcat.c:44 src/ypmatch.c:46 src/yppasswd.c:85
+#: src/yppoll.c:48 src/ypset.c:53 src/yptest.c:56 src/ypwhich.c:53
 #, c-format
 msgid ""
 "Copyright (C) %s Thorsten Kukuk.\n"
@@ -70,20 +71,20 @@ msgid ""
 msgstr ""
 
 #: src/domainname.c:65 src/domainname.c:78 src/ypcat.c:74 src/ypmatch.c:73
-#: src/yppasswd.c:115 src/yppasswd.c:126 src/yppasswd.c:138 src/yppoll.c:73
-#: src/ypset.c:76 src/ypwhich.c:82
+#: src/yppasswd.c:120 src/yppasswd.c:131 src/yppasswd.c:143 src/yppoll.c:73
+#: src/ypset.c:76 src/yptest.c:86 src/ypwhich.c:82
 msgid "  -?, --help     Give this help list\n"
 msgstr ""
 
 #: src/domainname.c:66 src/domainname.c:79 src/ypcat.c:75 src/ypmatch.c:74
-#: src/yppasswd.c:116 src/yppasswd.c:127 src/yppasswd.c:139 src/yppoll.c:74
-#: src/ypset.c:77 src/ypwhich.c:83
+#: src/yppasswd.c:121 src/yppasswd.c:132 src/yppasswd.c:144 src/yppoll.c:74
+#: src/ypset.c:77 src/yptest.c:87 src/ypwhich.c:83
 msgid "      --usage    Give a short usage message\n"
 msgstr ""
 
 #: src/domainname.c:67 src/domainname.c:80 src/ypcat.c:76 src/ypmatch.c:75
-#: src/yppasswd.c:117 src/yppasswd.c:128 src/yppasswd.c:140 src/yppoll.c:75
-#: src/ypset.c:78 src/ypwhich.c:84
+#: src/yppasswd.c:122 src/yppasswd.c:133 src/yppasswd.c:145 src/yppoll.c:75
+#: src/ypset.c:78 src/yptest.c:88 src/ypwhich.c:84
 msgid "      --version  Print program version\n"
 msgstr ""
 
@@ -94,19 +95,19 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/domainname.c:88 src/ypcat.c:85 src/ypmatch.c:85 src/yppasswd.c:154
-#: src/yppoll.c:85 src/ypset.c:88 src/ypwhich.c:94
+#: src/domainname.c:88 src/ypcat.c:85 src/ypmatch.c:85 src/yppasswd.c:159
+#: src/yppoll.c:85 src/ypset.c:88 src/yptest.c:97 src/ypwhich.c:94
 #, c-format
 msgid "Try `%s --help' or `%s --usage' for more information.\n"
 msgstr ""
 
-#: src/ypcat.c:49
+#: src/ypcat.c:49 src/yptest.c:61
 #, c-format
 msgid "Written by %s.\n"
 msgstr ""
 
 #: src/ypcat.c:55
-msgid "Usage: ypcat [-kt] [-d domain] mapname | -x\n"
+msgid "Usage: ypcat [-kt] [-d domain] [-h hostname] mapname | -x\n"
 msgstr ""
 
 #: src/ypcat.c:63
@@ -116,11 +117,11 @@ msgid ""
 msgstr ""
 
 #: src/ypcat.c:65 src/ypmatch.c:67 src/yppoll.c:71 src/ypset.c:73
-#: src/ypwhich.c:74
+#: src/yptest.c:77 src/ypwhich.c:74
 msgid "  -d domain      Use 'domain' instead of the default domain\n"
 msgstr ""
 
-#: src/ypcat.c:67
+#: src/ypcat.c:67 src/yptest.c:79
 msgid "  -h hostname    Query ypserv on 'hostname' instead the current one\n"
 msgstr ""
 
@@ -136,7 +137,7 @@ msgstr ""
 msgid "  -x             Display the map nickname translation table\n"
 msgstr ""
 
-#: src/ypcat.c:209 src/ypmatch.c:174 src/yppasswd.c:536 src/yppoll.c:163
+#: src/ypcat.c:209 src/ypmatch.c:174 src/yppasswd.c:585 src/yppoll.c:163
 #: src/ypset.c:224 src/ypwhich.c:263
 #, c-format
 msgid "%s: can't get local yp domain: %s\n"
@@ -166,190 +167,216 @@ msgstr ""
 msgid "Can't match key %s in map %s. Reason: %s\n"
 msgstr ""
 
-#: src/yppasswd.c:91
+#: src/yppasswd.c:96
 msgid "Usage: yppasswd [-f] [-l] [-p] [User]\n"
 msgstr ""
 
-#: src/yppasswd.c:97
+#: src/yppasswd.c:102
 msgid "Usage: ypchsh [User]\n"
 msgstr ""
 
-#: src/yppasswd.c:103
+#: src/yppasswd.c:108
 msgid "Usage: ypchfn [User]\n"
 msgstr ""
 
-#: src/yppasswd.c:110
+#: src/yppasswd.c:115
 msgid ""
 "yppasswd - change your password in the NIS database\n"
 "\n"
 msgstr ""
 
-#: src/yppasswd.c:112
+#: src/yppasswd.c:117
 msgid "  -f             Change GECOS field information\n"
 msgstr ""
 
-#: src/yppasswd.c:113
+#: src/yppasswd.c:118
 msgid "  -l             Change the login shell\n"
 msgstr ""
 
-#: src/yppasswd.c:114
+#: src/yppasswd.c:119
 msgid "  -p             Change the password\n"
 msgstr ""
 
-#: src/yppasswd.c:124
+#: src/yppasswd.c:129
 msgid ""
 "ypchsh - change the shell in the NIS database\n"
 "\n"
 msgstr ""
 
-#: src/yppasswd.c:135
+#: src/yppasswd.c:140
 msgid ""
 "ypchfn - change the GECOS information in the NIS database\n"
 "\n"
 msgstr ""
 
-#: src/yppasswd.c:166
+#: src/yppasswd.c:171
 #, c-format
 msgid "%s: can't find the master ypserver: %s\n"
 msgstr ""
 
-#: src/yppasswd.c:174
+#: src/yppasswd.c:179
 #, c-format
 msgid "%s: yppasswdd not running on NIS master host (\"%s\").\n"
 msgstr ""
 
-#: src/yppasswd.c:181
+#: src/yppasswd.c:186
 #, c-format
 msgid "%s: yppasswd daemon running on illegal port (\"%s\").\n"
 msgstr ""
 
-#: src/yppasswd.c:198
+#: src/yppasswd.c:203
 msgid "No more"
 msgstr ""
 
-#: src/yppasswd.c:201
+#: src/yppasswd.c:206
 msgid "True"
 msgstr ""
 
-#: src/yppasswd.c:204
+#: src/yppasswd.c:209
 msgid "False"
 msgstr ""
 
-#: src/yppasswd.c:207
+#: src/yppasswd.c:212
 msgid "No such map"
 msgstr ""
 
-#: src/yppasswd.c:210
+#: src/yppasswd.c:215
 msgid "No such domain"
 msgstr ""
 
-#: src/yppasswd.c:213
+#: src/yppasswd.c:218
 msgid "Bad operation"
 msgstr ""
 
-#: src/yppasswd.c:216
+#: src/yppasswd.c:221
 msgid "Database bad"
 msgstr ""
 
-#: src/yppasswd.c:219
+#: src/yppasswd.c:224
 msgid "Bad arguments"
 msgstr ""
 
-#: src/yppasswd.c:222
+#: src/yppasswd.c:227
 msgid "Version Mismatch"
 msgstr ""
 
-#: src/yppasswd.c:225
+#: src/yppasswd.c:230
 msgid "Unknown error"
 msgstr ""
 
-#: src/yppasswd.c:345
+#: src/yppasswd.c:350
 #, c-format
 msgid "%s: no colons allowed in GECOS field... sorry.\n"
 msgstr ""
 
-#: src/yppasswd.c:381
+#: src/yppasswd.c:385
 msgid "The password must have at least 6 characters.\n"
 msgstr ""
 
-#: src/yppasswd.c:395
+#: src/yppasswd.c:399
 msgid ""
 "The password must have both upper and lowercase letters, or non-letters.\n"
 msgstr ""
 
-#: src/yppasswd.c:404
+#: src/yppasswd.c:408
 msgid "You cannot reuse the old password.\n"
 msgstr ""
 
-#: src/yppasswd.c:426
+#: src/yppasswd.c:430
 msgid "Please don't use something like your username as password.\n"
 msgstr ""
 
-#: src/yppasswd.c:549
+#: src/yppasswd.c:545
 #, c-format
-msgid "%s: unknown user (uid=%ld).\n"
+msgid ""
+"yppasswd is deprecated, use %s instead\n"
+"\n"
+msgstr ""
+
+#: src/yppasswd.c:548 src/yppasswd.c:562 src/yppasswd.c:577
+#, c-format
+msgid "Calling %s failed: %s\n"
 msgstr ""
 
 #: src/yppasswd.c:559
 #, c-format
+msgid ""
+"ypchsh is deprecated, use %s instead\n"
+"\n"
+msgstr ""
+
+#: src/yppasswd.c:573
+#, c-format
+msgid ""
+"ypchfn is deprecated, use %s instead\n"
+"\n"
+msgstr ""
+
+#: src/yppasswd.c:598
+#, c-format
+msgid "%s: unknown user (uid=%ld).\n"
+msgstr ""
+
+#: src/yppasswd.c:608
+#, c-format
 msgid "%s: Only root may change account information for others\n"
 msgstr ""
 
-#: src/yppasswd.c:576
+#: src/yppasswd.c:625
 #, c-format
 msgid "Changing NIS account information for %s on %s.\n"
 msgstr ""
 
-#: src/yppasswd.c:587
+#: src/yppasswd.c:636
 msgid "Please enter root password:"
 msgstr ""
 
-#: src/yppasswd.c:589
+#: src/yppasswd.c:638
 #, c-format
 msgid "Please enter %spassword:"
 msgstr ""
 
-#: src/yppasswd.c:590
+#: src/yppasswd.c:639
 msgid "old "
 msgstr ""
 
-#: src/yppasswd.c:602
+#: src/yppasswd.c:669
 msgid "Sorry.\n"
 msgstr ""
 
-#: src/yppasswd.c:620
+#: src/yppasswd.c:688
 #, c-format
 msgid "Changing NIS password for %s on %s.\n"
 msgstr ""
 
-#: src/yppasswd.c:628
+#: src/yppasswd.c:696
 msgid ""
 "Too many tries. Aborted.\n"
 "Password unchanged.\n"
 msgstr ""
 
-#: src/yppasswd.c:633
+#: src/yppasswd.c:701
 msgid "Please enter new password:"
 msgstr ""
 
-#: src/yppasswd.c:636
+#: src/yppasswd.c:704
 msgid "Password unchanged.\n"
 msgstr ""
 
-#: src/yppasswd.c:647
+#: src/yppasswd.c:715
 #, c-format
 msgid "Not a valid password: %s.\n"
 msgstr ""
 
-#: src/yppasswd.c:655
+#: src/yppasswd.c:725
 msgid "Please retype new password:"
 msgstr ""
 
-#: src/yppasswd.c:660
+#: src/yppasswd.c:730
 msgid "Mismatch - password unchanged.\n"
 msgstr ""
 
-#: src/yppasswd.c:678
+#: src/yppasswd.c:748
 #, c-format
 msgid ""
 "\n"
@@ -358,23 +385,23 @@ msgid ""
 "field, type the word \"none\".\n"
 msgstr ""
 
-#: src/yppasswd.c:685
+#: src/yppasswd.c:755
 msgid "Name"
 msgstr ""
 
-#: src/yppasswd.c:689
+#: src/yppasswd.c:759
 msgid "Location"
 msgstr ""
 
-#: src/yppasswd.c:693
+#: src/yppasswd.c:763
 msgid "Office Phone"
 msgstr ""
 
-#: src/yppasswd.c:697
+#: src/yppasswd.c:767
 msgid "Home Phone"
 msgstr ""
 
-#: src/yppasswd.c:711
+#: src/yppasswd.c:781
 #, c-format
 msgid ""
 "\n"
@@ -383,15 +410,15 @@ msgid ""
 "system's default shell, type the word \"none\".\n"
 msgstr ""
 
-#: src/yppasswd.c:716
+#: src/yppasswd.c:786
 msgid "Login shell"
 msgstr ""
 
-#: src/yppasswd.c:738
+#: src/yppasswd.c:808
 msgid "Error while changing the NIS password."
 msgstr ""
 
-#: src/yppasswd.c:740
+#: src/yppasswd.c:810
 #, c-format
 msgid ""
 "\n"
@@ -399,7 +426,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/yppasswd.c:744
+#: src/yppasswd.c:814
 #, c-format
 msgid ""
 "\n"
@@ -407,11 +434,11 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/yppasswd.c:753
+#: src/yppasswd.c:823
 msgid "Error while changing the GECOS information."
 msgstr ""
 
-#: src/yppasswd.c:755
+#: src/yppasswd.c:825
 #, c-format
 msgid ""
 "\n"
@@ -419,7 +446,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/yppasswd.c:760
+#: src/yppasswd.c:830
 #, c-format
 msgid ""
 "\n"
@@ -427,11 +454,11 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/yppasswd.c:769
+#: src/yppasswd.c:839
 msgid "Error while changing the login shell."
 msgstr ""
 
-#: src/yppasswd.c:771
+#: src/yppasswd.c:841
 #, c-format
 msgid ""
 "\n"
@@ -439,7 +466,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/yppasswd.c:776
+#: src/yppasswd.c:846
 #, c-format
 msgid ""
 "\n"
@@ -447,11 +474,11 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/yppasswd.c:784
+#: src/yppasswd.c:854
 msgid "Error while changing the NIS account information."
 msgstr ""
 
-#: src/yppasswd.c:787
+#: src/yppasswd.c:857
 #, c-format
 msgid ""
 "\n"
@@ -459,7 +486,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/yppasswd.c:792
+#: src/yppasswd.c:862
 #, c-format
 msgid ""
 "\n"
@@ -570,7 +597,7 @@ msgid ""
 msgstr ""
 
 #: src/ypset.c:75
-msgid "  -h hostname    Set ypbind's binding on ´hostname´\n"
+msgid "  -h hostname    Set ypbind's binding on hostname\n"
 msgstr ""
 
 #: src/ypset.c:108
@@ -583,7 +610,7 @@ msgstr ""
 msgid "can't find address for %s\n"
 msgstr ""
 
-#: src/ypset.c:134 src/ypwhich.c:142
+#: src/ypset.c:134 src/yptest.c:148 src/ypwhich.c:142
 #, c-format
 msgid "can't yp_bind: Reason: %s\n"
 msgstr ""
@@ -596,6 +623,90 @@ msgstr ""
 #: src/ypset.c:241
 #, c-format
 msgid "ypset: host %s unknown\n"
+msgstr ""
+
+#: src/yptest.c:67
+msgid "Usage: yptest [-q] [-d domain] [-h hostname] [-m map] [-u user]\n"
+msgstr ""
+
+#: src/yptest.c:75
+msgid ""
+"yptest - call different NIS routines to test configuration\n"
+"\n"
+msgstr ""
+
+#: src/yptest.c:81
+msgid "  -m map         Use this existing map for tests\n"
+msgstr ""
+
+#: src/yptest.c:82
+msgid "  -u user        Use the existing NIS user 'user' for tests\n"
+msgstr ""
+
+#: src/yptest.c:84
+msgid "  -q             Be quiet, don't print messages\n"
+msgstr ""
+
+#: src/yptest.c:161 src/yptest.c:163
+#, c-format
+msgid "Used NIS server: %s\n"
+msgstr ""
+
+#: src/yptest.c:282
+msgid "ERROR: domainname is not set!\n"
+msgstr ""
+
+#: src/yptest.c:287
+msgid "WARNING: domainname is not set!\n"
+msgstr ""
+
+#: src/yptest.c:291
+#, c-format
+msgid "Configured domainname is \"%s\"\n"
+msgstr ""
+
+#: src/yptest.c:296
+#, c-format
+msgid "Domainname which will be used due the test: \"%s\"\n"
+msgstr ""
+
+#: src/yptest.c:315
+#, c-format
+msgid "yptest: host %s unknown\n"
+msgstr ""
+
+#: src/yptest.c:350 src/yptest.c:370 src/yptest.c:397 src/yptest.c:420
+#: src/yptest.c:440 src/yptest.c:466 src/yptest.c:488
+msgid "ERROR: No running ypbind\n"
+msgstr ""
+
+#: src/yptest.c:354
+#, c-format
+msgid "WARNING: %s (Map %s, key %s)\n"
+msgstr ""
+
+#: src/yptest.c:374 src/yptest.c:403 src/yptest.c:424 src/yptest.c:444
+#: src/yptest.c:492
+#, c-format
+msgid "WARNING: %s (Map %s)\n"
+msgstr ""
+
+#: src/yptest.c:383
+msgid "-- skipped --\n"
+msgstr ""
+
+#: src/yptest.c:470
+#, c-format
+msgid "WARNING: %s\n"
+msgstr ""
+
+#: src/yptest.c:500
+msgid "All tests passed\n"
+msgstr ""
+
+#: src/yptest.c:502
+#, c-format
+msgid "%d tests failed\n"
 msgstr ""
 
 #: src/ypwhich.c:64

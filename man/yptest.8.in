@@ -1,63 +1,78 @@
-.\"	$OpenBSD: yptest.8,v 1.10 2001/08/02 18:37:35 mpech Exp $
+.\" -*- nroff -*-
+.\" Copyright (C) 2002 Thorsten Kukuk
+.\" This file is part of the yp-tools.
+.\" Author: Thorsten Kukuk <kukuk@suse.de>
 .\"
-.\" Copyright (c) 1994 Mats O Jansson <moj@stacken.kth.se>
-.\" All rights reserved.
+.\" This program is free software; you can redistribute it and/or modify
+.\" it under the terms of the GNU General Public License version 2 as
+.\" published by the Free Software Foundation.
 .\"
-.\" Redistribution and use in source and binary forms, with or without
-.\" modification, are permitted provided that the following conditions
-.\" are met:
-.\" 1. Redistributions of source code must retain the above copyright
-.\"    notice, this list of conditions and the following disclaimer.
-.\" 2. Redistributions in binary form must reproduce the above copyright
-.\"    notice, this list of conditions and the following disclaimer in the
-.\"    documentation and/or other materials provided with the distribution.
-.\" 3. All advertising materials mentioning features or use of this software
-.\"    must display the following acknowledgement:
-.\"	This product includes software developed by Mats O Jansson
-.\" 4. The name of the author may not be used to endorse or promote products
-.\"    derived from this software without specific prior written permission.
+.\" This program is distributed in the hope that it will be useful,
+.\" but WITHOUT ANY WARRANTY; without even the implied warranty of
+.\" MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+.\" GNU General Public License for more details.
 .\"
-.\" THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS
-.\" OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-.\" WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-.\" ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
-.\" DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-.\" DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
-.\" OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-.\" HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
-.\" LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
-.\" OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
-.\" SUCH DAMAGE.
+.\" You should have received a copy of the GNU General Public License
+.\" along with this program; if not, write to the Free Software Foundation,
+.\" Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .\"
-.Dd August 26, 1994
-.Dt YPTEST 8
-.Os
-.Sh NAME
-.Nm yptest
-.Nd calls different YP routines
-.Sh SYNOPSIS
-.Nm yptest
-.\".Op Fl u Ar file
-.\".Nm /usr/sbin/makedbm
-.\".Op Fl bls
-.\".Op Fl i Ar yp_input_file
-.\".Op Fl o Ar yp_output_file
-.\".Op Fl d Ar yp_domain_name
-.\".Op Fl m Ar yp_master_name
-.\".Ar infile
-.\".Ar outfile
-.Sh DESCRIPTION
-.Nm
-checks various YP functions to see if the YP server works as expected.
-.\".Pp
-.\"The options are as follows:
-.\".Bl -tag -width Ds
-.\".It Fl d Ar yp_domain_name
-.\"Include an entry the in the map with the key YP_DOMAIN_NAME and the argument
-.\"as value.
-.\".El
-.Sh SEE ALSO
-.Xr yp 8 ,
-.Xr ypserv 8
-.Sh AUTHORS
-Mats O Jansson <moj@stacken.kth.se>
+.TH yptest 8 "May 2002" "YP Tools @VERSION@"
+.SH NAME
+yptest - test NIS configuration
+.SH SYNOPSYS
+.B yptest [\fB-q\fR] [\fB-d \fIdomain\fR] [\fB-h \fIhost\fR] [\fB-m \fImap\fR] [\fB-u \fIuser\fR]
+.LP
+.SH DESCRIPTION
+.BR yptest
+calls various NIS functions to check if the NIS configuration is
+correct and works as expected.
+.LP
+.SH OPTIONS
+.TP
+.B \-q
+Be quiet, don't print messages
+.TP
+.BI \-d " domainname"
+Specify a domain other than the default domain as returned by
+.BR domainname (1).
+This option is not supported by all tests.
+.TP
+.BI \-h " hostname"
+Query ypserv on
+.I hostname
+instead of the currently used one.
+This option is not supported by all tests.
+.TP
+.BI \-m " map"
+Use the map
+.I map
+for the tests instead of
+.I passwd.byname.
+This option should be used if the default map does not exists.
+.TP
+.BI \-u " user"
+Use the account
+.I user
+instead of
+.I nobody.
+This option should be used if the
+.I nobody
+account does not exists in the map used for testing (
+.I passwd.byname
+or the one given with the
+.B \-u
+option.
+.SH "SEE ALSO"
+.BR domainname (8),
+.BR ypbind (8),
+.BR ypcat (8),
+.BR ypmatch (1),
+.BR ypserv (8),
+.BR yppoll (8),
+.BR ypwhich (1)
+.LP
+.SH AUTHOR
+.B yptest
+is part of the
+.B yp-tools
+package, which was written by Thorsten Kukuk <kukuk@suse.de>.

@@ -45,6 +45,8 @@
 #define _(String) gettext (String)
 #endif
 
+static int be_quiet = 0;
+
 /* Name and version of program.  */
 /* Print the version information.  */
 static void
@@ -114,7 +116,8 @@ print_bindhost (char *domain, struct sockaddr_in *socka_in, int vers)
   client = clntudp_create (socka_in, YPBINDPROG, vers, tv, &sock);
   if (client == NULL)
     {
-      fprintf (stderr, "%s\n", yperr_string (YPERR_YPBIND));
+      if (!be_quiet)
+	fprintf (stderr, "%s\n", yperr_string (YPERR_YPBIND));
       return 1;
     }
 
@@ -132,7 +135,8 @@ print_bindhost (char *domain, struct sockaddr_in *socka_in, int vers)
 
   if (ret != RPC_SUCCESS)
     {
-      fprintf (stderr, "%s\n", yperr_string (YPERR_YPBIND));
+      if (!be_quiet)
+	fprintf (stderr, "%s\n", yperr_string (YPERR_YPBIND));
       clnt_destroy (client);
       return 1;
     }
@@ -140,8 +144,9 @@ print_bindhost (char *domain, struct sockaddr_in *socka_in, int vers)
     {
       if (yp_r.ypbind_status != YPBIND_SUCC_VAL)
         {
-          fprintf (stderr, _("can't yp_bind: Reason: %s\n"),
-                   ypbinderr_string (yp_r.ypbind_respbody.ypbind_error));
+	  if (!be_quiet)
+	    fprintf (stderr, _("can't yp_bind: Reason: %s\n"),
+		     ypbinderr_string (yp_r.ypbind_respbody.ypbind_error));
           clnt_destroy (client);
           return 1;
         }
@@ -150,10 +155,13 @@ print_bindhost (char *domain, struct sockaddr_in *socka_in, int vers)
 
   saddr = yp_r.ypbind_respbody.ypbind_bindinfo.ypbind_binding_addr;
   host = gethostbyaddr ((char *) &saddr, sizeof (saddr), AF_INET);
-  if (host)
-    printf (_("Used NIS server: %s\n"), host->h_name);
-  else
-    printf (_("Used NIS server: %s\n"), inet_ntoa (saddr));
+  if (!be_quiet)
+    {
+      if (host)
+	printf (_("Used NIS server: %s\n"), host->h_name);
+      else
+	printf (_("Used NIS server: %s\n"), inet_ntoa (saddr));
+    }
   return 0;
 }
 
@@ -169,15 +177,17 @@ print_data (int status, char *inkey, int inkeylen, char *inval,
     {
       if (inkey[inkeylen - 1] == '\0')
         --inkeylen;
-      fprintf (stdout, "%*.*s ", inkeylen, inkeylen, inkey);
+      if (!be_quiet)
+	fprintf (stdout, "%*.*s ", inkeylen, inkeylen, inkey);
     }
   if (invallen > 0)
     {
       if (inval[invallen -1] == '\0')
         --invallen;
-      fprintf (stdout, "%*.*s\n", invallen, invallen, inval);
+      if (!be_quiet)
+	fprintf (stdout, "%*.*s\n", invallen, invallen, inval);
     }
-  else
+  else if (!be_quiet)
     fputs ("\n", stdout);
 
   return 0;
@@ -235,6 +245,7 @@ main (int argc, char **argv)
 	  key = optarg;
 	  break;
 	case 'q':
+	  be_quiet = 1;
 	  break;
 	case '?':
 	  print_help ();
@@ -260,29 +271,33 @@ main (int argc, char **argv)
       return 1;
     }
 
-  printf ("Test 1: domainname\n");
+  if (!be_quiet)
+    printf ("Test 1: domainname\n");
   yp_get_default_domain(&domain);
   if (domain == NULL || domain[0] == '\0')
     {
       if (!domainname)
 	{
-	  fputs (_("ERROR: domainname is not set!\n"), stderr);
+	  if (!be_quiet)
+	    fputs (_("ERROR: domainname is not set!\n"), stderr);
 	  return 1;
 	}
 
-      fputs (_("WARNING: domainname is not set!\n"), stderr);
+      if (!be_quiet)
+	fputs (_("WARNING: domainname is not set!\n"), stderr);
       ++result;
     }
-  else
+  else if (!be_quiet)
     printf (_("Configured domainname is \"%s\"\n"), domain);
 
   if (domainname == NULL)
     domainname = domain;
-  else
+  else if (!be_quiet)
     printf (_("Domainname which will be used due the test: \"%s\"\n"),
 	    domainname);
 
-  printf ("\nTest 2: ypbind\n");
+  if (!be_quiet)
+    printf ("\nTest 2: ypbind\n");
   if (hostname)
     {
       struct sockaddr_in sock_in;
@@ -296,8 +311,9 @@ main (int argc, char **argv)
 	  host = gethostbyname (hostname);
 	  if (!host)
 	    {
-	      fprintf (stderr, _("yptest: host %s unknown\n"),
-		       hostname);
+	      if (!be_quiet)
+		fprintf (stderr, _("yptest: host %s unknown\n"),
+			 hostname);
 	      return 1;
 	    }
 	  memcpy (&sock_in.sin_addr, host->h_addr_list[0],
@@ -319,42 +335,52 @@ main (int argc, char **argv)
 	return 1;
     }
 
-  printf ("\nTest 3: yp_match\n");
+  if (!be_quiet)
+    printf ("\nTest 3: yp_match\n");
   KeyLen = strlen (key);
   status = yp_match (domainname, map, key, KeyLen, &Value, &ValLen);
   switch (status)
     {
     case YPERR_SUCCESS:
-      printf("%*.*s\n", ValLen, ValLen, Value);
+      if (!be_quiet)
+	printf("%*.*s\n", ValLen, ValLen, Value);
       break;
     case YPERR_YPBIND:
-      fprintf (stderr, _("ERROR: No running ypbind\n"));
+      if (!be_quiet)
+	fprintf (stderr, _("ERROR: No running ypbind\n"));
       return 1;
     default:
-      fprintf (stderr, _("WARNING: %s (Map %s, key %s)\n"),
-	       yperr_string (status), map, key);
+      if (!be_quiet)
+	fprintf (stderr, _("WARNING: %s (Map %s, key %s)\n"),
+		 yperr_string (status), map, key);
       ++result;
     }
 
-  printf("\nTest 4: yp_first\n");
+  if (!be_quiet)
+    printf("\nTest 4: yp_first\n");
   status = yp_first(domainname, map, &Key2, &KeyLen, &Value, &ValLen);
   switch (status)
     {
     case YPERR_SUCCESS:
-      printf("%*.*s %*.*s\n", KeyLen, KeyLen, Key2, ValLen, ValLen, Value);
+      if (!be_quiet)
+	printf("%*.*s %*.*s\n", KeyLen, KeyLen, Key2, ValLen, ValLen, Value);
       break;
     case YPERR_YPBIND:
-      fprintf (stderr, _("ERROR: No running ypbind\n"));
+      if (!be_quiet)
+	fprintf (stderr, _("ERROR: No running ypbind\n"));
       return 1;
     default:
-      fprintf (stderr, _("WARNING: %s (Map %s)\n"),
-	       yperr_string (status), map);
+      if (!be_quiet)
+	fprintf (stderr, _("WARNING: %s (Map %s)\n"),
+		 yperr_string (status), map);
       ++result;
     }
 
-  printf ("\nTest 5: yp_next\n");
+  if (!be_quiet)
+    printf ("\nTest 5: yp_next\n");
   if (status != YPERR_SUCCESS)
-    printf (_("-- skipped --\n"));
+    if (!be_quiet)
+      printf (_("-- skipped --\n"));
   while (status == 0)
     {
       status = yp_next (domainname, map, Key2, KeyLen, &Key2,
@@ -362,54 +388,66 @@ main (int argc, char **argv)
       switch (status)
 	{
 	case YPERR_SUCCESS:
-	  printf("%*.*s %*.*s\n", KeyLen, KeyLen, Key2,
-		 ValLen, ValLen, Value);
+	  if (!be_quiet)
+	    printf("%*.*s %*.*s\n", KeyLen, KeyLen, Key2,
+		   ValLen, ValLen, Value);
 	  break;
 	case YPERR_YPBIND:
-	  fprintf (stderr, _("ERROR: No running ypbind\n"));
+	  if (!be_quiet)
+	    fprintf (stderr, _("ERROR: No running ypbind\n"));
 	  return 1;
 	case YPERR_NOMORE:
 	  break;
 	default:
-	  fprintf (stderr, _("WARNING: %s (Map %s)\n"),
-		   yperr_string (status), map);
+	  if (!be_quiet)
+	    fprintf (stderr, _("WARNING: %s (Map %s)\n"),
+		     yperr_string (status), map);
 	  ++result;
 	}
     }
 
-  printf("\nTest 6: yp_master\n");
+  if (!be_quiet)
+    printf("\nTest 6: yp_master\n");
   status = yp_master (domainname, map, &Key2);
   switch (status)
     {
     case YPERR_SUCCESS:
-      printf("%s\n", Key2);
+      if (!be_quiet)
+	printf("%s\n", Key2);
       break;
     case YPERR_YPBIND:
-      fprintf (stderr, _("ERROR: No running ypbind\n"));
+      if (!be_quiet)
+	fprintf (stderr, _("ERROR: No running ypbind\n"));
       return 1;
     default:
-      fprintf (stderr, _("WARNING: %s (Map %s)\n"),
-	       yperr_string (status), map);
+      if (!be_quiet)
+	fprintf (stderr, _("WARNING: %s (Map %s)\n"),
+		 yperr_string (status), map);
       ++result;
     }
 
-  printf ("\nTest 7: yp_order\n");
+  if (!be_quiet)
+    printf ("\nTest 7: yp_order\n");
   status = yp_order (domainname, map, &order);
   switch (status)
     {
     case YPERR_SUCCESS:
-      printf ("%d\n", order);
+      if (!be_quiet)
+	printf ("%d\n", order);
       break;
     case YPERR_YPBIND:
-      fprintf (stderr, _("ERROR: No running ypbind\n"));
+      if (!be_quiet)
+	fprintf (stderr, _("ERROR: No running ypbind\n"));
       return 1;
     default:
-      fprintf (stderr, _("WARNING: %s (Map %s)\n"),
-	       yperr_string (status), map);
+      if (!be_quiet)
+	fprintf (stderr, _("WARNING: %s (Map %s)\n"),
+		 yperr_string (status), map);
       ++result;
     }
 
-  printf("\nTest 8: yp_maplist\n");
+  if (!be_quiet)
+    printf("\nTest 8: yp_maplist\n");
   ypml = NULL;
   status = yp_maplist (domainname, &ypml);
   switch (status)
@@ -418,20 +456,24 @@ main (int argc, char **argv)
       for(y = ypml; y; )
 	{
 	  ypml = y;
-	  printf("%s\n", ypml->map);
+	  if (!be_quiet)
+	    printf("%s\n", ypml->map);
 	  y = ypml->next;
 	}
       break;
     case YPERR_YPBIND:
-      fprintf (stderr, _("ERROR: No running ypbind\n"));
+      if (!be_quiet)
+	fprintf (stderr, _("ERROR: No running ypbind\n"));
       return 1;
     default:
-      fprintf (stderr, _("WARNING: %s\n"),
-	       yperr_string (status));
+      if (!be_quiet)
+	fprintf (stderr, _("WARNING: %s\n"),
+		 yperr_string (status));
       ++result;
     }
 
-  printf("\nTest 9: yp_all\n");
+  if (!be_quiet)
+    printf("\nTest 9: yp_all\n");
   Callback.foreach = print_data;
   if (hostname)
     status = yp_all_host (hostname, domainname, map, &Callback);
@@ -442,13 +484,22 @@ main (int argc, char **argv)
     case YPERR_SUCCESS:
       break;
     case YPERR_YPBIND:
-      fprintf (stderr, _("ERROR: No running ypbind\n"));
+      if (!be_quiet)
+	fprintf (stderr, _("ERROR: No running ypbind\n"));
       return 1;
     default:
-      fprintf (stderr, _("WARNING: %s (Map %s)\n"),
-	       yperr_string (status), map);
+      if (!be_quiet)
+	fprintf (stderr, _("WARNING: %s (Map %s)\n"),
+		 yperr_string (status), map);
       ++result;
     }
 
+  if (!be_quiet)
+    {
+      if (result == 0)
+	printf (_("All tests passed\n"));
+      else
+	fprintf (stderr, _("%d tests failed\n"), result);
+    }
   return result;
 }

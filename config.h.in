@@ -59,6 +59,9 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
 
+/* Define to 1 if you have the <xcrypt.h> header file. */
+#undef HAVE_XCRYPT_H
+
 /* Define to 1 if you have the `ypbinderr_string' function. */
 #undef HAVE_YPBINDERR_STRING
 
@@ -97,6 +100,9 @@
 
 /* Define if using the ElectricFence debugging malloc package */
 #undef WITH_EFENCE
+
+/* Define if yppasswd is deprecated and passwd should be used instead */
+#undef YPPASSWD_IS_DEPRECATED
 
 /* Define to empty if `const' does not conform to ANSI C. */
 #undef const

@@ -28,7 +28,9 @@
 #define valdat_len dsize
 
 #include <pwd.h>
-#ifdef HAVE_CRYPT_H
+#ifdef HAVE_XCRYPT_H
+#include <xcrypt.h>
+#elif defined (HAVE_CRYPT_H)
 #include <crypt.h>
 #endif
 #include <ctype.h>
@@ -37,6 +39,7 @@
 #else
 #include "lib/getopt.h"
 #endif
+#include <errno.h>
 #include <time.h>
 #include <netdb.h>
 #include <limits.h>
@@ -46,6 +49,7 @@
 #include <locale.h>
 #include <libintl.h>
 #include <sys/param.h>
+#include <sys/stat.h>
 #include <rpcsvc/yp_prot.h>
 #include <rpcsvc/ypclnt.h>
 #ifdef HAVE_RPC_CLNT_SOC_H
@@ -531,9 +535,50 @@ main (int argc, char **argv)
   else if (argc == 1)
     user = argv[0];
 
-#ifdef YPPASSWD_IS_DEPRICATED
+#ifdef YPPASSWD_IS_DEPRECATED
+  if (p_flag)
+    {
+      struct stat st;
+      if (stat ("/etc/SuSE-release", &st) == 0 &&
+	  stat (PASSWD_PROG, &st) == 0)
+	{
+	  printf (_("yppasswd is deprecated, use %s instead\n\n"),
+		  PASSWD_PROG);
+	  if (execl (PASSWD_PROG, "passwd", user, NULL) == -1)
+	    fprintf (stderr, _("Calling %s failed: %s\n"), PASSWD_PROG,
+		     strerror (errno));
+	}
+    }
 
-#else
+  if (l_flag)
+    {
+      struct stat st;
+      if (stat ("/etc/SuSE-release", &st) == 0 &&
+	  stat (CHSH_PROG, &st) == 0)
+	{
+	  printf (_("ypchsh is deprecated, use %s instead\n\n"),
+		  CHSH_PROG);
+	  if (execl (CHSH_PROG, "chsh", user, NULL) == -1)
+	    fprintf (stderr, _("Calling %s failed: %s\n"), CHSH_PROG,
+		     strerror (errno));
+	}
+    }
+
+  if (f_flag)
+    {
+      struct stat st;
+      if (stat ("/etc/SuSE-release", &st) == 0 &&
+	  stat (CHFN_PROG, &st) == 0)
+	{
+	  printf (_("ypchfn is deprecated, use %s instead\n\n"),
+		  CHFN_PROG);
+
+	  if (execl (CHFN_PROG, "chfn", user, NULL) == -1)
+	    fprintf (stderr, _("Calling %s failed: %s\n"), CHFN_PROG,
+		     strerror (errno));
+	}
+    }
+#endif
 
   if ((error = yp_get_default_domain (&domainname)) != 0)
     {
@@ -601,11 +646,30 @@ main (int argc, char **argv)
        * leave the checking to yppasswdd */
       if (uid != 0 && strcmp (pwd->pw_passwd, "x") != 0 &&
 	  strcmp (pwd->pw_passwd, hashpass ) != 0)
-        if (strcmp (crypt (s, pwd->pw_passwd), pwd->pw_passwd))
-          {
-            fprintf (stderr, _("Sorry.\n"));
-	    return 1;
-          }
+	{
+	  int passwdlen;
+	  char *sane_passwd;
+	  passwdlen = strlen (pwd->pw_passwd);
+	  /* Some systems (HPU/X) store the password aging info after
+	   * the password (with a comma to separate it). To support
+	   * this we cut the password after the first invalid char
+	   * after the normal 13 ones. We can't cut at the first
+	   * invalid char, since MD5 uses $ in the first char.
+	   */
+	  if (passwdlen > 13)
+	    passwdlen = 13 + strspn(pwd->pw_passwd + 13,
+				    "abcdefghijklmnopqrstuvwxyz"
+				    "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+				    "0123456789./");
+
+	  sane_passwd = alloca (passwdlen + 1);
+	  strncpy (sane_passwd, pwd->pw_passwd, passwdlen);
+	  if (strcmp (crypt (s, sane_passwd), sane_passwd))
+	    {
+	      fprintf (stderr, _("Sorry.\n"));
+	      return 1;
+	    }
+	}
       yppwd.oldpass = strdup (s);
     }
 
@@ -804,5 +868,4 @@ main (int argc, char **argv)
   clnt_destroy (clnt);
 
   return ((error || status) != 0);
-#endif
 }

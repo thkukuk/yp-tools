@@ -10,4 +10,5 @@ src/ypmatch.c
 src/yppasswd.c
 src/yppoll.c
 src/ypset.c
+src/yptest.c
 src/ypwhich.c
