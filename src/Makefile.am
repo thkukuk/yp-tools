@@ -21,9 +21,11 @@ rootexecbindir = @rootbindir@
 EXTRA_PROGRAMS = domainname
 rootexecbin_PROGRAMS = @DOMAINNAME@
 bin_PROGRAMS = ypwhich ypmatch ypcat yppasswd
-sbin_PROGRAMS = yppoll ypset yptest
+sbin_PROGRAMS = yppoll ypset yptest ypserv_test
 
-domainname_LDADD := @LIBINTL@
+domainname_LDADD = @LIBINTL@
+
+ypserv_test_LDADD = -lpthread
 
 yppasswd_SOURCES = yppasswd.c yppasswd_xdr.c yppasswd.h
 yppasswd_LDADD = ${LDADD} @LIBCRYPT@ @LIBCRACK@
