@@ -46,7 +46,7 @@
 #define _(String) gettext (String)
 #endif
 
-static struct timeval TIMEOUT = { 25, 0 };
+static struct timeval TIMEOUT = { 10, 0 };
 static char *domainname = NULL;
 static char *hostname = "localhost";
 static int do_loop = 0;
@@ -123,14 +123,14 @@ test_ypproc_null_2 (void *v_param __attribute__((unused)))
       pthread_exit (&retval);
     }
 
-  while (do_loop)
+  do
     {
       if (ypproc_null_2 (NULL, NULL, clnt) != RPC_SUCCESS)
 	{
 	  count++;
 	  clnt_perror (clnt, "ypproc_null_2");
 	}
-    }
+    } while (do_loop);
 
   return NULL;
 }
@@ -162,7 +162,7 @@ test_ypproc_domain_2 (void *v_param __attribute__ ((unused)))
       pthread_exit (&retval);
     }
 
-  while (do_loop)
+  do
     {
       /* At first, try a correct domainname.  */
       if (ypproc_domain_2 (&domain_ack, &result, clnt) != RPC_SUCCESS)
@@ -200,7 +200,7 @@ test_ypproc_domain_2 (void *v_param __attribute__ ((unused)))
 	  count++;
 	  fprintf (stderr, "ypproc_domain_2: ypserv sends ACK instead of NAK\n");
 	}
-    }
+    } while (do_loop);
 
   return NULL;
 }
@@ -232,7 +232,7 @@ test_ypproc_domain_nonack_2 (void *v_param __attribute__ ((unused)))
       pthread_exit (&retval);
     }
 
-  while (do_loop)
+  do
     {
       /* At first, try a correct domainname.  */
       if (ypproc_domain_nonack_2 (&domain_ack, &result, clnt) != RPC_SUCCESS)
@@ -270,7 +270,7 @@ test_ypproc_domain_nonack_2 (void *v_param __attribute__ ((unused)))
 	  count++;
 	  fprintf (stderr, "ypproc_domain_nonack_2: ypserv sends ACK instead of NAK\n");
 	}
-    }
+    } while (do_loop);
 
   return NULL;
 }
@@ -305,7 +305,7 @@ test_ypproc_match_2 (void *v_param)
       pthread_exit (&retval);
     }
 
-  while (do_loop)
+  do
     {
       /* At first, try a correct query.  */
       if (ypproc_match_2 (&request1, &result, clnt) != RPC_SUCCESS)
@@ -313,37 +313,72 @@ test_ypproc_match_2 (void *v_param)
 	  count++;
 	  clnt_perror (clnt, "ypproc_match_2");
 	}
-      else if (result != TRUE)
+      else if (result.status != YP_TRUE)
 	{
 	  count++;
-	  fprintf (stderr, "ypproc_match_2: ypserv sends NAK instead of ACK\n");
+	  fprintf (stderr,
+		   "ypproc_match_2: ypserv sends %d instead of YP_TRUE\n",
+		   result.status);
 	}
 
-
-      /* Second try: Invalid domainname.  */
-      if (ypproc_match_2 (&domain_inv, &result, clnt) != RPC_SUCCESS)
+      /* Second try: Unknown user  */
+      if (ypproc_match_2 (&request2, &result, clnt) != RPC_SUCCESS)
 	{
 	  count++;
 	  clnt_perror (clnt, "ypproc_match_2");
 	}
-      else if (result == TRUE)
+      else if (result.status != YP_NOKEY)
 	{
 	  count++;
-	  fprintf (stderr, "ypproc_match_2: ypserv sends ACK instead of NAK\n");
+	  fprintf (stderr,
+		   "ypproc_match_2: ypserv sends %d instead of YP_NOKEY\n",
+		   result.status);
 	}
 
-      /* Third try: Not existing domainname.  */
-      if (ypproc_match_2 (&domain_nak, &result, clnt) != RPC_SUCCESS)
+      /* Third: Invalid map name.  */
+      if (ypproc_match_2 (&request3, &result, clnt) != RPC_SUCCESS)
 	{
 	  count++;
 	  clnt_perror (clnt, "ypproc_match_2");
 	}
-      else if (result == TRUE)
+      else if (result.status != YP_NOMAP)
 	{
 	  count++;
-	  fprintf (stderr, "ypproc_match_2: ypserv sends ACK instead of NAK\n");
+	  fprintf (stderr,
+		   "ypproc_match_2: ypserv sends %d instead of YP_NOMAP\n",
+		   result.status);
 	}
-    }
+
+      /* Fourth: Invalid domain name.  */
+      if (ypproc_match_2 (&request4, &result, clnt) != RPC_SUCCESS)
+	{
+	  count++;
+	  clnt_perror (clnt, "ypproc_match_2");
+	}
+      else if (result.status != YP_NODOM)
+	{
+	  count++;
+	  fprintf (stderr,
+		   "ypproc_match_2: ypserv sends %d instead of YP_NODOM\n",
+		   result.status);
+	}
+
+      /* Fifth: Invalid key name.  */
+      if (ypproc_match_2 (&request5, &result, clnt) != RPC_SUCCESS)
+	{
+	  count++;
+	  clnt_perror (clnt, "ypproc_match_2");
+	}
+      else if (result.status != YP_BADARGS)
+	{
+	  count++;
+	  fprintf (stderr,
+		   "ypproc_match_2: ypserv sends %d instead of YP_BADARGS\n",
+		   result.status);
+	}
+
+
+    } while (do_loop);
 
   return NULL;
 }
@@ -431,8 +466,8 @@ main (int argc, char **argv)
 
   pthread_create (&thread, NULL, &test_ypproc_null_2, NULL);
   pthread_create (&thread, NULL, &test_ypproc_domain_2, NULL);
-
-  test_ypproc_domain_nonack_2 (NULL);
+  pthread_create (&thread, NULL, &test_ypproc_domain_nonack_2, NULL);
+  test_ypproc_match_2 ("kukuk");
 
   return 0;
 }
