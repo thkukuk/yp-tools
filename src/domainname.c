@@ -87,7 +87,7 @@ print_error (const char *progname)
   print_usage (stderr, progname);
   fprintf (stderr,
 	   _("Try `%s --help' or `%s --usage' for more information.\n"),
-	   progname);
+	   progname, progname);
 }
 
 int

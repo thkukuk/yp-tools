@@ -1,5 +1,5 @@
 
-This is version 2.4 of a collection of NIS client tools.
+This is version 2.5 of a collection of NIS client tools.
 
 See the file COPYING for copying restrictions.
 
@@ -19,7 +19,7 @@ http://www.suse.de/~kukuk/nis/index.html
 
 or from the main ftp server:
 
-ftp://ftp.kernel.org/pub/linux/utils/net/NIS/yp-tools-2.4.tar.gz
+ftp://ftp.kernel.org/pub/linux/utils/net/NIS/yp-tools-2.5.tar.gz
 
 You should use ypbind 3.3 with the ypbind-3.3-glibc5.diff patch
 from ftp.kernel.org or ypbind-mt 1.6 or greater.
@@ -28,3 +28,4 @@ Don't forget to edit /etc/nsswitch.conf, or install the version
 from the etc directory for NIS.
 
   Thorsten Kukuk <kukuk@suse.de>
+

@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(src/ypcat.c)
-AM_INIT_AUTOMAKE(yp-tools, 2.4)
+AM_INIT_AUTOMAKE(yp-tools, 2.5)
 AM_CONFIG_HEADER(config.h)
 AC_PREFIX_DEFAULT(/usr)
 
@@ -32,9 +32,6 @@ else
 fi
 AC_SUBST(DOMAINNAME)
 AC_SUBST(MAN_DOMAINNAME)
-
-
-test "$CFLAGS" = "" && CFLAGS="-O3"
 
 dnl Checks for programs.
 AC_PROG_CC

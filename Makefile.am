@@ -1,5 +1,5 @@
 #
-# Copyright (c) 1997, 1998, 1999 Thorsten Kukuk, Germany
+# Copyright (c) 1997, 1998, 1999, 2001 Thorsten Kukuk, Germany
 #
 # Author: Thorsten Kukuk <kukuk@suse.de>
 #
@@ -10,4 +10,4 @@ SUBDIRS = intl lib src po man etc
 
 CLEANFILES = *~
 
-EXTRA_DIST = yp-tools.spec
+#EXTRA_DIST = yp-tools.spec

@@ -1,5 +1,9 @@
 2001-03-11  Thorsten Kukuk  <kukuk@suse.de>
 
+	* release version 2.5
+
+	* src/domainname.c (print_error): Add missing argument to printf.
+
 	* src/yppasswd.c (main): Use strncpy.
 	  Dont't use the same buffer for old and new gecos value.
 
