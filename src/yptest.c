@@ -1,4 +1,4 @@
-/* Copyright (C) 2001 Thorsten Kukuk
+/* Copyright (C) 2001, 2002 Thorsten Kukuk
    This file is part of the yp-tools.
    Author: Thorsten Kukuk <kukuk@suse.de>
 
@@ -431,7 +431,7 @@ main (int argc, char **argv)
       ++result;
     }
 
-  printf("\nTest 8: yp_all\n");
+  printf("\nTest 9: yp_all\n");
   Callback.foreach = print_data;
   if (hostname)
     status = yp_all_host (hostname, domainname, map, &Callback);
