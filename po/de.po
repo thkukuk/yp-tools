@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: yp-tools 2.0\n"
-"POT-Creation-Date: 1999-02-28 21:21+0100\n"
+"POT-Creation-Date: 1999-05-18 16:34+0200\n"
 "PO-Revision-Date: 1999-02-17 21:29+01:00\n"
 "Last-Translator: Thorsten Kukuk <kukuk@suse.de>\n"
 "Language-Team: No Language-Team in the moment\n"

@@ -1,5 +1,7 @@
 1999-05-18  Thorsten Kukuk  <kukuk@suse.de>
 
+	* release version 2.3
+
 	* src/ypcat.c (print_data): Mark indata as unused.
 
 1999-05-01  Thorsten Kukuk  <kukuk@suse.de>

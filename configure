@@ -820,7 +820,7 @@ fi
 
 
 
-test "$CFLAGS" = "" && CFLAGS="-O6"
+test "$CFLAGS" = "" && CFLAGS="-O3"
 
 # Extract the first word of "gcc", so it can be a program name with args.
 set dummy gcc; ac_word=$2
@@ -1044,7 +1044,7 @@ else
   fi
 fi
 
-test -n "$GCC" && WARNFLAGS="-Wall"
+test -n "$GCC" && WARNFLAGS="-W -Wall -Wbad-function-cast -Wcast-align -Winline -Wmissing-declarations -Wmissing-prototypes -Wnested-externs -Wpointer-arith -Wshadow -Wstrict-prototypes -Wundef"
 
 echo $ac_n "checking for POSIXized ISC""... $ac_c" 1>&6
 echo "configure:1051: checking for POSIXized ISC" >&5

@@ -1,7 +1,7 @@
 .\" -*- nroff -*-
-.\" Copyright (C) 1998 Thorsten Kukuk
+.\" Copyright (C) 1998, 1999 Thorsten Kukuk
 .\" This file is part of the yp-tools.
-.\" Author: Thorsten Kukuk <kukuk@vt.uni-paderborn.de>
+.\" Author: Thorsten Kukuk <kukuk@suse.de>
 .\"
 .\" This program is free software; you can redistribute it and/or modify
 .\" it under the terms of the GNU General Public License as published by
@@ -154,4 +154,4 @@ To accept a default, simply press return. To clear a field, enter the string
 .B yppasswd
 is part of the
 .B yp-tools
-package, which was written by Thorsten Kukuk <kukuk@vt.uni-paderborn.de>.
+package, which was written by Thorsten Kukuk <kukuk@suse.de>.

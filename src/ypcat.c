@@ -1,6 +1,6 @@
-/* Copyright (C) 1998 Thorsten Kukuk
+/* Copyright (C) 1998, 1999 Thorsten Kukuk
    This file is part of the yp-tools.
-   Author: Thorsten Kukuk <kukuk@vt.uni-paderborn.de>
+   Author: Thorsten Kukuk <kukuk@suse.de>
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -88,7 +88,7 @@ static int kflag = 0;
 
 static int
 print_data (int status, char *inkey, int inkeylen, char *inval,
-	    int invallen, char *indata)
+	    int invallen, char *indata __attribute__ ((unused)))
 {
   if (status != YP_TRUE)
     return status;

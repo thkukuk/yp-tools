@@ -166,7 +166,7 @@ ID: $(HEADERS) $(SOURCES)
 
 
 mostlyclean:
-	rm -f *.a *.o *.lo core core.*
+	rm -f *.a *.o *.lo core core.* libintl.h
 
 clean: mostlyclean
 

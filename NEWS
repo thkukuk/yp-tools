@@ -8,6 +8,7 @@ Please send bug reports, questions and suggestions to
 Version 2.3
 * Fix compiler warnings
 * Fix german translation
+* Fix minor Makefile bugs
 
 Version 2.2
 * Fix inclusion of local header files
