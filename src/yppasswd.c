@@ -1,9 +1,9 @@
-/* Copyright (C) 1998, 1999, 2001 Thorsten Kukuk
+/* Copyright (C) 1998, 1999, 2000, 2001 Thorsten Kukuk
    This file is part of the yp-tools.
    Author: Thorsten Kukuk <kukuk@suse.de>
 
    This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License version 2 as 
+   it under the terms of the GNU General Public License version 2 as
    published by the Free Software Foundation.
 
    This program is distributed in the hope that it will be useful,
@@ -167,14 +167,16 @@ getnismaster (char *domainname, const char *progname)
   port = getrpcport (master, YPPASSWDPROG, YPPASSWDPROC_UPDATE, IPPROTO_UDP);
   if (port == 0)
     {
-      fprintf (stderr, _("%s: yppasswdd not running on NIS master host\n"),
-               progname);
+      fprintf (stderr,
+	       _("%s: yppasswdd not running on NIS master host (\"%s\").\n"),
+               progname, master);
       return NULL;
     }
   if (port >= IPPORT_RESERVED)
     {
-      fprintf (stderr, _("%s: yppasswd daemon running on illegal port.\n"),
-               progname);
+      fprintf (stderr,
+	       _("%s: yppasswd daemon running on illegal port (\"%s\").\n"),
+               progname, master);
       return NULL;
     }
 

@@ -10,6 +10,22 @@ ALL_LINGUAS="de"
 AC_SUBST(PACKAGE)
 AC_SUBST(VERSION)
 
+dnl Some hacks...
+test "${prefix}" = "NONE" && prefix="/usr"
+if test ${prefix} = '/usr'
+then
+dnl If we use /usr as prefix, use /usr/share/man for manual pages
+	if test ${mandir} = '${prefix}/man'
+        then
+           mandir='${prefix}/share/man'
+        fi
+fi
+dnl Change libexec to lib/yp
+if test ${libexecdir} = '${exec_prefix}/libexec'
+then
+  libexecdir='${exec_prefix}/lib/yp'
+fi
+
 if test x"$ac_default_prefix" = x"/usr"
 then
    rootbindir="/bin"

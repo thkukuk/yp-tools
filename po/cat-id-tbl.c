@@ -64,8 +64,8 @@ ypchsh - change the shell in the NIS database\n\
 ypchfn - change the GECOS information in the NIS database\n\
 \n", 39},
   {"%s: can't find the master ypserver: %s\n", 40},
-  {"%s: yppasswdd not running on NIS master host\n", 41},
-  {"%s: yppasswd daemon running on illegal port.\n", 42},
+  {"%s: yppasswdd not running on NIS master host (\"%s\").\n", 41},
+  {"%s: yppasswd daemon running on illegal port (\"%s\").\n", 42},
   {"No more", 43},
   {"True", 44},
   {"False", 45},

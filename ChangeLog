@@ -1,3 +1,10 @@
+2000-05-21  Thorsten Kukuk  <kukuk@suse.de>
+
+	* configure.in: Usr /usr/share/man if prefix = /usr.
+	  libexecdir is /usr/lib/yp
+
+	* src/yppasswd.c(getnismaster): print name of NIS master.
+
 2001-03-11  Thorsten Kukuk  <kukuk@suse.de>
 
 	* release version 2.5
