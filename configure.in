@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(src/ypcat.c)
-AM_INIT_AUTOMAKE(yp-tools, 2.6)
+AM_INIT_AUTOMAKE(yp-tools, 2.7)
 AM_CONFIG_HEADER(config.h)
 AC_PREFIX_DEFAULT(/usr)
 
@@ -90,5 +90,6 @@ dnl internationalization macros
 AM_GNU_GETTEXT
 
 AC_OUTPUT([Makefile intl/Makefile lib/Makefile src/Makefile man/Makefile
-	   etc/Makefile po/Makefile.in man/sedscript],
-          [chmod +x man/sedscript])
+	   etc/Makefile po/Makefile.in man/domainname.8 man/nicknames.5
+	   man/ypcat.1 man/ypmatch.1 man/yppasswd.1 man/yppoll.8
+	   man/ypset.8 man/ypwhich.1])

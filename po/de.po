@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: yp-tools 2.5\n"
-"POT-Creation-Date: 2001-10-31 21:02+0100\n"
+"POT-Creation-Date: 2001-12-08 22:30+0100\n"
 "PO-Revision-Date: 2001-03-11 21:43+01:00\n"
 "Last-Translator: Thorsten Kukuk <kukuk@suse.de>\n"
 "Language-Team: No Language-Team in the moment\n"
@@ -52,8 +52,8 @@ msgid "Unknown ypbind error"
 msgstr "Unbekannter ypbind Fehler"
 
 # , c-format
-#: src/domainname.c:46 src/ypcat.c:44 src/ypmatch.c:47 src/yppasswd.c:80
-#: src/yppoll.c:49 src/ypset.c:54 src/ypwhich.c:54
+#: src/domainname.c:45 src/ypcat.c:44 src/ypmatch.c:46 src/yppasswd.c:80
+#: src/yppoll.c:48 src/ypset.c:53 src/ypwhich.c:53
 #, c-format
 msgid ""
 "Copyright (C) %s Thorsten Kukuk.\n"
@@ -66,44 +66,44 @@ msgstr ""
 "Es gibt KEINERLEI Garantie; nicht einmal für die TAUGLICHKEIT oder\n"
 "VERWENDBARKEIT FÜR EINEN ANGEGEBENEN ZWECK.\n"
 
-#: src/domainname.c:57
+#: src/domainname.c:56
 #, c-format
 msgid "Usage: %s [domain]\n"
 msgstr "Aufruf: %s [Domainname]\n"
 
-#: src/domainname.c:64
+#: src/domainname.c:63
 msgid ""
 "domainname - set or display name of current domain\n"
 "\n"
 msgstr "domainname - Setze oder zeige den Namen der aktuellen Domain\n"
 
-#: src/domainname.c:66 src/domainname.c:79 src/ypcat.c:72 src/ypmatch.c:74
-#: src/yppasswd.c:115 src/yppasswd.c:126 src/yppasswd.c:138 src/yppoll.c:74
-#: src/ypset.c:77 src/ypwhich.c:83
+#: src/domainname.c:65 src/domainname.c:78 src/ypcat.c:74 src/ypmatch.c:73
+#: src/yppasswd.c:115 src/yppasswd.c:126 src/yppasswd.c:138 src/yppoll.c:73
+#: src/ypset.c:76 src/ypwhich.c:82
 msgid "  -?, --help     Give this help list\n"
 msgstr "  -?, --help     Gib diese Hilfe aus\n"
 
-#: src/domainname.c:67 src/domainname.c:80 src/ypcat.c:73 src/ypmatch.c:75
-#: src/yppasswd.c:116 src/yppasswd.c:127 src/yppasswd.c:139 src/yppoll.c:75
-#: src/ypset.c:78 src/ypwhich.c:84
+#: src/domainname.c:66 src/domainname.c:79 src/ypcat.c:75 src/ypmatch.c:74
+#: src/yppasswd.c:116 src/yppasswd.c:127 src/yppasswd.c:139 src/yppoll.c:74
+#: src/ypset.c:77 src/ypwhich.c:83
 msgid "      --usage    Give a short usage message\n"
 msgstr "      --usage    Gib eine kurze Aufruf Hilfe aus\n"
 
-#: src/domainname.c:68 src/domainname.c:81 src/ypcat.c:74 src/ypmatch.c:76
-#: src/yppasswd.c:117 src/yppasswd.c:128 src/yppasswd.c:140 src/yppoll.c:76
-#: src/ypset.c:79 src/ypwhich.c:85
+#: src/domainname.c:67 src/domainname.c:80 src/ypcat.c:76 src/ypmatch.c:75
+#: src/yppasswd.c:117 src/yppasswd.c:128 src/yppasswd.c:140 src/yppoll.c:75
+#: src/ypset.c:78 src/ypwhich.c:84
 msgid "      --version  Print program version\n"
 msgstr "      --version  Gib Programm Version Information aus\n"
 
-#: src/domainname.c:76
+#: src/domainname.c:75
 #, c-format
 msgid ""
 "%s - set or display name of current NIS domain\n"
 "\n"
 msgstr "%s - Setze oder zeige den Namen der aktuellen NIS Domain an\n"
 
-#: src/domainname.c:89 src/ypcat.c:83 src/ypmatch.c:86 src/yppasswd.c:154
-#: src/yppoll.c:86 src/ypset.c:89 src/ypwhich.c:95
+#: src/domainname.c:88 src/ypcat.c:85 src/ypmatch.c:85 src/yppasswd.c:154
+#: src/yppoll.c:85 src/ypset.c:88 src/ypwhich.c:94
 #, c-format
 msgid "Try `%s --help' or `%s --usage' for more information.\n"
 msgstr "Versuche \"%s --help\" oder \"%s --usage\" für mehr Informationen.\n"
@@ -126,45 +126,49 @@ msgstr ""
 "ypcat - Gib Daten von allen Schlüsseln einer NIS map aus\n"
 "\n"
 
-#: src/ypcat.c:65 src/ypmatch.c:68 src/yppoll.c:72 src/ypset.c:74
-#: src/ypwhich.c:75
+#: src/ypcat.c:65 src/ypmatch.c:67 src/yppoll.c:71 src/ypset.c:73
+#: src/ypwhich.c:74
 msgid "  -d domain      Use 'domain' instead of the default domain\n"
 msgstr "  -d domain      Benutze \"domain\" anstelle der default Domain\n"
 
-#: src/ypcat.c:67 src/ypmatch.c:70
+#: src/ypcat.c:67
+msgid "  -h hostname    Query ypserv on 'hostname' instead the current one\n"
+msgstr ""
+
+#: src/ypcat.c:69 src/ypmatch.c:69
 msgid "  -k             Display map keys\n"
 msgstr "  -k             Gib Schlüssel mit aus\n"
 
-#: src/ypcat.c:69 src/ypmatch.c:71 src/ypwhich.c:79
+#: src/ypcat.c:71 src/ypmatch.c:70 src/ypwhich.c:78
 msgid "  -t             Inhibits map nickname translation\n"
 msgstr "  -t             Verbietet die Übersetzung von Nicknames\n"
 
-#: src/ypcat.c:70 src/ypmatch.c:72 src/ypwhich.c:81
+#: src/ypcat.c:72 src/ypmatch.c:71 src/ypwhich.c:80
 msgid "  -x             Display the map nickname translation table\n"
 msgstr "  -x             Zeige die Nickname Übersetzungstabelle an\n"
 
 # , c-format
-#: src/ypcat.c:202 src/ypmatch.c:175 src/yppasswd.c:536 src/yppoll.c:164
-#: src/ypset.c:225 src/ypwhich.c:264
+#: src/ypcat.c:209 src/ypmatch.c:174 src/yppasswd.c:536 src/yppoll.c:163
+#: src/ypset.c:224 src/ypwhich.c:263
 #, c-format
 msgid "%s: can't get local yp domain: %s\n"
 msgstr "%s: Kann die lokale NIS Domain nicht bestimmen: %s\n"
 
-#: src/ypcat.c:222 src/ypmatch.c:207 src/ypwhich.c:292
+#: src/ypcat.c:232 src/ypmatch.c:206 src/ypwhich.c:291
 msgid "No running ypbind\n"
 msgstr "ypbind ist nicht am laufen\n"
 
 # , c-format
-#: src/ypcat.c:225
+#: src/ypcat.c:235
 #, c-format
 msgid "No such map %s. Reason: %s\n"
 msgstr "Map %s nicht gefunden. Grund: %s\n"
 
-#: src/ypmatch.c:58
+#: src/ypmatch.c:57
 msgid "Usage: ypmatch [-d domain] [-kt] key ... mapname | -x\n"
 msgstr "Aufruf: ypmatch [-d Domain] [-kt] Schlüßel ... Mapname\n"
 
-#: src/ypmatch.c:66
+#: src/ypmatch.c:65
 msgid ""
 "ypmatch - print the values of one or more keys from a NIS map\n"
 "\n"
@@ -173,7 +177,7 @@ msgstr ""
 "\n"
 
 # , c-format
-#: src/ypmatch.c:210
+#: src/ypmatch.c:209
 #, c-format
 msgid "Can't match key %s in map %s. Reason: %s\n"
 msgstr "Schlüßel %s in Map %s nicht gefunden. Grund: %s\n"
@@ -545,136 +549,136 @@ msgstr ""
 "Die NIS Account Informationen wurden geändert auf %s.\n"
 "\n"
 
-#: src/yppoll.c:60
+#: src/yppoll.c:59
 msgid "Usage: yppoll [-h host] [-d domain] mapname\n"
 msgstr "Aufruf: yppoll [-h Rechner] [-d Domainname] Mapname\n"
 
-#: src/yppoll.c:68
+#: src/yppoll.c:67
 msgid ""
 "yppoll - return version and master server of a NIS map\n"
 "\n"
 msgstr "yppoll - Gib Version und Master Server einer NIS Map aus\n"
 
-#: src/yppoll.c:71
+#: src/yppoll.c:70
 msgid "  -h host        Ask ypserv process at 'host'\n"
 msgstr "  -h Rechner     Frag ypserv Prozeß auf \"Rechner\"\n"
 
-#: src/yppoll.c:183 src/yppoll.c:193 src/yppoll.c:203
+#: src/yppoll.c:182 src/yppoll.c:192 src/yppoll.c:202
 msgid "Couldn't get NIS server"
 msgstr "Kann keinen NIS server finden"
 
-#: src/yppoll.c:184
+#: src/yppoll.c:183
 msgid " - ypbind not running ?\n"
 msgstr " - ypbind läuft nicht ?\n"
 
 # , c-format
-#: src/yppoll.c:234
+#: src/yppoll.c:233
 #, c-format
 msgid "Unknown host: %s\n"
 msgstr "Unbekannter Rechner: %s\n"
 
-#: src/yppoll.c:237
+#: src/yppoll.c:236
 msgid "Host name lookup failure\n"
 msgstr "Fehler beim Suchen des Rechner Namens\n"
 
 # , c-format
-#: src/yppoll.c:240
+#: src/yppoll.c:239
 #, c-format
 msgid "No address associated with name: %s\n"
 msgstr "Zu dem Namen wurde keine Adresse gefunden: %s\n"
 
-#: src/yppoll.c:244
+#: src/yppoll.c:243
 msgid "Unknown server error\n"
 msgstr "Unbekannter Server Fehler\n"
 
-#: src/yppoll.c:247
+#: src/yppoll.c:246
 msgid "gethostbyname: Unknown error\n"
 msgstr "gethostbyname: Unbekanter Fehler\n"
 
 # , c-format
-#: src/yppoll.c:265 src/yppoll.c:274
+#: src/yppoll.c:264 src/yppoll.c:273
 #, c-format
 msgid "Can't create connection to %s.\n"
 msgstr "Kann keine Verbindung zu %s aufbauen.\n"
 
-#: src/yppoll.c:276 src/ypset.c:149
+#: src/yppoll.c:275 src/ypset.c:148
 msgid "Reason"
 msgstr "Grund"
 
 # , c-format
-#: src/yppoll.c:282
+#: src/yppoll.c:281
 #, c-format
 msgid "Domain %s is not supported by %s.\n"
 msgstr "Domain \"%s\" wird von »%s« nicht unterstützt.\n"
 
-#: src/yppoll.c:311
+#: src/yppoll.c:310
 msgid "Can't get any map parameter information.\n"
 msgstr "Kann keine Map Informationen bekommen.\n"
 
 # , c-format
-#: src/yppoll.c:313
+#: src/yppoll.c:312
 #, c-format
 msgid "Domain %s is supported.\n"
 msgstr "Domain \"%s\" wird unterstützt.\n"
 
 # , c-format
-#: src/yppoll.c:317
+#: src/yppoll.c:316
 #, c-format
 msgid "Can't get order number for map %s.\n"
 msgstr "Kann Zeitstempel für Map %s nicht bekommen.\n"
 
 # , c-format
-#: src/yppoll.c:318 src/yppoll.c:332
+#: src/yppoll.c:317 src/yppoll.c:331
 #, c-format
 msgid "\tReason: %s\n"
 msgstr "        Grund: %s\n"
 
 # , c-format
-#: src/yppoll.c:325
+#: src/yppoll.c:324
 #, c-format
 msgid "Map %s has order number %ld. [%s]\n"
 msgstr "Der Zeitstempel der Map »%s« ist %ld. [%s]\n"
 
 # , c-format
-#: src/yppoll.c:331
+#: src/yppoll.c:330
 #, c-format
 msgid "Can't get master for map %s.\n"
 msgstr "Kann Master Server der Map %s nicht bekommen.\n"
 
 # , c-format
-#: src/yppoll.c:335
+#: src/yppoll.c:334
 #, c-format
 msgid "The master server is %s.\n"
 msgstr "Der Master Server ist »%s«.\n"
 
-#: src/ypset.c:65
+#: src/ypset.c:64
 msgid "Usage: ypset [-d domain] [-h hostname] server\n"
 msgstr "Aufruf: ypset [-d Domain] [-h Rechner] Server\n"
 
-#: src/ypset.c:72
+#: src/ypset.c:71
 msgid ""
 "ypset - bind ypbind to a particular NIS server\n"
 "\n"
 msgstr "ypset - Binde ypbind an einen bestimmten NIS Server\n"
 
-#: src/ypset.c:76
+#: src/ypset.c:75
 msgid "  -h hostname    Set ypbind's binding on ´hostname´\n"
 msgstr "  -h Rechner     Setze ypbind's binding auf \"Rechner\"\n"
 
 # , c-format
-#: src/ypset.c:109
+#: src/ypset.c:108
 #, c-format
 msgid "%s not running ypserv.\n"
 msgstr "Auf »%s« läuft kein ypserv.\n"
 
 # , c-format
-#: src/ypset.c:120
+#: src/ypset.c:119
 #, c-format
 msgid "can't find address for %s\n"
 msgstr "Kann Addresse für »%s« nicht finden\n"
 
 # , c-format
-#: src/ypset.c:135 src/ypwhich.c:143
+#: src/ypset.c:134 src/ypwhich.c:142
 #, c-format
 msgid "can't yp_bind: Reason: %s\n"
 msgstr ""
@@ -682,22 +686,22 @@ msgstr ""
 "Grund: %s\n"
 
 # , c-format
-#: src/ypset.c:147
+#: src/ypset.c:146
 #, c-format
 msgid "Cannot ypset for domain %s on host %s.\n"
 msgstr "Kann die Domain %s auf dem Rechner »%s« nicht setzen.\n"
 
 # , c-format
-#: src/ypset.c:242
+#: src/ypset.c:241
 #, c-format
 msgid "ypset: host %s unknown\n"
 msgstr "ypset: Rechner »%s« unbekannt\n"
 
-#: src/ypwhich.c:65
+#: src/ypwhich.c:64
 msgid "Usage: ypwhich [-d domain] [[-t] -m [mname]|[-Vn] hostname] | -x\n"
 msgstr "Aufruf: ypwhich [-d domain] [[-t] -m [Mapname]|[-Vn] Rechner] | -x\n"
 
-#: src/ypwhich.c:73
+#: src/ypwhich.c:72
 msgid ""
 "ypwhich - return name of NIS server or map master\n"
 "\n"
@@ -705,34 +709,34 @@ msgstr ""
 "ypwhich - gibt Namen des NIS Server oder des Masters für eine Map aus\n"
 "\n"
 
-#: src/ypwhich.c:77
+#: src/ypwhich.c:76
 msgid "  -m mname       Find the master NIS server for the map 'mname'\n"
 msgstr "  -m mname       Finden den NIS Master Server für die Map \"mname\"\n"
 
-#: src/ypwhich.c:80
+#: src/ypwhich.c:79
 msgid "  -V n           Version of ypbind, V2 is default\n"
 msgstr "  -V n           Version des ypbinds Protokoll, V2 ist default\n"
 
 # , c-format
-#: src/ypwhich.c:296
+#: src/ypwhich.c:295
 #, c-format
 msgid "Can't find master for map \"%s\". Reason: %s\n"
 msgstr "Kann Master Server der Map \"%s\" nicht finden. Grund: %s\n"
 
 # , c-format
-#: src/ypwhich.c:320
+#: src/ypwhich.c:319
 #, c-format
 msgid "Can't find master for map %s. Reason: %s\n"
 msgstr ""
 "Kann Master Server der Map %s nicht finden.\n"
 "Grund: %s\n"
 
-#: src/ypwhich.c:330
+#: src/ypwhich.c:329
 msgid "No running ypbind.\n"
 msgstr "ypbind ist nicht am laufen.\n"
 
 # , c-format
-#: src/ypwhich.c:334
+#: src/ypwhich.c:333
 #, c-format
 msgid "Can't get map list for domain %s. Reason: %s\n"
 msgstr ""
@@ -740,7 +744,7 @@ msgstr ""
 "Grund: %s\n"
 
 # , c-format
-#: src/ypwhich.c:354
+#: src/ypwhich.c:353
 #, c-format
 msgid "ypwhich: host %s unknown\n"
 msgstr "ypwhich: Rechner %s ist unbekannt\n"

@@ -1,3 +1,33 @@
+2001-12-08  Thorsten Kukuk  <kukuk@suse.de>
+
+	* configure.in: Create manual pages in man directory.
+	* man/Makefile.am: Remove old rules to create manual pages.
+
+	* man/ypset.8.in: Allow only GPL version 2, rename PK_VERSION to
+	VERSION.
+	* man/domainname.8.in: Likewise.
+	* man/nicknames.5.in: Likewise.
+	* man/ypmatch.1.in: Likewise.
+	* man/yppasswd.1.in: Likewise.
+	* man/yppoll.8.in: Likewise.
+	* man/ypwhich.1.in: Likewise.
+	* man/ypcat.1.in: Likewise, also add description of -h option.
+
+	* src/ypcat.c: Implement -h option (query specific host)
+
+	* src/ypset.c: Allow only GPL version 2.
+	* src/ypwhich.c: Likewise.
+	* src/yppoll.c: Likewise.
+	* src/yppasswd_xdr.c: Likewise.
+	* src/ypmatch.c: Likewise.
+	* src/ypcat.c: Likewise.
+	* src/domainname.c: Likewise.
+
+	* lib/Makefile.am (libyptools_a_SOURCES): Add yp_all_host.c.
+	* lib/yp_all_host.c: New, yp_all with user supplied hostname.
+	* lib/yp_all_host.h: New, prototypes for yp_all_host.c.
+	* lib/Makefile.am (noinst_HEADERS): Add yp_all_host.h.
+
 2001-10-31  Thorsten Kukuk  <kukuk@suse.de>
 
 	* release version 2.6

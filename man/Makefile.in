@@ -14,7 +14,7 @@
 @SET_MAKE@
 
 #
-# Copyright (c) 1997, 1998, 1999 Thorsten Kukuk, Germany
+# Copyright (c) 1997, 1998, 1999, 2001 Thorsten Kukuk, Germany
 #
 # Author: Thorsten Kukuk <kukuk@suse.de>
 #
@@ -73,12 +73,9 @@ DATADIRNAME = @DATADIRNAME@
 DEPDIR = @DEPDIR@
 DOMAINNAME = @DOMAINNAME@
 EXEEXT = @EXEEXT@
-GENCAT = @GENCAT@
-GLIBC21 = @GLIBC21@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
-INSTOBJEXT = @INSTOBJEXT@
 INTLBISON = @INTLBISON@
 INTLLIBS = @INTLLIBS@
 INTLOBJS = @INTLOBJS@
@@ -110,7 +107,7 @@ CLEANFILES = *~ sedscript domainname.8 ypcat.1 ypmatch.1 yppasswd.1\
 	yppoll.8 ypset.8 ypwhich.1 nicknames.5
 
 
-EXTRA_DIST = sedscript.in domainname.8.in nisdomainname.8 ypdomainname.8\
+EXTRA_DIST = domainname.8.in nisdomainname.8 ypdomainname.8\
 	ypcat.1.in ypchfn.1 ypchsh.1 ypmatch.1.in yppasswd.1.in\
 	yppoll.8.in ypset.8.in ypwhich.1.in nicknames.5.in
 
@@ -121,12 +118,15 @@ man_MANS = ypcat.1 ypchfn.1 ypchsh.1 ypmatch.1 yppasswd.1 yppoll.8 ypset.8\
 subdir = man
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
-CONFIG_CLEAN_FILES = sedscript
+CONFIG_CLEAN_FILES = domainname.8 nicknames.5 ypcat.1 ypmatch.1 \
+	yppasswd.1 yppoll.8 ypset.8 ypwhich.1
 DIST_SOURCES =
 
 NROFF = nroff
 MANS = $(man_MANS)
-DIST_COMMON = Makefile.am Makefile.in sedscript.in
+DIST_COMMON = Makefile.am Makefile.in domainname.8.in nicknames.5.in \
+	ypcat.1.in ypmatch.1.in yppasswd.1.in yppoll.8.in ypset.8.in \
+	ypwhich.1.in
 all: all-am
 
 .SUFFIXES:
@@ -137,7 +137,21 @@ Makefile:  $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && \
 	  CONFIG_HEADERS= CONFIG_LINKS= \
 	  CONFIG_FILES=$(subdir)/$@ $(SHELL) ./config.status
-sedscript: $(top_builddir)/config.status sedscript.in
+domainname.8: $(top_builddir)/config.status domainname.8.in
+	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status
+nicknames.5: $(top_builddir)/config.status nicknames.5.in
+	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status
+ypcat.1: $(top_builddir)/config.status ypcat.1.in
+	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status
+ypmatch.1: $(top_builddir)/config.status ypmatch.1.in
+	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status
+yppasswd.1: $(top_builddir)/config.status yppasswd.1.in
+	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status
+yppoll.8: $(top_builddir)/config.status yppoll.8.in
+	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status
+ypset.8: $(top_builddir)/config.status ypset.8.in
+	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status
+ypwhich.1: $(top_builddir)/config.status ypwhich.1.in
 	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status
 uninstall-info-am:
 
@@ -361,38 +375,6 @@ uninstall-man: uninstall-man1 uninstall-man5 uninstall-man8
 	uninstall uninstall-am uninstall-info-am uninstall-man \
 	uninstall-man1 uninstall-man5 uninstall-man8
 
-
-domainname.8: domainname.8.in sedscript
-	-rm -f domainname.8
-	./sedscript < $(srcdir)/domainname.8.in > domainname.8
-
-nicknames.5: nicknames.5.in sedscript
-	-rm -f nicknames.5
-	./sedscript < $(srcdir)/nicknames.5.in > nicknames.5
-
-ypcat.1: ypcat.1.in sedscript
-	-rm -f ypcat.1
-	./sedscript < $(srcdir)/ypcat.1.in > ypcat.1
-
-ypmatch.1: ypmatch.1.in sedscript
-	-rm -f ypmatch.1
-	./sedscript < $(srcdir)/ypmatch.1.in > ypmatch.1
-
-yppasswd.1: yppasswd.1.in sedscript
-	-rm -f yppasswd.1
-	./sedscript < $(srcdir)/yppasswd.1.in > yppasswd.1
-
-yppoll.8: yppoll.8.in sedscript
-	-rm -f yppoll.8
-	./sedscript < $(srcdir)/yppoll.8.in > yppoll.8
-
-ypset.8: ypset.8.in sedscript
-	-rm -f ypset.8
-	./sedscript < $(srcdir)/ypset.8.in > ypset.8
-
-ypwhich.1: ypwhich.1.in sedscript
-	-rm -f ypwhich.1
-	./sedscript < $(srcdir)/ypwhich.1.in > ypwhich.1
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

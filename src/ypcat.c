@@ -3,9 +3,8 @@
    Author: Thorsten Kukuk <kukuk@suse.de>
 
    This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2, or (at your option)
-   any later version.
+   it under the terms of the GNU General Public License version 2 as
+   published by the Free Software Foundation.
 
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -30,6 +29,7 @@
 #include <libintl.h>
 #include "lib/yp-tools.h"
 #include "lib/nicknames.h"
+#include "lib/yp_all_host.h"
 
 #ifndef _
 #define _(String) gettext (String)
@@ -45,7 +45,7 @@ print_version (void)
 Copyright (C) %s Thorsten Kukuk.\n\
 This is free software; see the source for copying conditions.  There is NO\n\
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\
-"), "1998");
+"), "1998, 1999, 2001");
   fprintf (stdout, _("Written by %s.\n"), "Thorsten Kukuk");
 }
 
@@ -63,6 +63,8 @@ print_help (void)
   fputs (_("ypcat - print values of all keys in a NIS database\n\n"), stdout);
 
   fputs (_("  -d domain      Use 'domain' instead of the default domain\n"),
+	 stdout);
+  fputs (_("  -h hostname    Query ypserv on 'hostname' instead the current one\n"),
 	 stdout);
   fputs (_("  -k             Display map keys\n"),
 	 stdout);
@@ -114,8 +116,9 @@ print_data (int status, char *inkey, int inkeylen, char *inval,
 int
 main (int argc, char **argv)
 {
-  int dflag = 0, mflag = 0, tflag = 0, xflag = 0;
+  int dflag = 0, hflag = 0, mflag = 0, tflag = 0, xflag = 0;
   char *domainname = NULL;
+  char *hostname = NULL;
 
   setlocale (LC_MESSAGES, "");
   setlocale (LC_CTYPE, "");
@@ -134,7 +137,7 @@ main (int argc, char **argv)
         {NULL, 0, NULL, '\0'}
       };
 
-      c = getopt_long (argc, argv, "d:ktx?", long_options, &option_index);
+      c = getopt_long (argc, argv, "d:h:ktx?", long_options, &option_index);
       if (c == (-1))
         break;
       switch (c)
@@ -142,6 +145,10 @@ main (int argc, char **argv)
 	case 'd':
 	  dflag = 1;
 	  domainname = optarg;
+	  break;
+	case 'h':
+	  hflag = 1;
+	  hostname = optarg;
 	  break;
 	case 'k':
 	  kflag = 1;
@@ -179,7 +186,7 @@ main (int argc, char **argv)
     if (argc == 1)
       mflag = 1;
 
-  if ((xflag && (dflag || mflag || tflag)) || (!xflag && !mflag))
+  if ((xflag && (hflag || dflag || mflag || tflag)) || (!xflag && !mflag))
     {
       print_error ();
       return 1;
@@ -213,7 +220,10 @@ main (int argc, char **argv)
       ypcb.foreach = print_data;
       ypcb.data = NULL;
 
-      res = yp_all (domainname, map, &ypcb);
+      if (hflag)
+	res = yp_all_host (hostname, domainname, map, &ypcb);
+      else
+	res = yp_all (domainname, map, &ypcb);
       switch (res)
 	{
 	case YPERR_SUCCESS:
