@@ -172,7 +172,9 @@ msgstr "Aufruf: ypmatch [-d Domain] [-kt] Schlüssel ... Mapname\n"
 msgid ""
 "ypmatch - print the values of one or more keys from a NIS map\n"
 "\n"
-msgstr "ypmatch - Gib die Daten von einem oder mehr Schlüsseln einer NIS Map aus\n\n"
+msgstr ""
+"ypmatch - Gib die Daten von einem oder mehr Schlüsseln einer NIS Map aus\n"
+"\n"
 
 # , c-format
 #: src/ypmatch.c:209
@@ -737,7 +739,8 @@ msgstr "  -m map         Benutze diese existierende Map für die Tests\n"
 
 #: src/yptest.c:82
 msgid "  -u user        Use the existing NIS user 'user' for tests\n"
-msgstr "  -u Benutzer    Benutze den existierenden NIS Benutzer für die Tests\n"
+msgstr ""
+"  -u Benutzer    Benutze den existierenden NIS Benutzer für die Tests\n"
 
 #: src/yptest.c:84
 msgid "  -q             Be quiet, don't print messages\n"
