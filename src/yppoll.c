@@ -1,4 +1,4 @@
-/* Copyright (C) 1998, 1999 Thorsten Kukuk
+/* Copyright (C) 1998, 1999, 2001 Thorsten Kukuk
    This file is part of the yp-tools.
    Author: Thorsten Kukuk <kukuk@suse.de>
 
@@ -21,6 +21,7 @@
 #include "config.h"
 #endif
 
+#include <time.h>
 #include <netdb.h>
 #include <unistd.h>
 #include <string.h>
@@ -93,7 +94,8 @@ main (int argc, char **argv)
   static struct timeval UDPTIMEOUT = {5, 0};
   char *hostname = NULL, *domainname = NULL, *master = NULL;
   struct sockaddr_in clnt_saddr;
-  int clnt_sock, order, result;
+  int clnt_sock, result;
+  time_t order;
   CLIENT *client;
   bool_t clnt_res;
   int res1, res2;
@@ -316,11 +318,11 @@ main (int argc, char **argv)
     }
   else
     {
-      char *c = strdup (ctime ((time_t *) & order));
+      char *c = strdup (ctime (&order));
 
       c[strlen(c)-1] = '\0';
-      fprintf (stdout, _("Map %s has order number %d. [%s]\n"), argv[0],
-	       order, c);
+      fprintf (stdout, _("Map %s has order number %ld. [%s]\n"), argv[0],
+	       (long) order, c);
     }
 
   if (res2)

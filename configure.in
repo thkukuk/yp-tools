@@ -59,6 +59,9 @@ AC_ISC_POSIX
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 
+AM_WITH_DMALLOC
+AM_WITH_EFENCE
+
 dnl Checks for libraries.
 dnl Replace `main' with a function in -lnsl:
 AC_CHECK_LIB(nsl, yp_get_default_domain)

@@ -35,6 +35,7 @@
 #else
 #include "lib/getopt.h"
 #endif
+#include <time.h>
 #include <netdb.h>
 #include <limits.h>
 #include <string.h>
@@ -249,7 +250,7 @@ ypgetpw (char *master, char *domainname, char *name, int uid)
 
   if (name == NULL)
     {
-      if (snprintf (uidbuf, sizeof (uidbuf), "%d", uid) > sizeof (uidbuf))
+      if (snprintf (uidbuf, sizeof (uidbuf), "%d", uid) >= sizeof (uidbuf))
 	abort ();
 
       keyval = strdup (uidbuf);
@@ -577,17 +578,22 @@ main (int argc, char **argv)
       (pwd->pw_uid != uid))
     {
       char prompt[130];
+      char *hashpass, *cp;
 
       if (pwd->pw_uid != uid)
-        sprintf (prompt, _("Please enter root password:"));
+        snprintf (prompt, sizeof (prompt), _("Please enter root password:"));
       else
-        sprintf (prompt, _("Please enter %spassword:"),
-		 p_flag ? _("old ") : "");
+        snprintf (prompt, sizeof (prompt), _("Please enter %spassword:"),
+		  p_flag ? _("old ") : "");
       s = getpass (prompt);
+      hashpass = alloca (strlen (pwd->pw_name) + 3);
+      cp = stpcpy (hashpass, "##");
+      strcpy (cp, pwd->pw_name)
 
       /* We can't check the password with shadow passwords enabled. We
        * leave the checking to yppasswdd */
-      if (uid != 0 && strcmp (pwd->pw_passwd, "x") != 0)
+      if (uid != 0 && strcmp (pwd->pw_passwd, "x") != 0 &&
+	  strcmp (pwd->pw_passwd, hashpass ) != 0)
         if (strcmp (crypt (s, pwd->pw_passwd), pwd->pw_passwd))
           {
             fprintf (stderr, _("Sorry.\n"));

@@ -1,3 +1,13 @@
+2001-10-31  Thorsten Kukuk  <kukuk@suse.de>
+
+	* release version 2.6
+
+	* src/yppoll.c: Include time.h, use time_t for order variable
+	* src/yppasswd.c: Include time.h, don't compare old password
+	  if passwd.adjunct map is used
+
+	* configure.in: Add malloc debug options for dmalloc and efence
+
 2000-10-30  Thorsten Kukuk  <kukuk@suse.de>
 
 	* Update to gettext 0.10.40

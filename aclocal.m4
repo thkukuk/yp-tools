@@ -55,6 +55,24 @@ AC_DEFUN(AM_FUNC_GETLINE,
   fi
 ])
 
+# serial 1
+
+AC_DEFUN(AM_WITH_EFENCE,
+[AC_MSG_CHECKING(if malloc debugging with efence is wanted)
+AC_ARG_WITH(efence,
+[  --with-efence           use ElectricFence 2.05],
+[if test "$withval" = yes; then
+  AC_MSG_RESULT(yes)
+  AC_DEFINE(WITH_EFENCE,1,
+	    [Define if using the ElectricFence debugging malloc package])
+  LIBS="$LIBS -lefence"
+  LDFLAGS="$LDFLAGS -g"
+  CFLAGS="-g"
+else
+  AC_MSG_RESULT(no)
+fi], [AC_MSG_RESULT(no)])
+])
+
 # Do all the work for Automake.  This macro actually does too much --
 # some checks are only needed if your package does certain things.
 # But this isn't really a big deal.
@@ -619,6 +637,25 @@ AC_DEFUN([AC_ISC_POSIX],
     AC_CHECK_LIB(cposix, strerror, [LIBS="$LIBS -lcposix"])
   ]
 )
+
+
+# serial 1
+
+AC_DEFUN([AM_WITH_DMALLOC],
+[AC_MSG_CHECKING([if malloc debugging is wanted])
+AC_ARG_WITH(dmalloc,
+[  --with-dmalloc          use dmalloc, as in
+                          http://www.dmalloc.com/dmalloc.tar.gz],
+[if test "$withval" = yes; then
+  AC_MSG_RESULT(yes)
+  AC_DEFINE(WITH_DMALLOC,1,
+            [Define if using the dmalloc debugging malloc package])
+  LIBS="$LIBS -ldmalloc"
+  LDFLAGS="$LDFLAGS -g"
+else
+  AC_MSG_RESULT(no)
+fi], [AC_MSG_RESULT(no)])
+])
 
 # Macro to add for using GNU gettext.
 # Ulrich Drepper <drepper@cygnus.com>, 1995.
