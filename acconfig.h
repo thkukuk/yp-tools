@@ -1,5 +1,5 @@
 /* Special definitions, processed by autoheader.
-   Copyright (C) 1997 Thorsten Kukuk <kukuk@vt.uni-paderborn.de> */
+   Copyright (C) 1997, 1999 Thorsten Kukuk <kukuk@suse.de> */
 
 /* Define to the name of the distribution.  */
 #undef PACKAGE

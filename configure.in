@@ -34,7 +34,7 @@ AC_SUBST(DOMAINNAME)
 AC_SUBST(MAN_DOMAINNAME)
 
 
-test "$CFLAGS" = "" && CFLAGS="-O6"
+test "$CFLAGS" = "" && CFLAGS="-O3"
 
 dnl Checks for programs.
 AC_PROG_CC

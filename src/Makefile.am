@@ -3,7 +3,7 @@
 #
 # Author: Thorsten Kukuk <kukuk@suse.de>
 #
-AUTOMAKE_OPTIONS = 1.3 gnits
+AUTOMAKE_OPTIONS = 1.4 gnits
 MAINT_CHARSET = latin1
 #
 INSTALL_PROGRAM = @INSTALL_PROGRAM@ -s -m 555

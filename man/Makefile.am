@@ -1,9 +1,9 @@
 #
-# Copyright (c) 1997, 1998 Thorsten Kukuk, Germany
+# Copyright (c) 1997, 1998, 1999 Thorsten Kukuk, Germany
 #
-# Author: Thorsten Kukuk <kukuk@vt.uni-paderborn.de>
+# Author: Thorsten Kukuk <kukuk@suse.de>
 #
-AUTOMAKE_OPTIONS = 1.3 gnits
+AUTOMAKE_OPTIONS = 1.4 gnits
 MAINT_CHARSET = latin1
 #
 CLEANFILES = *~ sedscript domainname.8 ypcat.1 ypmatch.1 yppasswd.1\
