@@ -1,3 +1,9 @@
+2000-10-30  Thorsten Kukuk  <kukuk@suse.de>
+
+	* Update to gettext 0.10.40
+	* Update to automake 1.5
+	* Update to autoconf 2.52
+
 2000-05-21  Thorsten Kukuk  <kukuk@suse.de>
 
 	* configure.in: Usr /usr/share/man if prefix = /usr.

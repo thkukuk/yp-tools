@@ -4,7 +4,7 @@
 # Created: 1993-05-16
 # Public domain
 
-# $Id: mkinstalldirs,v 1.1 1999/02/28 20:19:59 kukuk Exp $
+# $Id: mkinstalldirs,v 1.2 2001/10/30 20:17:03 kukuk Exp $
 
 errstatus=0
 
@@ -22,7 +22,7 @@ do
      esac
 
      if test ! -d "$pathcomp"; then
-        echo "mkdir $pathcomp" 1>&2
+        echo "mkdir $pathcomp"
 
         mkdir "$pathcomp" || lasterr=$?
 
