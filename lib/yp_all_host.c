@@ -1,4 +1,4 @@
-/* Copyright (C) 2001 Thorsten Kukuk
+/* Copyright (C) 2001, 2003 Thorsten Kukuk
    This file is part of the yp-tools.
    Author: Thorsten Kukuk <kukuk@suse.de>
 
@@ -103,7 +103,7 @@ yp_all_host (const char *hostname, const char *indomain, const char *inmap,
   enum clnt_stat result;
   struct sockaddr_in clnt_sin;
   CLIENT *clnt;
-  unsigned long status;
+  long status = 0;
   int clnt_sock;
 
   if (hostname == NULL || hostname[0] == '\0' ||
