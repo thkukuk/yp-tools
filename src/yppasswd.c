@@ -664,6 +664,7 @@ main (int argc, char **argv)
 
 	  sane_passwd = alloca (passwdlen + 1);
 	  strncpy (sane_passwd, pwd->pw_passwd, passwdlen);
+	  sane_passwd[passwdlen] = 0;
 	  if (strcmp (crypt (s, sane_passwd), sane_passwd))
 	    {
 	      fprintf (stderr, _("Sorry.\n"));
@@ -751,6 +752,7 @@ main (int argc, char **argv)
 	      pwd->pw_name, master);
 
       strncpy (gecos, pwd->pw_gecos, sizeof (gecos));
+      gecos[sizeof (gecos)] = '\0';
       sp = getfield (gecos, oname, sizeof (oname));
       if (newfield (progname, _("Name"), oname, name,
 		    sizeof (name)))
