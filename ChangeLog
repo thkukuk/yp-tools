@@ -1,6 +1,18 @@
+2004-06-21  Thorsten Kukuk  <kukuk@suse.de>
+
+	* release version 2.9
+
+	* src/yppasswd.c (main): Fix one byte overrun (reported
+	by Alan Cox <alan@redhat.com>).
+
+	* src/yppasswd.1.in: Fix yppasswd option (-p)
+	Declare ypasswd, ypchsh and ypchfn as deprecated
+
 2003-05-15  Thorsten Kukuk  <kukuk@suse.de>
 
 	* lib/yp_all_host.c (yp_all_host): status is signed.
+	* man/domainname.8.in: Add hint about programs caching
+	the domainname
 
 2002-03-07  Thorsten Kukuk  <kukuk@suse.de>
 

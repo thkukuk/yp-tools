@@ -1,5 +1,5 @@
 .\" -*- nroff -*-
-.\" Copyright (C) 1998, 1999, 2001 Thorsten Kukuk
+.\" Copyright (C) 1998, 1999, 2001, 2004 Thorsten Kukuk
 .\" This file is part of the yp-tools.
 .\" Author: Thorsten Kukuk <kukuk@suse.de>
 .\"
@@ -16,7 +16,7 @@
 .\" along with this program; if not, write to the Free Software Foundation,
 .\" Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .\"
-.TH yppasswd 1 "May 1998" "YP Tools @VERSION@"
+.TH yppasswd 1 "June 2004" "YP Tools @VERSION@"
 .SH NAME
 yppasswd, ypchfn, ypchsh \- change your password in the NIS database
 .SH SYNOPSIS
@@ -26,21 +26,22 @@ yppasswd, ypchfn, ypchsh \- change your password in the NIS database
 .br
 .B "ypchsh [user]"
 .SH DESCRIPTION
-The standard
+In the old days, the standard
 .BR passwd (1),
 .BR chfn (1)
 and
 .BR chsh (1)
-cannot be used under Linux to change the users NIS password, shell and GECOS
-information, because they only modify the password file on the local host.
-For changing the NIS information, they are replaced by their NIS
-counterparts,
+tools could not be used under Linux to change the users NIS password,
+shell and GECOS information. For changing the NIS information, they were
+replaced by their NIS counterparts,
 .BR yppasswd ,
 .B ypchfn
 and
 .BR ypchsh .
 .P
-These commands are the same program, linked to different names.
+Today, this versions are deprecated and should not be used any
+longer.
+.P
 Using the command line switches, you can choose whether to update your
 password
 .BR \-p ,
@@ -82,7 +83,7 @@ daemon. Subsequently, the
 program prompts for the updated information:
 .\"
 .\"
-.IP "\fByppasswd\fP or \fB-l\fP"
+.IP "\fByppasswd\fP or \fB-p\fP"
 Change the user's NIS password.	The user is prompted for the new password.
 While typing the password, echoing is turned off, so the password does not
 appear on the screen. An empty password is rejected, as are passwords shorter

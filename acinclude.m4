@@ -2,7 +2,7 @@ dnl See if there's a working, system-supplied version of the getline function.
 dnl We can't just do AC_REPLACE_FUNCS(getline) because some systems
 dnl have a function by that name in -linet that doesn't have anything
 dnl to do with the function we need.
-AC_DEFUN(AM_FUNC_GETLINE,
+AC_DEFUN([AM_FUNC_GETLINE],
 [dnl
   am_getline_needs_run_time_check=no
   AC_CHECK_FUNC(getline,
@@ -46,7 +46,7 @@ AC_DEFUN(AM_FUNC_GETLINE,
 
 # serial 1
 
-AC_DEFUN(AM_WITH_EFENCE,
+AC_DEFUN([AM_WITH_EFENCE],
 [AC_MSG_CHECKING(if malloc debugging with efence is wanted)
 AC_ARG_WITH(efence,
 [  --with-efence           use ElectricFence 2.05],

@@ -57,7 +57,8 @@ Only the super-user can set the name of the domain by specifying the new
 .B domain
 as an argument. All three programs uses
 .BR setdomainname (2)
-for this.
+for this. Bear in mind, that already running programs may continue to
+use the old domainname.
 .SH "SEE ALSO"
 .BR getdomainname (2),
 .BR setdomainname (2),

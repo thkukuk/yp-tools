@@ -72,7 +72,7 @@ print_help (void)
 
   fputs (_("  -d domain      Use 'domain' instead of the default domain\n"),
 	 stdout);
-  fputs (_("  -h hostname    Set ypbind's binding on ´hostname´\n"), stdout);
+  fputs (_("  -h hostname    Set ypbind's binding on 'hostname'\n"), stdout);
   fputs (_("  -?, --help     Give this help list\n"), stdout);
   fputs (_("      --usage    Give a short usage message\n"), stdout);
   fputs (_("      --version  Print program version\n"), stdout);

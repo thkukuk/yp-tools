@@ -1,4 +1,4 @@
-/* Copyright (C) 1998, 1999, 2000, 2001, 2002 Thorsten Kukuk
+/* Copyright (C) 1998, 1999, 2000, 2001, 2002, 2004 Thorsten Kukuk
    This file is part of the yp-tools.
    Author: Thorsten Kukuk <kukuk@suse.de>
 
@@ -752,7 +752,7 @@ main (int argc, char **argv)
 	      pwd->pw_name, master);
 
       strncpy (gecos, pwd->pw_gecos, sizeof (gecos));
-      gecos[sizeof (gecos)] = '\0';
+      gecos[sizeof (gecos) - 1] = '\0';
       sp = getfield (gecos, oname, sizeof (oname));
       if (newfield (progname, _("Name"), oname, name,
 		    sizeof (name)))

@@ -6,12 +6,10 @@
 AUTOMAKE_OPTIONS = 1.5 gnits dist-bzip2
 MAINT_CHARSET = latin1
 #
-SUBDIRS = m4  lib src po man etc
+SUBDIRS = m4 lib src po man etc
 
 CLEANFILES = *~
 
 #EXTRA_DIST = yp-tools.spec
 
 ACLOCAL_AMFLAGS = -I m4
-
-EXTRA_DIST = config.rpath
