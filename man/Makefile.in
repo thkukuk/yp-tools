@@ -73,9 +73,12 @@ DATADIRNAME = @DATADIRNAME@
 DEPDIR = @DEPDIR@
 DOMAINNAME = @DOMAINNAME@
 EXEEXT = @EXEEXT@
+GENCAT = @GENCAT@
+GLIBC21 = @GLIBC21@
 GMOFILES = @GMOFILES@
 GMSGFMT = @GMSGFMT@
 INSTALL_STRIP_PROGRAM = @INSTALL_STRIP_PROGRAM@
+INSTOBJEXT = @INSTOBJEXT@
 INTLBISON = @INTLBISON@
 INTLLIBS = @INTLLIBS@
 INTLOBJS = @INTLOBJS@
@@ -104,29 +107,29 @@ AUTOMAKE_OPTIONS = 1.4 gnits
 MAINT_CHARSET = latin1
 #
 CLEANFILES = *~ sedscript domainname.8 ypcat.1 ypmatch.1 yppasswd.1\
-	yppoll.8 ypset.8 ypwhich.1 nicknames.5
+	yppoll.8 ypset.8 yptest.8 ypwhich.1 nicknames.5
 
 
 EXTRA_DIST = domainname.8.in nisdomainname.8 ypdomainname.8\
 	ypcat.1.in ypchfn.1 ypchsh.1 ypmatch.1.in yppasswd.1.in\
-	yppoll.8.in ypset.8.in ypwhich.1.in nicknames.5.in
+	yppoll.8.in ypset.8.in yptest.8.in ypwhich.1.in nicknames.5.in
 
 
 man_MANS = ypcat.1 ypchfn.1 ypchsh.1 ypmatch.1 yppasswd.1 yppoll.8 ypset.8\
-	 ypwhich.1 nicknames.5 @MAN_DOMAINNAME@
+	 yptest.8 ypwhich.1 nicknames.5 @MAN_DOMAINNAME@
 
 subdir = man
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES = domainname.8 nicknames.5 ypcat.1 ypmatch.1 \
-	yppasswd.1 yppoll.8 ypset.8 ypwhich.1
+	yppasswd.1 yppoll.8 ypset.8 yptest.8 ypwhich.1
 DIST_SOURCES =
 
 NROFF = nroff
 MANS = $(man_MANS)
 DIST_COMMON = Makefile.am Makefile.in domainname.8.in nicknames.5.in \
 	ypcat.1.in ypmatch.1.in yppasswd.1.in yppoll.8.in ypset.8.in \
-	ypwhich.1.in
+	yptest.8.in ypwhich.1.in
 all: all-am
 
 .SUFFIXES:
@@ -150,6 +153,8 @@ yppasswd.1: $(top_builddir)/config.status yppasswd.1.in
 yppoll.8: $(top_builddir)/config.status yppoll.8.in
 	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status
 ypset.8: $(top_builddir)/config.status ypset.8.in
+	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status
+yptest.8: $(top_builddir)/config.status yptest.8.in
 	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status
 ypwhich.1: $(top_builddir)/config.status ypwhich.1.in
 	cd $(top_builddir) && CONFIG_FILES=$(subdir)/$@ CONFIG_HEADERS= CONFIG_LINKS= $(SHELL) ./config.status

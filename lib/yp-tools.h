@@ -161,6 +161,11 @@ struct ypbind_setdom {
 };
 
 extern int yp_get_default_domain (char **);
+extern int yp_first (const char *, const char *, char **,
+                     int *, char **, int *);
+extern int yp_next (const char *, const char *, const char *,
+                    const int, char **, int *, char **, int *);
+extern int yp_order (const char *, const char *, unsigned int *);
 extern int yp_all (const char *, const char *, const struct ypall_callback *);
 extern int yp_maplist (const char *, struct ypmaplist **);
 extern int yp_master (const char *, const char *, char **);

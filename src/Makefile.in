@@ -14,7 +14,7 @@
 @SET_MAKE@
 
 #
-# Copyright (c) 1997, 1998, 1999 Thorsten Kukuk, Germany
+# Copyright (c) 1997, 1998, 1999, 2001 Thorsten Kukuk, Germany
 #
 # Author: Thorsten Kukuk <kukuk@suse.de>
 #
@@ -117,7 +117,7 @@ rootexecbindir = @rootbindir@
 EXTRA_PROGRAMS = domainname
 rootexecbin_PROGRAMS = @DOMAINNAME@
 bin_PROGRAMS = ypwhich ypmatch ypcat yppasswd
-sbin_PROGRAMS = yppoll ypset
+sbin_PROGRAMS = yppoll ypset yptest
 
 domainname_LDADD := @INTLLIBS@
 
@@ -131,7 +131,7 @@ EXTRA_PROGRAMS = domainname$(EXEEXT)
 bin_PROGRAMS = ypwhich$(EXEEXT) ypmatch$(EXEEXT) ypcat$(EXEEXT) \
 	yppasswd$(EXEEXT)
 rootexecbin_PROGRAMS = @DOMAINNAME@
-sbin_PROGRAMS = yppoll$(EXEEXT) ypset$(EXEEXT)
+sbin_PROGRAMS = yppoll$(EXEEXT) ypset$(EXEEXT) yptest$(EXEEXT)
 PROGRAMS = $(bin_PROGRAMS) $(rootexecbin_PROGRAMS) $(sbin_PROGRAMS)
 
 domainname_SOURCES = domainname.c
@@ -162,6 +162,11 @@ ypset_OBJECTS = ypset.$(OBJEXT)
 ypset_LDADD = $(LDADD)
 ypset_DEPENDENCIES = ../lib/libyptools.a
 ypset_LDFLAGS =
+yptest_SOURCES = yptest.c
+yptest_OBJECTS = yptest.$(OBJEXT)
+yptest_LDADD = $(LDADD)
+yptest_DEPENDENCIES = ../lib/libyptools.a
+yptest_LDFLAGS =
 ypwhich_SOURCES = ypwhich.c
 ypwhich_OBJECTS = ypwhich.$(OBJEXT)
 ypwhich_LDADD = $(LDADD)
@@ -177,15 +182,16 @@ depcomp = $(SHELL) $(top_srcdir)/depcomp
 @AMDEP_TRUE@DEP_FILES = $(DEPDIR)/domainname.Po $(DEPDIR)/ypcat.Po \
 @AMDEP_TRUE@	$(DEPDIR)/ypmatch.Po $(DEPDIR)/yppasswd.Po \
 @AMDEP_TRUE@	$(DEPDIR)/yppasswd_xdr.Po $(DEPDIR)/yppoll.Po \
-@AMDEP_TRUE@	$(DEPDIR)/ypset.Po $(DEPDIR)/ypwhich.Po
+@AMDEP_TRUE@	$(DEPDIR)/ypset.Po $(DEPDIR)/yptest.Po \
+@AMDEP_TRUE@	$(DEPDIR)/ypwhich.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 CCLD = $(CC)
 LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 DIST_SOURCES = domainname.c ypcat.c ypmatch.c $(yppasswd_SOURCES) \
-	yppoll.c ypset.c ypwhich.c
+	yppoll.c ypset.c yptest.c ypwhich.c
 DIST_COMMON = Makefile.am Makefile.in
-SOURCES = domainname.c ypcat.c ypmatch.c $(yppasswd_SOURCES) yppoll.c ypset.c ypwhich.c
+SOURCES = domainname.c ypcat.c ypmatch.c $(yppasswd_SOURCES) yppoll.c ypset.c yptest.c ypwhich.c
 
 all: all-am
 
@@ -285,6 +291,9 @@ yppoll$(EXEEXT): $(yppoll_OBJECTS) $(yppoll_DEPENDENCIES)
 ypset$(EXEEXT): $(ypset_OBJECTS) $(ypset_DEPENDENCIES) 
 	@rm -f ypset$(EXEEXT)
 	$(LINK) $(ypset_LDFLAGS) $(ypset_OBJECTS) $(ypset_LDADD) $(LIBS)
+yptest$(EXEEXT): $(yptest_OBJECTS) $(yptest_DEPENDENCIES) 
+	@rm -f yptest$(EXEEXT)
+	$(LINK) $(yptest_LDFLAGS) $(yptest_OBJECTS) $(yptest_LDADD) $(LIBS)
 ypwhich$(EXEEXT): $(ypwhich_OBJECTS) $(ypwhich_DEPENDENCIES) 
 	@rm -f ypwhich$(EXEEXT)
 	$(LINK) $(ypwhich_LDFLAGS) $(ypwhich_OBJECTS) $(ypwhich_LDADD) $(LIBS)
@@ -302,6 +311,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/yppasswd_xdr.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/yppoll.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ypset.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/yptest.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@$(DEPDIR)/ypwhich.Po@am__quote@
 
 distclean-depend:

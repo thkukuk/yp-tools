@@ -52,7 +52,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\
 static void
 print_usage (FILE *stream)
 {
-  fputs (_("Usage: ypcat [-kt] [-d domain] mapname | -x\n"),
+  fputs (_("Usage: ypcat [-kt] [-d domain] [-h hostname] mapname | -x\n"),
 	 stream);
 }
 

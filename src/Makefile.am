@@ -1,5 +1,5 @@
 #
-# Copyright (c) 1997, 1998, 1999 Thorsten Kukuk, Germany
+# Copyright (c) 1997, 1998, 1999, 2001 Thorsten Kukuk, Germany
 #
 # Author: Thorsten Kukuk <kukuk@suse.de>
 #
@@ -21,7 +21,7 @@ rootexecbindir = @rootbindir@
 EXTRA_PROGRAMS = domainname
 rootexecbin_PROGRAMS = @DOMAINNAME@
 bin_PROGRAMS = ypwhich ypmatch ypcat yppasswd
-sbin_PROGRAMS = yppoll ypset
+sbin_PROGRAMS = yppoll ypset yptest
 
 domainname_LDADD := @INTLLIBS@
 
