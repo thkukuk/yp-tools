@@ -1,3 +1,8 @@
+2002-03-07  Thorsten Kukuk  <kukuk@suse.de>
+
+	* man/ypcat.1.in: fix type (yset -> ypset).
+        Reported by Hector Del Manzano <inq@charma.uprm.edu>.
+
 2002-12-05  Thorsten Kukuk  <kukuk@suse.de>
 
 	* release version 2.8

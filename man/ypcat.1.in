@@ -70,7 +70,7 @@ map nickname translation table.
 .BR ypmatch (1),
 .BR yppoll (8),
 .BR ypserv (8),
-.BR yset (8),
+.BR ypset (8),
 .BR ypwhich (1)
 .LP
 .SH AUTHOR
