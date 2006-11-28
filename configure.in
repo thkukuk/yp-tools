@@ -86,9 +86,6 @@ if test "${YPPASSWD_IS_DEPRECATED}" = "1"; then
   AC_PATH_PROG(CHSH_PROG, chsh)
 fi
 
-AM_WITH_DMALLOC
-AM_WITH_EFENCE
-
 dnl Checks for libraries.
 dnl Replace `main' with a function in -lnsl:
 AC_CHECK_LIB(nsl, yp_get_default_domain)
@@ -131,7 +128,7 @@ dnl internationalization macros
 AM_GNU_GETTEXT_VERSION
 AM_GNU_GETTEXT([external])
 
-AC_OUTPUT([Makefile lib/Makefile src/Makefile man/Makefile m4/Makefile
+AC_OUTPUT([Makefile lib/Makefile src/Makefile man/Makefile
 	   etc/Makefile po/Makefile.in man/domainname.8 man/nicknames.5
 	   man/ypcat.1 man/ypmatch.1 man/yppasswd.1 man/yppoll.8
 	   man/ypset.8 man/yptest.8 man/ypwhich.1])
