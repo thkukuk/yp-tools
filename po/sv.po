@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: yp-tools 2.9\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-06-21 14:19+0200\n"
+"Report-Msgid-Bugs-To: kukuk@thkukuk.de\n"
+"POT-Creation-Date: 2006-11-28 21:17+0100\n"
 "PO-Revision-Date: 2006-11-12 17:34+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -20,8 +20,7 @@ msgstr ""
 msgid "nickname file %s does not exist.\n"
 msgstr "smeknamnsfilen %s finns inte.\n"
 
-#: lib/nicknames.c:96
-#: lib/nicknames.c:105
+#: lib/nicknames.c:96 lib/nicknames.c:105
 #, c-format
 msgid "Bogus entry in line %d: %s\n"
 msgstr "Konstig post på raden %d: %s\n"
@@ -51,14 +50,8 @@ msgstr "Fel vid allokering av systemresurser"
 msgid "Unknown ypbind error"
 msgstr "Okänt ypbind-fel"
 
-#: src/domainname.c:45
-#: src/ypcat.c:44
-#: src/ypmatch.c:46
-#: src/yppasswd.c:85
-#: src/yppoll.c:48
-#: src/ypset.c:53
-#: src/yptest.c:56
-#: src/ypwhich.c:53
+#: src/domainname.c:45 src/ypcat.c:44 src/ypmatch.c:46 src/yppasswd.c:85
+#: src/yppoll.c:48 src/ypset.c:53 src/yptest.c:56 src/ypwhich.c:53
 #, c-format
 msgid ""
 "Copyright (C) %s Thorsten Kukuk.\n"
@@ -83,45 +76,21 @@ msgstr ""
 "domainname - ställ in eller visa namnet på aktuell domän\n"
 "\n"
 
-#: src/domainname.c:65
-#: src/domainname.c:78
-#: src/ypcat.c:74
-#: src/ypmatch.c:73
-#: src/yppasswd.c:120
-#: src/yppasswd.c:131
-#: src/yppasswd.c:143
-#: src/yppoll.c:73
-#: src/ypset.c:76
-#: src/yptest.c:86
-#: src/ypwhich.c:82
+#: src/domainname.c:65 src/domainname.c:78 src/ypcat.c:74 src/ypmatch.c:73
+#: src/yppasswd.c:120 src/yppasswd.c:131 src/yppasswd.c:143 src/yppoll.c:73
+#: src/ypset.c:76 src/yptest.c:86 src/ypwhich.c:82
 msgid "  -?, --help     Give this help list\n"
 msgstr "  -?, --help     Visa den här hjälplistan\n"
 
-#: src/domainname.c:66
-#: src/domainname.c:79
-#: src/ypcat.c:75
-#: src/ypmatch.c:74
-#: src/yppasswd.c:121
-#: src/yppasswd.c:132
-#: src/yppasswd.c:144
-#: src/yppoll.c:74
-#: src/ypset.c:77
-#: src/yptest.c:87
-#: src/ypwhich.c:83
+#: src/domainname.c:66 src/domainname.c:79 src/ypcat.c:75 src/ypmatch.c:74
+#: src/yppasswd.c:121 src/yppasswd.c:132 src/yppasswd.c:144 src/yppoll.c:74
+#: src/ypset.c:77 src/yptest.c:87 src/ypwhich.c:83
 msgid "      --usage    Give a short usage message\n"
 msgstr "      --usage    Visa ett kort användningsmeddelande\n"
 
-#: src/domainname.c:67
-#: src/domainname.c:80
-#: src/ypcat.c:76
-#: src/ypmatch.c:75
-#: src/yppasswd.c:122
-#: src/yppasswd.c:133
-#: src/yppasswd.c:145
-#: src/yppoll.c:75
-#: src/ypset.c:78
-#: src/yptest.c:88
-#: src/ypwhich.c:84
+#: src/domainname.c:67 src/domainname.c:80 src/ypcat.c:76 src/ypmatch.c:75
+#: src/yppasswd.c:122 src/yppasswd.c:133 src/yppasswd.c:145 src/yppoll.c:75
+#: src/ypset.c:78 src/yptest.c:88 src/ypwhich.c:84
 msgid "      --version  Print program version\n"
 msgstr "      --version  Skriv ut programversion\n"
 
@@ -134,20 +103,13 @@ msgstr ""
 "%s - ställ in eller visa namnet på aktuell NIS-domän\n"
 "\n"
 
-#: src/domainname.c:88
-#: src/ypcat.c:85
-#: src/ypmatch.c:85
-#: src/yppasswd.c:159
-#: src/yppoll.c:85
-#: src/ypset.c:88
-#: src/yptest.c:97
-#: src/ypwhich.c:94
+#: src/domainname.c:88 src/ypcat.c:85 src/ypmatch.c:85 src/yppasswd.c:159
+#: src/yppoll.c:85 src/ypset.c:88 src/yptest.c:97 src/ypwhich.c:94
 #, c-format
 msgid "Try `%s --help' or `%s --usage' for more information.\n"
 msgstr "Prova \"%s --help\" eller \"%s --usage\" för mer information.\n"
 
-#: src/ypcat.c:49
-#: src/yptest.c:61
+#: src/ypcat.c:49 src/yptest.c:61
 #, c-format
 msgid "Written by %s.\n"
 msgstr "Skrivet av %s.\n"
@@ -164,51 +126,36 @@ msgstr ""
 "ypcat - skriv ut värden för alla nycklar i en NIS-databas\n"
 "\n"
 
-#: src/ypcat.c:65
-#: src/ypmatch.c:67
-#: src/yppoll.c:71
-#: src/ypset.c:73
-#: src/yptest.c:77
-#: src/ypwhich.c:74
+#: src/ypcat.c:65 src/ypmatch.c:67 src/yppoll.c:71 src/ypset.c:73
+#: src/yptest.c:77 src/ypwhich.c:74
 msgid "  -d domain      Use 'domain' instead of the default domain\n"
 msgstr "  -d domän       Använd \"domän\" istället för standarddomänen\n"
 
-#: src/ypcat.c:67
-#: src/yptest.c:79
+#: src/ypcat.c:67 src/yptest.c:79
 msgid "  -h hostname    Query ypserv on 'hostname' instead the current one\n"
-msgstr "  -h värdnamn    Fråga ypserv på \"värdnamn\" istället för den aktuella\n"
+msgstr ""
+"  -h värdnamn    Fråga ypserv på \"värdnamn\" istället för den aktuella\n"
 
-#: src/ypcat.c:69
-#: src/ypmatch.c:69
+#: src/ypcat.c:69 src/ypmatch.c:69
 msgid "  -k             Display map keys\n"
 msgstr "  -k             Visa kartnycklar\n"
 
 # Inhibit = hindrar, hämmar?
-#: src/ypcat.c:71
-#: src/ypmatch.c:70
-#: src/ypwhich.c:78
+#: src/ypcat.c:71 src/ypmatch.c:70 src/ypwhich.c:78
 msgid "  -t             Inhibits map nickname translation\n"
 msgstr "  -t             Hindrar smeknamnsöversättning för kartan\n"
 
-#: src/ypcat.c:72
-#: src/ypmatch.c:71
-#: src/ypwhich.c:80
+#: src/ypcat.c:72 src/ypmatch.c:71 src/ypwhich.c:80
 msgid "  -x             Display the map nickname translation table\n"
 msgstr "  -x             Visa kartans översättningstabell för smeknamn\n"
 
-#: src/ypcat.c:209
-#: src/ypmatch.c:174
-#: src/yppasswd.c:585
-#: src/yppoll.c:163
-#: src/ypset.c:224
-#: src/ypwhich.c:263
+#: src/ypcat.c:209 src/ypmatch.c:174 src/yppasswd.c:585 src/yppoll.c:163
+#: src/ypset.c:224 src/ypwhich.c:263
 #, c-format
 msgid "%s: can't get local yp domain: %s\n"
 msgstr "%s: kan inte få lokal yp-domän: %s\n"
 
-#: src/ypcat.c:232
-#: src/ypmatch.c:206
-#: src/ypwhich.c:291
+#: src/ypcat.c:232 src/ypmatch.c:206 src/ypwhich.c:291
 #, c-format
 msgid "No running ypbind\n"
 msgstr "Ingen körande ypbind\n"
@@ -348,8 +295,10 @@ msgid "The password must have at least 6 characters.\n"
 msgstr "Lösenordet måste innehålla åtminstone 6 tecken.\n"
 
 #: src/yppasswd.c:399
-msgid "The password must have both upper and lowercase letters, or non-letters.\n"
-msgstr "Lösenordet måste innehålla både versaler och gemener, eller icke-bokstäver.\n"
+msgid ""
+"The password must have both upper and lowercase letters, or non-letters.\n"
+msgstr ""
+"Lösenordet måste innehålla både versaler och gemener, eller icke-bokstäver.\n"
 
 #: src/yppasswd.c:408
 msgid "You cannot reuse the old password.\n"
@@ -368,9 +317,7 @@ msgstr ""
 "yppasswd är föråldrat, använd %s istället\n"
 "\n"
 
-#: src/yppasswd.c:548
-#: src/yppasswd.c:562
-#: src/yppasswd.c:577
+#: src/yppasswd.c:548 src/yppasswd.c:562 src/yppasswd.c:577
 #, c-format
 msgid "Calling %s failed: %s\n"
 msgstr "Anrop av %s misslyckades: %s\n"
@@ -629,9 +576,7 @@ msgstr ""
 msgid "  -h host        Ask ypserv process at 'host'\n"
 msgstr "  -h värd        Fråga ypserv-processen på \"värd\"\n"
 
-#: src/yppoll.c:182
-#: src/yppoll.c:192
-#: src/yppoll.c:202
+#: src/yppoll.c:182 src/yppoll.c:192 src/yppoll.c:202
 msgid "Couldn't get NIS server"
 msgstr "Kunde inte få NIS-server"
 
@@ -664,14 +609,12 @@ msgstr "Okänt serverfel\n"
 msgid "gethostbyname: Unknown error\n"
 msgstr "gethostbyname: Okänt fel\n"
 
-#: src/yppoll.c:264
-#: src/yppoll.c:273
+#: src/yppoll.c:264 src/yppoll.c:273
 #, c-format
 msgid "Can't create connection to %s.\n"
 msgstr "Kan inte etablera anslutning till %s.\n"
 
-#: src/yppoll.c:275
-#: src/ypset.c:148
+#: src/yppoll.c:275 src/ypset.c:148
 msgid "Reason"
 msgstr "Anledning"
 
@@ -694,8 +637,7 @@ msgstr "Domänen %s stöds.\n"
 msgid "Can't get order number for map %s.\n"
 msgstr "Kan inte få ordningsnumret för kartan %s.\n"
 
-#: src/yppoll.c:317
-#: src/yppoll.c:331
+#: src/yppoll.c:317 src/yppoll.c:331
 #, c-format
 msgid "\tReason: %s\n"
 msgstr "\tAnledning: %s\n"
@@ -742,9 +684,7 @@ msgstr "%s kör inte ypserv.\n"
 msgid "can't find address for %s\n"
 msgstr "kan inte hitta adress för %s\n"
 
-#: src/ypset.c:134
-#: src/yptest.c:148
-#: src/ypwhich.c:142
+#: src/ypset.c:134 src/yptest.c:148 src/ypwhich.c:142
 #, c-format
 msgid "can't yp_bind: Reason: %s\n"
 msgstr "kan inte yp_bind: Anledning: %s\n"
@@ -761,7 +701,8 @@ msgstr "ypset: värden %s är okänd\n"
 
 #: src/yptest.c:67
 msgid "Usage: yptest [-q] [-d domain] [-h hostname] [-m map] [-u user]\n"
-msgstr "Användning: yptest [-q] [-d domän] [-h värdnamn] [-m karta] [-u användare]\n"
+msgstr ""
+"Användning: yptest [-q] [-d domän] [-h värdnamn] [-m karta] [-u användare]\n"
 
 #: src/yptest.c:75
 msgid ""
@@ -777,14 +718,15 @@ msgstr "  -m karta       Använd denna existerande karta för tester\n"
 
 #: src/yptest.c:82
 msgid "  -u user        Use the existing NIS user 'user' for tests\n"
-msgstr "  -u användare   Använd den existerande NIS-användaren \"användare\" för tester\n"
+msgstr ""
+"  -u användare   Använd den existerande NIS-användaren \"användare\" för "
+"tester\n"
 
 #: src/yptest.c:84
 msgid "  -q             Be quiet, don't print messages\n"
 msgstr "  -q             Var tyst, skriv inte ut meddelanden\n"
 
-#: src/yptest.c:161
-#: src/yptest.c:163
+#: src/yptest.c:161 src/yptest.c:163
 #, c-format
 msgid "Used NIS server: %s\n"
 msgstr "Använd NIS-server: %s\n"
@@ -812,13 +754,8 @@ msgstr "Domainname som kommer att användas för testet: \"%s\"\n"
 msgid "yptest: host %s unknown\n"
 msgstr "yptest: värden %s är okänd\n"
 
-#: src/yptest.c:350
-#: src/yptest.c:370
-#: src/yptest.c:397
-#: src/yptest.c:420
-#: src/yptest.c:440
-#: src/yptest.c:466
-#: src/yptest.c:488
+#: src/yptest.c:350 src/yptest.c:370 src/yptest.c:397 src/yptest.c:420
+#: src/yptest.c:440 src/yptest.c:466 src/yptest.c:488
 #, c-format
 msgid "ERROR: No running ypbind\n"
 msgstr "FEL: Ingen körande ypbind\n"
@@ -828,10 +765,7 @@ msgstr "FEL: Ingen körande ypbind\n"
 msgid "WARNING: %s (Map %s, key %s)\n"
 msgstr "VARNING: %s (Karta %s, nyckel %s)\n"
 
-#: src/yptest.c:374
-#: src/yptest.c:403
-#: src/yptest.c:424
-#: src/yptest.c:444
+#: src/yptest.c:374 src/yptest.c:403 src/yptest.c:424 src/yptest.c:444
 #: src/yptest.c:492
 #, c-format
 msgid "WARNING: %s (Map %s)\n"
@@ -901,4 +835,3 @@ msgstr "Kan inte få kartlista för domänen %s. Anledning: %s\n"
 #, c-format
 msgid "ypwhich: host %s unknown\n"
 msgstr "ypwhich: värden %s är okänd\n"
-

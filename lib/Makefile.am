@@ -1,13 +1,10 @@
 #
-# Copyright (c) 1998, 1999, 2001 Thorsten Kukuk, Germany
+# Copyright (c) 1998, 1999, 2001, 2006 Thorsten Kukuk, Germany
 #
-# Author: Thorsten Kukuk <kukuk@suse.de>
+# Author: Thorsten Kukuk <kukuk@thkukuk.de>
 #
 # Process this file with automake to produce Makefile.in.
 #
-AUTOMAKE_OPTIONS = 1.4 gnits
-MAINT_CHARSET = latin1
-
 noinst_LIBRARIES = libyptools.a
 
 AM_CFLAGS = @WARNFLAGS@

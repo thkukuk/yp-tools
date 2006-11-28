@@ -1,3 +1,12 @@
 Makefile
 Makefile.in
 .deps
+domainname
+ypcat
+ypmatch
+yppasswd
+yppoll
+ypserv_test
+ypset
+yptest
+ypwhich

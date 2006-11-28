@@ -1,10 +1,7 @@
 #
-# Copyright (c) 1999 Thorsten Kukuk, Germany
+# Copyright (c) 1999, 2006 Thorsten Kukuk, Germany
 #
-# Author: Thorsten Kukuk <kukuk@suse.de>
-#
-AUTOMAKE_OPTIONS = 1.4 gnits
-MAINT_CHARSET = latin1
+# Author: Thorsten Kukuk <kukuk@thkukuk.de>
 #
 CLEANFILES = *~
 
