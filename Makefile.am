@@ -1,15 +1,16 @@
 #
-# Copyright (c) 1997, 1998, 1999, 2001 Thorsten Kukuk, Germany
+# Copyright (c) 1997, 1998, 1999, 2001, 2006 Thorsten Kukuk, Germany
 #
-# Author: Thorsten Kukuk <kukuk@suse.de>
+# Author: Thorsten Kukuk <kukuk@thkukuk.de>
 #
 AUTOMAKE_OPTIONS = 1.5 gnits dist-bzip2
-MAINT_CHARSET = latin1
 #
-SUBDIRS = m4 lib src po man etc
+SUBDIRS = lib src po man etc
 
 CLEANFILES = *~
 
-#EXTRA_DIST = yp-tools.spec
-
 ACLOCAL_AMFLAGS = -I m4
+
+M4_FILES = $(shell ls $(srcdir)/m4/*.m4)
+
+EXTRA_DIST = config.rpath $(M4_FILES)
