@@ -1,5 +1,9 @@
 2006-11-28  Thorsten Kukuk  <kukuk@suse.de>
 
+	* man/ypcat.1.in: Fix typo.
+
+2006-11-28  Thorsten Kukuk  <kukuk@suse.de>
+
 	* release version 2.10
 
 	* m4/gettext.m4: Upgrade to gettext-0.15.

@@ -19,7 +19,7 @@
 .TH ypcat 1 "December 2001" "YP Tools @VERSION@"
 .SH NAME
 ypcat - print values of all keys in a NIS database
-.SH SYNOPSYS
+.SH SYNOPSIS
 .B ypcat
 [
 .BR \-kt
