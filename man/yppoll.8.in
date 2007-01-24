@@ -1,7 +1,7 @@
 .\" -*- nroff -*-
-.\" Copyright (C) 1998, 1999, 2001 Thorsten Kukuk
+.\" Copyright (C) 1998, 1999, 2001, 2007 Thorsten Kukuk
 .\" This file is part of the yp-tools.
-.\" Author: Thorsten Kukuk <kukuk@suse.de>
+.\" Author: Thorsten Kukuk <kukuk@thkukuk.de>
 .\"
 .\" This program is free software; you can redistribute it and/or modify
 .\" it under the terms of the GNU General Public License version 2 as
@@ -16,10 +16,10 @@
 .\" along with this program; if not, write to the Free Software Foundation,
 .\" Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .\"
-.TH yppoll 8 "May 1998" "YP Tools @VERSION@"
+.TH yppoll 8 "January 2007" "YP Tools @VERSION@"
 .SH NAME
 yppoll - return version and master server of a NIS map
-.SH SYNOPSYS
+.SH SYNOPSIS
 .B yppoll
 [
 .BI \-h " host"
@@ -60,4 +60,4 @@ Specify a domain other than the default domain as returned by
 .B yppoll
 is part of the
 .B yp-tools
-package, which was written by Thorsten Kukuk <kukuk@suse.de>.
+package, which was written by Thorsten Kukuk <kukuk@thkukuk.de>.
