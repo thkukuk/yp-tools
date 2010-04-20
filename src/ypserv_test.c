@@ -1,4 +1,4 @@
-/* Copyright (C) 2001, 2002, 2003 Thorsten Kukuk
+/* Copyright (C) 2001, 2002, 2003, 2009 Thorsten Kukuk
    This file is part of the yp-tools.
    Author: Thorsten Kukuk <kukuk@suse.de>
 
@@ -82,6 +82,7 @@ print_help (void)
 	 stdout);
   fputs (_("  -h hostname    Query ypserv on 'hostname' instead the current one\n"),
 	 stdout);
+  fputs (_("  -l             Run all queries in an endless loop\n"),  stdout);
   fputs (_("  -m map         Use this existing map for tests\n"), stdout);
   fputs (_("  -u user        Use the existing NIS user 'user' for tests\n"),
 	 stdout);
@@ -290,6 +291,139 @@ ypproc_match_2 (struct ypreq_key *argp, struct ypresp_val *clnt_res, CLIENT *cln
 		    TIMEOUT));
 }
 
+/*
+ * for unit alignment
+ */
+static const char xdr_zero[BYTES_PER_XDR_UNIT] = {0, 0, 0, 0};
+
+
+static bool_t
+xdr_opaque_fake (XDR *xdrs, caddr_t cp, u_int cnt)
+{
+  u_int rndup;
+  static char crud[BYTES_PER_XDR_UNIT];
+
+  /*
+   * if no data we are done
+   */
+  if (cnt == 0)
+    return TRUE;
+
+  /*
+   * round byte count to full xdr units
+   */
+  rndup = cnt % BYTES_PER_XDR_UNIT;
+  if (rndup > 0)
+    rndup = BYTES_PER_XDR_UNIT - rndup;
+
+  switch (xdrs->x_op)
+    {
+    case XDR_DECODE:
+      if (!XDR_GETBYTES (xdrs, cp, cnt))
+        {
+          return FALSE;
+        }
+      if (rndup == 0)
+        return TRUE;
+      return XDR_GETBYTES (xdrs, (caddr_t)crud, rndup);
+
+    case XDR_ENCODE:
+      if (!XDR_PUTBYTES (xdrs, cp, cnt))
+        {
+          return FALSE;
+        }
+      if (rndup == 0)
+        return TRUE;
+      return XDR_PUTBYTES (xdrs, xdr_zero, rndup);
+
+    case XDR_FREE:
+      return TRUE;
+    }
+  return FALSE;
+}
+
+
+static bool_t
+xdr_bytes_fake (XDR *xdrs, char **cpp, u_int *sizep, u_int maxsize)
+{
+  char *sp = *cpp;      /* sp is the actual string pointer */
+  u_int nodesize;
+
+  /*
+   * first deal with the length since xdr bytes are counted
+   */
+  if (!xdr_u_int (xdrs, sizep))
+    {
+      return FALSE;
+    }
+  nodesize = *sizep;
+  if ((nodesize > maxsize) && (xdrs->x_op != XDR_FREE))
+    {
+      return FALSE;
+    }
+
+  /*
+   * now deal with the actual bytes
+   */
+  switch (xdrs->x_op)
+    {
+    case XDR_DECODE:
+      if (nodesize == 0)
+        {
+          return TRUE;
+        }
+      if (sp == NULL)
+        {
+          *cpp = sp = (char *) mem_alloc (nodesize);
+        }
+      if (sp == NULL)
+        {
+          (void) fprintf (stderr, "%s: %s", __func__, _("out of memory\n"));
+          return FALSE;
+        }
+      /* fall into ... */
+
+    case XDR_ENCODE:
+      return xdr_opaque_fake (xdrs, sp, nodesize);
+
+    case XDR_FREE:
+      if (sp != NULL)
+        {
+          mem_free (sp, nodesize);
+          *cpp = NULL;
+        }
+      return TRUE;
+    }
+  return FALSE;
+}
+
+
+static bool_t
+xdr_keydat_fake (XDR *xdrs, keydat_t *objp)
+{
+  return xdr_bytes_fake (xdrs, (char **) &objp->keydat_val,
+			 (u_int *) &objp->keydat_len, ~0);
+}
+
+static bool_t
+xdr_ypreq_key_fake (XDR *xdrs, struct ypreq_key *objp)
+{
+  if (!xdr_domainname (xdrs, &objp->domain))
+    return FALSE;
+  if (!xdr_mapname (xdrs, &objp->map))
+    return FALSE;
+  return xdr_keydat_fake (xdrs, &objp->keydat);
+}
+
+static enum clnt_stat
+ypproc_match_2_fake (struct ypreq_key *argp, struct ypresp_val *clnt_res, CLIENT *clnt)
+{
+  return (clnt_call(clnt, YPPROC_MATCH,
+		    (xdrproc_t) xdr_ypreq_key_fake, (caddr_t) argp,
+		    (xdrproc_t) xdr_ypresp_val, (caddr_t) clnt_res,
+		    TIMEOUT));
+}
+
 static void *
 test_ypproc_match_2 (void *v_param)
 {
@@ -300,6 +434,7 @@ test_ypproc_match_2 (void *v_param)
   struct ypreq_key request3 = {domainname, "passwd-byname", {strlen(key), key}};
   struct ypreq_key request4 = {"../../etc/", "passwd.byname", {strlen(key), key}};
   struct ypreq_key request5 = {domainname, "passwd.byname", {0, ""}};
+  struct ypreq_key request6 = {domainname, "passwd.byname", {8000, ""}};
   struct ypresp_val result;
   unsigned long int count = 0;
 
@@ -385,6 +520,21 @@ test_ypproc_match_2 (void *v_param)
 	  count++;
 	  fprintf (stderr,
 		   "ypproc_match_2: ypserv sends %d instead of YP_BADARGS\n",
+		   result.status);
+	}
+
+      /* Six: Invalid size of key name.  */
+      memset (&result, 0, sizeof (result));
+      if (ypproc_match_2_fake (&request6, &result, clnt) != RPC_SUCCESS)
+	{
+	  count++;
+	  clnt_perror (clnt, "ypproc_match_2");
+	}
+      else if (result.status != YP_BADARGS)
+	{
+	  count++;
+	  fprintf (stderr,
+		   "ypproc_match_2(6): ypserv sends %d instead of YP_BADARGS\n",
 		   result.status);
 	}
 

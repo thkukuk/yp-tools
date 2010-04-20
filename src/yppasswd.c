@@ -1,4 +1,4 @@
-/* Copyright (C) 1998, 1999, 2000, 2001, 2002, 2004 Thorsten Kukuk
+/* Copyright (C) 1998, 1999, 2000, 2001, 2002, 2004, 2010 Thorsten Kukuk
    This file is part of the yp-tools.
    Author: Thorsten Kukuk <kukuk@suse.de>
 
@@ -50,6 +50,8 @@
 #include <libintl.h>
 #include <sys/param.h>
 #include <sys/stat.h>
+#include <sys/types.h>
+#include <fcntl.h>
 #include <rpcsvc/yp_prot.h>
 #include <rpcsvc/ypclnt.h>
 #ifdef HAVE_RPC_CLNT_SOC_H
@@ -368,6 +370,49 @@ getfield (char *gecos, char *field, int size)
   return sp;
 }
 
+#define DES 0
+#define MD5 1
+#define SHA_256 5
+#define SHA_512 6
+
+static int
+get_hash_id (const char *passwd)
+{
+  int hash_id = DES;
+  if (strncmp(passwd, "$1$", 3) == 0)
+    hash_id = MD5;
+  else if (strncmp(passwd, "$5$", 3) == 0)
+    hash_id = SHA_256;
+  else if (strncmp(passwd, "$6$", 3) == 0)
+    hash_id = SHA_512;
+  return hash_id;
+}
+
+static int
+get_passwd_len (const char *passwd)
+{
+  static const char *allowed_chars = 
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789./";
+  int passwdlen = strlen (passwd);
+  int hash_id = get_hash_id (passwd);
+
+  /* Some systems (HPU/X) store the password aging info after
+   * the password (with a comma to separate it). To support
+   * this we cut the password after the first invalid char
+   * after the normal 13 ones - in the case of MD5 and DES.
+   * We can't cut at the first invalid char, since MD5 
+   * uses $ in the first char. In case of SHA-2 we are looking
+   * for first invalid char after the 38 ones.
+   */
+  if (passwdlen > 13 && (hash_id == DES || hash_id == MD5))
+      passwdlen = 13 + strspn (passwd + 13, allowed_chars);
+
+  if (passwdlen > 38 && (hash_id == SHA_256 || hash_id == SHA_512))
+      passwdlen = 38 + strspn (passwd + 38, allowed_chars);
+
+  return passwdlen;
+}
+
 #if ! defined(USE_CRACKLIB) || defined(USE_CRACKLIB_STRICT)
 /* this function will verify the user's password
  * for some silly things.  If we're using cracklib, then
@@ -379,6 +424,7 @@ verifypassword (struct passwd *pwd, char *pwdstr, uid_t uid)
 {
   char *p, *q;
   int ucase, lcase, other, r;
+  int passwdlen;
 
   if ((strlen (pwdstr) < 6) && uid)
     {
@@ -401,8 +447,9 @@ verifypassword (struct passwd *pwd, char *pwdstr, uid_t uid)
       return 0;
     }
 
+  passwdlen = get_passwd_len (pwd->pw_passwd);
   if (pwd->pw_passwd[0]
-      && !strncmp (pwd->pw_passwd, crypt (pwdstr, pwd->pw_passwd), 13)
+      && !strncmp (pwd->pw_passwd, crypt (pwdstr, pwd->pw_passwd), passwdlen)
       && uid)
     {
       fputs (_("You cannot reuse the old password.\n"), stderr);
@@ -436,11 +483,43 @@ verifypassword (struct passwd *pwd, char *pwdstr, uid_t uid)
 
 #endif
 
+#define bin_to_ascii(c) ((c)>=38?((c)-38+'a'):(c)>=12?((c)-12+'A'):(c)+'.')
+
+static void
+create_random_salt (char *salt, int num_chars)
+{
+  int fd;
+  unsigned char c;
+  int i;
+  int res;
+
+  fd = open ("/dev/urandom", O_RDONLY);
+
+  for (i = 0; i < num_chars; i++)
+    {
+      res = 0;
+      if (fd != 0)
+        res = read (fd, &c, 1);
+
+      if (res != 1)
+        c = random ();
+
+      salt[i] = bin_to_ascii (c & 0x3f);
+    }
+
+  salt[num_chars] = 0;
+
+  if (fd != 0)
+    close (fd);
+}
+
 int
 main (int argc, char **argv)
 {
   char *s, *progname, *domainname = NULL, *user = NULL, *master = NULL;
   int f_flag = 0, l_flag = 0, p_flag = 0, error, status;
+  int hash_id = DES;
+  char rounds[11] = "\0"; /* max length is '999999999$' */
   struct yppasswd yppwd;
   struct passwd *pwd;
   CLIENT *clnt;
@@ -450,6 +529,8 @@ main (int argc, char **argv)
   setlocale (LC_CTYPE, "");
   bindtextdomain (PACKAGE, LOCALEDIR);
   textdomain (PACKAGE);
+
+  srandom (time (NULL));
 
   if ((s = strrchr (argv[0], '/')) != NULL)
     progname = s + 1;
@@ -642,27 +723,22 @@ main (int argc, char **argv)
       cp = stpcpy (hashpass, "##");
       strcpy (cp, pwd->pw_name);
 
+      hash_id = get_hash_id (pwd->pw_passwd);
+
+      /* Preserve 'rounds=<N>$' (if present) in case of SHA-2 */
+      if (hash_id == SHA_256 || hash_id == SHA_512)
+	{
+	  if (strncmp (pwd->pw_passwd + 3, "rounds=", 7) == 0)
+	    strncpy (rounds, pwd->pw_passwd + 10, strcspn (pwd->pw_passwd + 10, "$") + 1);
+	}
+
       /* We can't check the password with shadow passwords enabled. We
        * leave the checking to yppasswdd */
       if (uid != 0 && strcmp (pwd->pw_passwd, "x") != 0 &&
 	  strcmp (pwd->pw_passwd, hashpass ) != 0)
 	{
-	  int passwdlen;
-	  char *sane_passwd;
-	  passwdlen = strlen (pwd->pw_passwd);
-	  /* Some systems (HPU/X) store the password aging info after
-	   * the password (with a comma to separate it). To support
-	   * this we cut the password after the first invalid char
-	   * after the normal 13 ones. We can't cut at the first
-	   * invalid char, since MD5 uses $ in the first char.
-	   */
-	  if (passwdlen > 13)
-	    passwdlen = 13 + strspn(pwd->pw_passwd + 13,
-				    "abcdefghijklmnopqrstuvwxyz"
-				    "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-				    "0123456789./");
-
-	  sane_passwd = alloca (passwdlen + 1);
+	  int passwdlen = get_passwd_len (pwd->pw_passwd);
+	  char *sane_passwd = alloca (passwdlen + 1);
 	  strncpy (sane_passwd, pwd->pw_passwd, passwdlen);
 	  sane_passwd[passwdlen] = 0;
 	  if (strcmp (crypt (s, sane_passwd), sane_passwd))
@@ -676,13 +752,11 @@ main (int argc, char **argv)
 
   if (p_flag)
     {
-#define bin_to_ascii(c) ((c)>=38?((c)-38+'a'):(c)>=12?((c)-12+'A'):(c)+'.')
 #ifdef USE_CRACKLIB
       char *error_msg;
 #endif /* USE_CRACKLIB */
-      char *buf, salt[2], *p = NULL;
+      char *buf, salt[37], *p = NULL;
       int tries = 0;
-      time_t tm;
 
       buf = (char *) malloc (129);
 
@@ -733,9 +807,34 @@ main (int argc, char **argv)
 	    }
 	}
 
-      time (&tm);
-      salt[0] = bin_to_ascii (tm & 0x3f);
-      salt[1] = bin_to_ascii ((tm >> 6) & 0x3f);
+      switch (hash_id)
+	{
+	case DES:
+	  create_random_salt (salt, 2);
+	  break;
+
+	case MD5:
+	  /* The user already had a MD5 password, so it's safe to
+	   * use a MD5 password again */
+	  strcpy (salt, "$1$");
+	  create_random_salt (salt + 3, 8);
+	  break;
+
+	case SHA_256:
+	case SHA_512:
+	  /* The user already had a SHA-2 password, so it's safe to
+	   * use a SHA-2 password again */
+	  snprintf (salt, 4, "$%d$", hash_id);
+	  if (strlen (rounds) != 0)
+	    {
+	      strcpy (salt + 3, "rounds=");
+	      strcpy (salt + 3 + 7, rounds);
+	      create_random_salt (salt + 3 + 7 + strlen (rounds), 16);
+	    }
+	  else
+	    create_random_salt (salt + 3, 16);
+	  break;
+	}
 
       yppwd.newpw.pw_passwd = strdup (crypt (buf, salt));
     }

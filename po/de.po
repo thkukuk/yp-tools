@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yp-tools 2.5\n"
 "Report-Msgid-Bugs-To: kukuk@thkukuk.de\n"
-"POT-Creation-Date: 2006-11-28 21:17+0100\n"
+"POT-Creation-Date: 2010-04-20 15:32+0200\n"
 "PO-Revision-Date: 2004-06-21 14:24+02:00\n"
 "Last-Translator: Thorsten Kukuk <kukuk@suse.de>\n"
 "Language-Team: No Language-Team in the moment\n"
@@ -53,7 +53,7 @@ msgid "Unknown ypbind error"
 msgstr "Unbekannter ypbind Fehler"
 
 # , c-format
-#: src/domainname.c:45 src/ypcat.c:44 src/ypmatch.c:46 src/yppasswd.c:85
+#: src/domainname.c:45 src/ypcat.c:44 src/ypmatch.c:46 src/yppasswd.c:87
 #: src/yppoll.c:48 src/ypset.c:53 src/yptest.c:56 src/ypwhich.c:53
 #, c-format
 msgid ""
@@ -79,19 +79,19 @@ msgid ""
 msgstr "domainname - Setze oder zeige den Namen der aktuellen Domain\n"
 
 #: src/domainname.c:65 src/domainname.c:78 src/ypcat.c:74 src/ypmatch.c:73
-#: src/yppasswd.c:120 src/yppasswd.c:131 src/yppasswd.c:143 src/yppoll.c:73
+#: src/yppasswd.c:122 src/yppasswd.c:133 src/yppasswd.c:145 src/yppoll.c:73
 #: src/ypset.c:76 src/yptest.c:86 src/ypwhich.c:82
 msgid "  -?, --help     Give this help list\n"
 msgstr "  -?, --help     Gib diese Hilfe aus\n"
 
 #: src/domainname.c:66 src/domainname.c:79 src/ypcat.c:75 src/ypmatch.c:74
-#: src/yppasswd.c:121 src/yppasswd.c:132 src/yppasswd.c:144 src/yppoll.c:74
+#: src/yppasswd.c:123 src/yppasswd.c:134 src/yppasswd.c:146 src/yppoll.c:74
 #: src/ypset.c:77 src/yptest.c:87 src/ypwhich.c:83
 msgid "      --usage    Give a short usage message\n"
 msgstr "      --usage    Gib eine kurze Aufruf Hilfe aus\n"
 
 #: src/domainname.c:67 src/domainname.c:80 src/ypcat.c:76 src/ypmatch.c:75
-#: src/yppasswd.c:122 src/yppasswd.c:133 src/yppasswd.c:145 src/yppoll.c:75
+#: src/yppasswd.c:124 src/yppasswd.c:135 src/yppasswd.c:147 src/yppoll.c:75
 #: src/ypset.c:78 src/yptest.c:88 src/ypwhich.c:84
 msgid "      --version  Print program version\n"
 msgstr "      --version  Gib Programm Version Information aus\n"
@@ -103,7 +103,7 @@ msgid ""
 "\n"
 msgstr "%s - Setze oder zeige den Namen der aktuellen NIS Domain an\n"
 
-#: src/domainname.c:88 src/ypcat.c:85 src/ypmatch.c:85 src/yppasswd.c:159
+#: src/domainname.c:88 src/ypcat.c:85 src/ypmatch.c:85 src/yppasswd.c:161
 #: src/yppoll.c:85 src/ypset.c:88 src/yptest.c:97 src/ypwhich.c:94
 #, c-format
 msgid "Try `%s --help' or `%s --usage' for more information.\n"
@@ -149,7 +149,7 @@ msgid "  -x             Display the map nickname translation table\n"
 msgstr "  -x             Zeige die Nickname Übersetzungstabelle an\n"
 
 # , c-format
-#: src/ypcat.c:209 src/ypmatch.c:174 src/yppasswd.c:585 src/yppoll.c:163
+#: src/ypcat.c:209 src/ypmatch.c:174 src/yppasswd.c:666 src/yppoll.c:163
 #: src/ypset.c:224 src/ypwhich.c:263
 #, c-format
 msgid "%s: can't get local yp domain: %s\n"
@@ -185,20 +185,20 @@ msgid "Can't match key %s in map %s. Reason: %s\n"
 msgstr "Schlüssel %s in Map %s nicht gefunden. Grund: %s\n"
 
 # , c-format
-#: src/yppasswd.c:96
+#: src/yppasswd.c:98
 msgid "Usage: yppasswd [-f] [-l] [-p] [User]\n"
 msgstr "Aufruf: yppasswd [-f] [-l] [-p] [User]\n"
 
-#: src/yppasswd.c:102
+#: src/yppasswd.c:104
 msgid "Usage: ypchsh [User]\n"
 msgstr "Aufruf: ypchsh [Benutzer]\n"
 
 # , c-format
-#: src/yppasswd.c:108
+#: src/yppasswd.c:110
 msgid "Usage: ypchfn [User]\n"
 msgstr "Aufruf: ypchfn [User]\n"
 
-#: src/yppasswd.c:115
+#: src/yppasswd.c:117
 msgid ""
 "yppasswd - change your password in the NIS database\n"
 "\n"
@@ -206,19 +206,19 @@ msgstr ""
 "yppasswd - Ändert das Passwort in der NIS Datenbank\n"
 "\n"
 
-#: src/yppasswd.c:117
+#: src/yppasswd.c:119
 msgid "  -f             Change GECOS field information\n"
 msgstr "  -f             Ändere GECOS Informationen\n"
 
-#: src/yppasswd.c:118
+#: src/yppasswd.c:120
 msgid "  -l             Change the login shell\n"
 msgstr "  -l             Ändere die Login Shell\n"
 
-#: src/yppasswd.c:119
+#: src/yppasswd.c:121
 msgid "  -p             Change the password\n"
 msgstr "  -p             Ändere das Passwort\n"
 
-#: src/yppasswd.c:129
+#: src/yppasswd.c:131
 msgid ""
 "ypchsh - change the shell in the NIS database\n"
 "\n"
@@ -226,116 +226,116 @@ msgstr ""
 "ypchsh - Ändert die Login Shell in der NIS Datanbank\n"
 "\n"
 
-#: src/yppasswd.c:140
+#: src/yppasswd.c:142
 msgid ""
 "ypchfn - change the GECOS information in the NIS database\n"
 "\n"
 msgstr "ypchfn - Ändere die GECOS Informationen in der NIS Datenbank\n"
 
 # , c-format
-#: src/yppasswd.c:171
+#: src/yppasswd.c:173
 #, c-format
 msgid "%s: can't find the master ypserver: %s\n"
 msgstr "%s: Kann den Master YP Server nicht bestimmen: %s\n"
 
 # , c-format
-#: src/yppasswd.c:179
+#: src/yppasswd.c:181
 #, c-format
 msgid "%s: yppasswdd not running on NIS master host (\"%s\").\n"
 msgstr ""
 "%s: Der yppasswd Dämon läuft nicht auf dem NIS Master Server (\"%s\").\n"
 
 # , c-format
-#: src/yppasswd.c:186
+#: src/yppasswd.c:188
 #, c-format
 msgid "%s: yppasswd daemon running on illegal port (\"%s\").\n"
 msgstr "%s: Der yppasswd Dämon läuft auf einem illegalen Port (\"%s\").\n"
 
-#: src/yppasswd.c:203
+#: src/yppasswd.c:205
 msgid "No more"
 msgstr "Nicht mehr"
 
-#: src/yppasswd.c:206
+#: src/yppasswd.c:208
 msgid "True"
 msgstr "Wahr"
 
-#: src/yppasswd.c:209
+#: src/yppasswd.c:211
 msgid "False"
 msgstr "Falsch"
 
-#: src/yppasswd.c:212
+#: src/yppasswd.c:214
 msgid "No such map"
 msgstr "Keine solche Map"
 
-#: src/yppasswd.c:215
+#: src/yppasswd.c:217
 msgid "No such domain"
 msgstr "Keine solche Domain"
 
-#: src/yppasswd.c:218
+#: src/yppasswd.c:220
 msgid "Bad operation"
 msgstr "Fehlgeschlagene Operation"
 
-#: src/yppasswd.c:221
+#: src/yppasswd.c:223
 msgid "Database bad"
 msgstr "Datenbank ist nicht in Ordnung"
 
-#: src/yppasswd.c:224
+#: src/yppasswd.c:226
 msgid "Bad arguments"
 msgstr "Falsche Argumente"
 
-#: src/yppasswd.c:227
+#: src/yppasswd.c:229
 msgid "Version Mismatch"
 msgstr "Versionsnummern stimmen nicht überein"
 
-#: src/yppasswd.c:230
+#: src/yppasswd.c:232
 msgid "Unknown error"
 msgstr "Unbekannter Fehler"
 
 # , c-format
-#: src/yppasswd.c:350
+#: src/yppasswd.c:352
 #, c-format
 msgid "%s: no colons allowed in GECOS field... sorry.\n"
 msgstr "%s: Im GECOS Feld sind keine Kommas erlaubt.\n"
 
-#: src/yppasswd.c:385
+#: src/yppasswd.c:431
 msgid "The password must have at least 6 characters.\n"
 msgstr "Das Passwort muß mindestens 6 Zeichen lang sein.\n"
 
-#: src/yppasswd.c:399
+#: src/yppasswd.c:445
 msgid ""
 "The password must have both upper and lowercase letters, or non-letters.\n"
 msgstr ""
 "Das Passwort muß sowoehl Groß- als auch Kleinbuschstaben haben, oder\n"
 "Sonderzeichen.\n"
 
-#: src/yppasswd.c:408
+#: src/yppasswd.c:455
 msgid "You cannot reuse the old password.\n"
 msgstr "Sie können das alte Passwort nicht wiederbenutzen.\n"
 
-#: src/yppasswd.c:430
+#: src/yppasswd.c:477
 msgid "Please don't use something like your username as password.\n"
 msgstr "Bitten benutzen Sie etwas anderes als Ihren Usernamen als Passwort.\n"
 
-#: src/yppasswd.c:545
+#: src/yppasswd.c:626
 #, c-format
 msgid ""
 "yppasswd is deprecated, use %s instead\n"
 "\n"
 msgstr "Anstelle von yppasswd sollte %s direkt aufgerufen werden\n"
 
-#: src/yppasswd.c:548 src/yppasswd.c:562 src/yppasswd.c:577
+#: src/yppasswd.c:629 src/yppasswd.c:643 src/yppasswd.c:658
 #, c-format
 msgid "Calling %s failed: %s\n"
 msgstr "Der Aufruf von %s schlug fehl: %s\n"
 
-#: src/yppasswd.c:559
+#: src/yppasswd.c:640
 #, c-format
 msgid ""
 "ypchsh is deprecated, use %s instead\n"
 "\n"
 msgstr "Anstelle von ypchsh sollte %s direkt aufgerufen werden\n"
 
-#: src/yppasswd.c:573
+#: src/yppasswd.c:654
 #, c-format
 msgid ""
 "ypchfn is deprecated, use %s instead\n"
@@ -343,50 +343,50 @@ msgid ""
 msgstr "Anstelle von ypchfn sollte %s direkt aufgerufen werden\n"
 
 # , c-format
-#: src/yppasswd.c:598
+#: src/yppasswd.c:679
 #, c-format
 msgid "%s: unknown user (uid=%ld).\n"
 msgstr "%s: unbekannter Benutzer (uid=%ld).\n"
 
 # , c-format
-#: src/yppasswd.c:608
+#: src/yppasswd.c:689
 #, c-format
 msgid "%s: Only root may change account information for others\n"
 msgstr "%s: Nur root darf Account Informationen für andere ändern\n"
 
 # , c-format
-#: src/yppasswd.c:625
+#: src/yppasswd.c:706
 #, c-format
 msgid "Changing NIS account information for %s on %s.\n"
 msgstr "Ändere NIS Account Informationen für %s auf %s.\n"
 
-#: src/yppasswd.c:636
+#: src/yppasswd.c:717
 #, c-format
 msgid "Please enter root password:"
 msgstr "Geben Sie bitte das root Password ein:"
 
 # , c-format
-#: src/yppasswd.c:638
+#: src/yppasswd.c:719
 #, c-format
 msgid "Please enter %spassword:"
 msgstr "Geben Sie bitte Ihr %sPasswort ein:"
 
-#: src/yppasswd.c:639
+#: src/yppasswd.c:720
 msgid "old "
 msgstr "altes "
 
-#: src/yppasswd.c:670
+#: src/yppasswd.c:746
 #, c-format
 msgid "Sorry.\n"
 msgstr "Falsches Password.\n"
 
 # , c-format
-#: src/yppasswd.c:689
+#: src/yppasswd.c:763
 #, c-format
 msgid "Changing NIS password for %s on %s.\n"
 msgstr "Ändere NIS Passwort für %s auf %s\n"
 
-#: src/yppasswd.c:697
+#: src/yppasswd.c:771
 msgid ""
 "Too many tries. Aborted.\n"
 "Password unchanged.\n"
@@ -394,31 +394,31 @@ msgstr ""
 "Zu viele Versuche.\n"
 "Passwort wurde nicht geändert.\n"
 
-#: src/yppasswd.c:702
+#: src/yppasswd.c:776
 msgid "Please enter new password:"
 msgstr "Geben Sie bitte ein neues Passwort ein:"
 
-#: src/yppasswd.c:705
+#: src/yppasswd.c:779
 #, c-format
 msgid "Password unchanged.\n"
 msgstr "Passwort wurde nicht geändert.\n"
 
-#: src/yppasswd.c:716
+#: src/yppasswd.c:790
 #, c-format
 msgid "Not a valid password: %s.\n"
 msgstr "Kein gültiges Passwort: %s.\n"
 
-#: src/yppasswd.c:726
+#: src/yppasswd.c:800
 msgid "Please retype new password:"
 msgstr "Bitte geben sie das neue Passwort erneut ein:"
 
-#: src/yppasswd.c:731
+#: src/yppasswd.c:805
 #, c-format
 msgid "Mismatch - password unchanged.\n"
 msgstr "Verschieden - Passwort wurde nicht geändert.\n"
 
 # , c-format
-#: src/yppasswd.c:749
+#: src/yppasswd.c:848
 #, c-format
 msgid ""
 "\n"
@@ -431,24 +431,24 @@ msgstr ""
 "Zum akzeptieren, einfach return drücken. Zum löschen, tippen\n"
 "Sie \"none\" ein.\n"
 
-#: src/yppasswd.c:757
+#: src/yppasswd.c:856
 msgid "Name"
 msgstr "Name"
 
-#: src/yppasswd.c:761
+#: src/yppasswd.c:860
 msgid "Location"
 msgstr "Büro"
 
-#: src/yppasswd.c:765
+#: src/yppasswd.c:864
 msgid "Office Phone"
 msgstr "Dienst. Telefon"
 
-#: src/yppasswd.c:769
+#: src/yppasswd.c:868
 msgid "Home Phone"
 msgstr "Privat. Telefon"
 
 # , c-format
-#: src/yppasswd.c:783
+#: src/yppasswd.c:882
 #, c-format
 msgid ""
 "\n"
@@ -461,17 +461,17 @@ msgstr ""
 "Um den default Wert zu akzeptieren, drücken Sie einfach <RETURN>. Um die\n"
 "default Shell des Systems zu benutzen, tippen Sie das Wort \"none\".\n"
 
-#: src/yppasswd.c:788
+#: src/yppasswd.c:887
 msgid "Login shell"
 msgstr "Login Shell"
 
 # , c-format
-#: src/yppasswd.c:810
+#: src/yppasswd.c:909
 msgid "Error while changing the NIS password."
 msgstr "Fehler während des Änderns vom NIS Passwort."
 
 # , c-format
-#: src/yppasswd.c:812
+#: src/yppasswd.c:911
 #, c-format
 msgid ""
 "\n"
@@ -483,7 +483,7 @@ msgstr ""
 "\n"
 
 # , c-format
-#: src/yppasswd.c:816
+#: src/yppasswd.c:915
 #, c-format
 msgid ""
 "\n"
@@ -495,12 +495,12 @@ msgstr ""
 "\n"
 
 # , c-format
-#: src/yppasswd.c:825
+#: src/yppasswd.c:924
 msgid "Error while changing the GECOS information."
 msgstr "Fehler während des änders der GECOS Informationen."
 
 # , c-format
-#: src/yppasswd.c:827
+#: src/yppasswd.c:926
 #, c-format
 msgid ""
 "\n"
@@ -512,7 +512,7 @@ msgstr ""
 "\n"
 
 # , c-format
-#: src/yppasswd.c:832
+#: src/yppasswd.c:931
 #, c-format
 msgid ""
 "\n"
@@ -524,12 +524,12 @@ msgstr ""
 "\n"
 
 # , c-format
-#: src/yppasswd.c:841
+#: src/yppasswd.c:940
 msgid "Error while changing the login shell."
 msgstr "Fehler während des änderns der Login Shell."
 
 # , c-format
-#: src/yppasswd.c:843
+#: src/yppasswd.c:942
 #, c-format
 msgid ""
 "\n"
@@ -541,7 +541,7 @@ msgstr ""
 "\n"
 
 # , c-format
-#: src/yppasswd.c:848
+#: src/yppasswd.c:947
 #, c-format
 msgid ""
 "\n"
@@ -553,12 +553,12 @@ msgstr ""
 "\n"
 
 # , c-format
-#: src/yppasswd.c:856
+#: src/yppasswd.c:955
 msgid "Error while changing the NIS account information."
 msgstr "Fehler während des änderns der NIS Account Informationen."
 
 # , c-format
-#: src/yppasswd.c:859
+#: src/yppasswd.c:958
 #, c-format
 msgid ""
 "\n"
@@ -570,7 +570,7 @@ msgstr ""
 "\n"
 
 # , c-format
-#: src/yppasswd.c:864
+#: src/yppasswd.c:963
 #, c-format
 msgid ""
 "\n"

@@ -21,6 +21,7 @@ yppasswd_SOURCES = yppasswd.c yppasswd_xdr.c yppasswd.h
 yppasswd_LDADD = ${LDADD} @LIBCRYPT@ @LIBCRACK@
 yppasswd_CFLAGS = -DPASSWD_PROG=\"${PASSWD_PROG}\" \
 	-DCHFN_PROG=\"${CHFN_PROG}\" -DCHSH_PROG=\"${CHSH_PROG}\"
+ypmatch_SOURCES = ypmatch.c ypclnt.c
 
 install-exec-hook:
 	ln -f ${DESTDIR}${bindir}/yppasswd ${DESTDIR}${bindir}/ypchsh

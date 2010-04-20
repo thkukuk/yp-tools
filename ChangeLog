@@ -1,4 +1,12 @@
-2007-01-24  Thorsten Kukuk  <kukuk@thkukuk.de>
+2010-04-20  Thorsten Kukuk  <kukuk@suse.de>
+
+	* release version 2.11
+
+	* Makefile.am: Add ypmatch_SOURCES.
+	* src/yppasswd.c: Add support for MD5, SHA-256
+	and SHA-512. Patch by Karel Klic <kklic@redhat.com>.
+
+2007-01-24  Thorsten Kukuk  <kukuk@suse.de>
 
 	* man/ypwhich.1.in: Fix spelling errors.
 	* man/domainname.8.in: Likewise.
