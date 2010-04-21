@@ -64,9 +64,9 @@ AC_PROG_MAKE_SET
 AC_PROG_RANLIB
 
 if test "${YPPASSWD_IS_DEPRECATED}" = "1"; then
-  AC_PATH_PROG(PASSWD_PROG, passwd)
-  AC_PATH_PROG(CHFN_PROG, chfn)
-  AC_PATH_PROG(CHSH_PROG, chsh)
+  AC_PATH_PROG([PASSWD_PROG], [passwd], [/usr/bin/passwd])
+  AC_PATH_PROG([CHFN_PROG], [chfn], [/usr/bin/chfn])
+  AC_PATH_PROG([CHSH_PROG], [chsh], [/usr/bin/chsh])
 fi
 
 dnl Checks for libraries.

@@ -12,6 +12,8 @@
 	* man/ypset.8.in: Fix typos.
 	* man/yptest.8.in: Fix typos.
 
+	* configure.in: Fix check for passwd, chsh, chfn.
+
 2010-04-20  Thorsten Kukuk  <kukuk@suse.de>
 
 	* release version 2.11
