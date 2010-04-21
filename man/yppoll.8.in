@@ -1,7 +1,7 @@
 .\" -*- nroff -*-
-.\" Copyright (C) 1998, 1999, 2001, 2007 Thorsten Kukuk
+.\" Copyright (C) 1998, 1999, 2001, 2007, 2010 Thorsten Kukuk
 .\" This file is part of the yp-tools.
-.\" Author: Thorsten Kukuk <kukuk@thkukuk.de>
+.\" Author: Thorsten Kukuk <kukuk@linux-nis.org>
 .\"
 .\" This program is free software; you can redistribute it and/or modify
 .\" it under the terms of the GNU General Public License version 2 as
@@ -16,7 +16,7 @@
 .\" along with this program; if not, write to the Free Software Foundation,
 .\" Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .\"
-.TH yppoll 8 "January 2007" "YP Tools @VERSION@"
+.TH yppoll 8 "April 2010" "YP Tools @VERSION@"
 .SH NAME
 yppoll - return version and master server of a NIS map
 .SH SYNOPSIS
@@ -42,22 +42,22 @@ for information about
 If
 .I host
 is not specified, the server polled is the default server returned by
-.BR ypwhich(1).
+.BR ypwhich (1).
 .TP
 .BI \-d " domain"
 Specify a domain other than the default domain as returned by
-.BR domainname (1).
+.BR domainname (8).
 .SH "SEE ALSO"
 .BR domainname (8),
 .BR ypbind (8),
 .BR ypcat (8),
 .BR ypmatch (1),
 .BR ypserv (8),
-.BR yset (8),
+.BR ypset (8),
 .BR ypwhich (1)
 .LP
 .SH AUTHOR
 .B yppoll
 is part of the
 .B yp-tools
-package, which was written by Thorsten Kukuk <kukuk@thkukuk.de>.
+package, which was written by Thorsten Kukuk <kukuk@linux-nis.org>.

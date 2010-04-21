@@ -1,7 +1,7 @@
 .\" -*- nroff -*-
-.\" Copyright (C) 1998, 1999, 2001, 2007 Thorsten Kukuk
+.\" Copyright (C) 1998, 1999, 2001, 2007, 2010 Thorsten Kukuk
 .\" This file is part of the yp-tools.
-.\" Author: Thorsten Kukuk <kukuk@thkukuk.de>
+.\" Author: Thorsten Kukuk <kukuk@linux-nis.org>
 .\"
 .\" This program is free software; you can redistribute it and/or modify
 .\" it under the terms of the GNU General Public License version 2 as
@@ -16,7 +16,7 @@
 .\" along with this program; if not, write to the Free Software Foundation,
 .\" Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .\"
-.TH ypmatch 1 "January 2007" "YP Tools @VERSION@"
+.TH ypmatch 1 "April 2010" "YP Tools @VERSION@"
 .SH NAME
 ypmatch - print the values of one or more keys from a NIS map
 .SH SYNOPSIS
@@ -40,7 +40,7 @@ specified by mapname, which may be a map name or a map nickname.
 .TP
 .BI \-d " domain"
 Specify a domain other than the default domain as returned by
-.BR domainname (1).
+.BR domainname (8).
 .TP
 .B \-k
 Display map keys. This option is useful with maps in which the
@@ -62,11 +62,11 @@ map nickname translation table.
 .BR ypcat (1),
 .BR yppoll (8),
 .BR ypserv (8),
-.BR yset (8),
+.BR ypset (8),
 .BR ypwhich (1)
 .LP
 .SH AUTHOR
 .B ypmatch
 is part of the
 .B yp-tools
-package, which was written by Thorsten Kukuk <kukuk@thkukuk.de>.
+package, which was written by Thorsten Kukuk <kukuk@linux-nis.org>.

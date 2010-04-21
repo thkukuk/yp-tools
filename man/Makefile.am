@@ -1,7 +1,7 @@
 #
-# Copyright (c) 1997, 1998, 1999, 2001, 2006 Thorsten Kukuk, Germany
+# Copyright (c) 1997, 1998, 1999, 2001, 2006, 2010 Thorsten Kukuk, Germany
 #
-# Author: Thorsten Kukuk <kukuk@thkukuk.de>
+# Author: Thorsten Kukuk <kukuk@linux-nis.org>
 #
 CLEANFILES = *~ sedscript domainname.8 ypcat.1 ypmatch.1 yppasswd.1\
 	yppoll.8 ypset.8 yptest.8 ypwhich.1 nicknames.5

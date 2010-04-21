@@ -1,7 +1,7 @@
 .\" -*- nroff -*-
-.\" Copyright (C) 1998, 1999, 2001, 2007 Thorsten Kukuk
+.\" Copyright (C) 1998, 1999, 2001, 2007, 2010 Thorsten Kukuk
 .\" This file is part of the yp-tools.
-.\" Author: Thorsten Kukuk <kukuk@suse.de>
+.\" Author: Thorsten Kukuk <kukuk@linux-nis.org>
 .\"
 .\" This program is free software; you can redistribute it and/or modify
 .\" it under the terms of the GNU General Public License version 2 as
@@ -16,7 +16,7 @@
 .\" along with this program; if not, write to the Free Software Foundation,
 .\" Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .\"
-.TH nicknames 5 "January 2007" "YP Tools @VERSION@"
+.TH nicknames 5 "April 2010" "YP Tools @VERSION@"
 .SH NAME
 /var/yp/nicknames - nickname translation table for NIS maps
 .SH DESCRIPTION
@@ -62,4 +62,4 @@ table looks like:
 .SH AUTHOR
 The
 .B yp-tools
-package was written by Thorsten Kukuk <kukuk@thkukuk.de>.
+package was written by Thorsten Kukuk <kukuk@linux-nis.org>.

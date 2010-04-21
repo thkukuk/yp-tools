@@ -4,6 +4,14 @@
 
 	* src/yppasswd.c (main): Remove obsolete check for /etc/SuSE-release.
 
+	* man/domainname.8.in: Fix typos.
+	* man/ypcat.1.in: Fix typos.
+	* man/ypmatch.1.in: Fix typos.
+	* man/yppoll.8.in: Fix typos.
+	* man/ypwhich.1.in: Fix typos.
+	* man/ypset.8.in: Fix typos.
+	* man/yptest.8.in: Fix typos.
+
 2010-04-20  Thorsten Kukuk  <kukuk@suse.de>
 
 	* release version 2.11
