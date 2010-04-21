@@ -4,6 +4,9 @@ Copyright (C) 1998-2006, 2010 Thorsten Kukuk
 
 Please send bug reports, questions and suggestions to <kukuk@linux-nis.org>.
 
+Version 2.12
+* Remove obsolete checks for /etc/SuSE-release
+
 Version 2.11
 * Add support for MD5, SHA-256, SHA-512 to yppasswd
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: kukuk@thkukuk.de\n"
-"POT-Creation-Date: 2010-04-20 15:32+0200\n"
+"POT-Creation-Date: 2010-04-21 11:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -137,7 +137,7 @@ msgstr ""
 msgid "  -x             Display the map nickname translation table\n"
 msgstr ""
 
-#: src/ypcat.c:209 src/ypmatch.c:174 src/yppasswd.c:666 src/yppoll.c:163
+#: src/ypcat.c:209 src/ypmatch.c:174 src/yppasswd.c:663 src/yppoll.c:163
 #: src/ypset.c:224 src/ypwhich.c:263
 #, c-format
 msgid "%s: can't get local yp domain: %s\n"
@@ -287,101 +287,101 @@ msgstr ""
 msgid "Please don't use something like your username as password.\n"
 msgstr ""
 
-#: src/yppasswd.c:626
+#: src/yppasswd.c:625
 #, c-format
 msgid ""
 "yppasswd is deprecated, use %s instead\n"
 "\n"
 msgstr ""
 
-#: src/yppasswd.c:629 src/yppasswd.c:643 src/yppasswd.c:658
+#: src/yppasswd.c:628 src/yppasswd.c:641 src/yppasswd.c:655
 #, c-format
 msgid "Calling %s failed: %s\n"
 msgstr ""
 
-#: src/yppasswd.c:640
+#: src/yppasswd.c:638
 #, c-format
 msgid ""
 "ypchsh is deprecated, use %s instead\n"
 "\n"
 msgstr ""
 
-#: src/yppasswd.c:654
+#: src/yppasswd.c:651
 #, c-format
 msgid ""
 "ypchfn is deprecated, use %s instead\n"
 "\n"
 msgstr ""
 
-#: src/yppasswd.c:679
+#: src/yppasswd.c:676
 #, c-format
 msgid "%s: unknown user (uid=%ld).\n"
 msgstr ""
 
-#: src/yppasswd.c:689
+#: src/yppasswd.c:686
 #, c-format
 msgid "%s: Only root may change account information for others\n"
 msgstr ""
 
-#: src/yppasswd.c:706
+#: src/yppasswd.c:703
 #, c-format
 msgid "Changing NIS account information for %s on %s.\n"
 msgstr ""
 
-#: src/yppasswd.c:717
+#: src/yppasswd.c:714
 #, c-format
 msgid "Please enter root password:"
 msgstr ""
 
-#: src/yppasswd.c:719
+#: src/yppasswd.c:716
 #, c-format
 msgid "Please enter %spassword:"
 msgstr ""
 
-#: src/yppasswd.c:720
+#: src/yppasswd.c:717
 msgid "old "
 msgstr ""
 
-#: src/yppasswd.c:746
+#: src/yppasswd.c:743
 #, c-format
 msgid "Sorry.\n"
 msgstr ""
 
-#: src/yppasswd.c:763
+#: src/yppasswd.c:760
 #, c-format
 msgid "Changing NIS password for %s on %s.\n"
 msgstr ""
 
-#: src/yppasswd.c:771
+#: src/yppasswd.c:768
 msgid ""
 "Too many tries. Aborted.\n"
 "Password unchanged.\n"
 msgstr ""
 
-#: src/yppasswd.c:776
+#: src/yppasswd.c:773
 msgid "Please enter new password:"
 msgstr ""
 
-#: src/yppasswd.c:779
+#: src/yppasswd.c:776
 #, c-format
 msgid "Password unchanged.\n"
 msgstr ""
 
-#: src/yppasswd.c:790
+#: src/yppasswd.c:787
 #, c-format
 msgid "Not a valid password: %s.\n"
 msgstr ""
 
-#: src/yppasswd.c:800
+#: src/yppasswd.c:797
 msgid "Please retype new password:"
 msgstr ""
 
-#: src/yppasswd.c:805
+#: src/yppasswd.c:802
 #, c-format
 msgid "Mismatch - password unchanged.\n"
 msgstr ""
 
-#: src/yppasswd.c:848
+#: src/yppasswd.c:845
 #, c-format
 msgid ""
 "\n"
@@ -390,23 +390,23 @@ msgid ""
 "field, type the word \"none\".\n"
 msgstr ""
 
-#: src/yppasswd.c:856
+#: src/yppasswd.c:853
 msgid "Name"
 msgstr ""
 
-#: src/yppasswd.c:860
+#: src/yppasswd.c:857
 msgid "Location"
 msgstr ""
 
-#: src/yppasswd.c:864
+#: src/yppasswd.c:861
 msgid "Office Phone"
 msgstr ""
 
-#: src/yppasswd.c:868
+#: src/yppasswd.c:865
 msgid "Home Phone"
 msgstr ""
 
-#: src/yppasswd.c:882
+#: src/yppasswd.c:879
 #, c-format
 msgid ""
 "\n"
@@ -415,15 +415,15 @@ msgid ""
 "system's default shell, type the word \"none\".\n"
 msgstr ""
 
-#: src/yppasswd.c:887
+#: src/yppasswd.c:884
 msgid "Login shell"
 msgstr ""
 
-#: src/yppasswd.c:909
+#: src/yppasswd.c:906
 msgid "Error while changing the NIS password."
 msgstr ""
 
-#: src/yppasswd.c:911
+#: src/yppasswd.c:908
 #, c-format
 msgid ""
 "\n"
@@ -431,7 +431,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/yppasswd.c:915
+#: src/yppasswd.c:912
 #, c-format
 msgid ""
 "\n"
@@ -439,11 +439,11 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/yppasswd.c:924
+#: src/yppasswd.c:921
 msgid "Error while changing the GECOS information."
 msgstr ""
 
-#: src/yppasswd.c:926
+#: src/yppasswd.c:923
 #, c-format
 msgid ""
 "\n"
@@ -451,7 +451,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/yppasswd.c:931
+#: src/yppasswd.c:928
 #, c-format
 msgid ""
 "\n"
@@ -459,11 +459,11 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/yppasswd.c:940
+#: src/yppasswd.c:937
 msgid "Error while changing the login shell."
 msgstr ""
 
-#: src/yppasswd.c:942
+#: src/yppasswd.c:939
 #, c-format
 msgid ""
 "\n"
@@ -471,7 +471,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/yppasswd.c:947
+#: src/yppasswd.c:944
 #, c-format
 msgid ""
 "\n"
@@ -479,11 +479,11 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/yppasswd.c:955
+#: src/yppasswd.c:952
 msgid "Error while changing the NIS account information."
 msgstr ""
 
-#: src/yppasswd.c:958
+#: src/yppasswd.c:955
 #, c-format
 msgid ""
 "\n"
@@ -491,7 +491,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/yppasswd.c:963
+#: src/yppasswd.c:960
 #, c-format
 msgid ""
 "\n"

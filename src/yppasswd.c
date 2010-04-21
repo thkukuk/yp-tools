@@ -391,7 +391,7 @@ get_hash_id (const char *passwd)
 static int
 get_passwd_len (const char *passwd)
 {
-  static const char *allowed_chars = 
+  static const char *allowed_chars =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789./";
   int passwdlen = strlen (passwd);
   int hash_id = get_hash_id (passwd);
@@ -400,7 +400,7 @@ get_passwd_len (const char *passwd)
    * the password (with a comma to separate it). To support
    * this we cut the password after the first invalid char
    * after the normal 13 ones - in the case of MD5 and DES.
-   * We can't cut at the first invalid char, since MD5 
+   * We can't cut at the first invalid char, since MD5
    * uses $ in the first char. In case of SHA-2 we are looking
    * for first invalid char after the 38 ones.
    */
@@ -620,8 +620,7 @@ main (int argc, char **argv)
   if (p_flag)
     {
       struct stat st;
-      if (stat ("/etc/SuSE-release", &st) == 0 &&
-	  stat (PASSWD_PROG, &st) == 0)
+      if (stat (PASSWD_PROG, &st) == 0)
 	{
 	  printf (_("yppasswd is deprecated, use %s instead\n\n"),
 		  PASSWD_PROG);
@@ -634,8 +633,7 @@ main (int argc, char **argv)
   if (l_flag)
     {
       struct stat st;
-      if (stat ("/etc/SuSE-release", &st) == 0 &&
-	  stat (CHSH_PROG, &st) == 0)
+      if (stat (CHSH_PROG, &st) == 0)
 	{
 	  printf (_("ypchsh is deprecated, use %s instead\n\n"),
 		  CHSH_PROG);
@@ -648,8 +646,7 @@ main (int argc, char **argv)
   if (f_flag)
     {
       struct stat st;
-      if (stat ("/etc/SuSE-release", &st) == 0 &&
-	  stat (CHFN_PROG, &st) == 0)
+      if (stat (CHFN_PROG, &st) == 0)
 	{
 	  printf (_("ypchfn is deprecated, use %s instead\n\n"),
 		  CHFN_PROG);

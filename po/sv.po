@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yp-tools 2.9\n"
 "Report-Msgid-Bugs-To: kukuk@thkukuk.de\n"
-"POT-Creation-Date: 2010-04-20 15:32+0200\n"
+"POT-Creation-Date: 2010-04-21 11:26+0200\n"
 "PO-Revision-Date: 2006-11-12 17:34+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -149,7 +149,7 @@ msgstr "  -t             Hindrar smeknamnsöversättning för kartan\n"
 msgid "  -x             Display the map nickname translation table\n"
 msgstr "  -x             Visa kartans översättningstabell för smeknamn\n"
 
-#: src/ypcat.c:209 src/ypmatch.c:174 src/yppasswd.c:666 src/yppoll.c:163
+#: src/ypcat.c:209 src/ypmatch.c:174 src/yppasswd.c:663 src/yppoll.c:163
 #: src/ypset.c:224 src/ypwhich.c:263
 #, c-format
 msgid "%s: can't get local yp domain: %s\n"
@@ -308,7 +308,7 @@ msgstr "Du kan inte återanvända det gamla lösenordet.\n"
 msgid "Please don't use something like your username as password.\n"
 msgstr "Använd inte någonting liknande ditt användarnamn som lösenord.\n"
 
-#: src/yppasswd.c:626
+#: src/yppasswd.c:625
 #, c-format
 msgid ""
 "yppasswd is deprecated, use %s instead\n"
@@ -317,12 +317,12 @@ msgstr ""
 "yppasswd är föråldrat, använd %s istället\n"
 "\n"
 
-#: src/yppasswd.c:629 src/yppasswd.c:643 src/yppasswd.c:658
+#: src/yppasswd.c:628 src/yppasswd.c:641 src/yppasswd.c:655
 #, c-format
 msgid "Calling %s failed: %s\n"
 msgstr "Anrop av %s misslyckades: %s\n"
 
-#: src/yppasswd.c:640
+#: src/yppasswd.c:638
 #, c-format
 msgid ""
 "ypchsh is deprecated, use %s instead\n"
@@ -331,7 +331,7 @@ msgstr ""
 "ypchsh är föråldrat, använd %s istället\n"
 "\n"
 
-#: src/yppasswd.c:654
+#: src/yppasswd.c:651
 #, c-format
 msgid ""
 "ypchfn is deprecated, use %s instead\n"
@@ -340,46 +340,46 @@ msgstr ""
 "ypchfn är föråldrat, använd %s istället\n"
 "\n"
 
-#: src/yppasswd.c:679
+#: src/yppasswd.c:676
 #, c-format
 msgid "%s: unknown user (uid=%ld).\n"
 msgstr "%s: okänd användare (uid=%ld).\n"
 
-#: src/yppasswd.c:689
+#: src/yppasswd.c:686
 #, c-format
 msgid "%s: Only root may change account information for others\n"
 msgstr "%s: Endast root får ändra kontoinformation för andra\n"
 
-#: src/yppasswd.c:706
+#: src/yppasswd.c:703
 #, c-format
 msgid "Changing NIS account information for %s on %s.\n"
 msgstr "Ändrar NIS-kontoinformation för %s på %s.\n"
 
-#: src/yppasswd.c:717
+#: src/yppasswd.c:714
 #, c-format
 msgid "Please enter root password:"
 msgstr "Ange root-lösenordet:"
 
-#: src/yppasswd.c:719
+#: src/yppasswd.c:716
 #, c-format
 msgid "Please enter %spassword:"
 msgstr "Ange %s-lösenordet:"
 
-#: src/yppasswd.c:720
+#: src/yppasswd.c:717
 msgid "old "
 msgstr "gammal"
 
-#: src/yppasswd.c:746
+#: src/yppasswd.c:743
 #, c-format
 msgid "Sorry.\n"
 msgstr "Tyvärr.\n"
 
-#: src/yppasswd.c:763
+#: src/yppasswd.c:760
 #, c-format
 msgid "Changing NIS password for %s on %s.\n"
 msgstr "Ändrar NIS-lösenord för %s på %s.\n"
 
-#: src/yppasswd.c:771
+#: src/yppasswd.c:768
 msgid ""
 "Too many tries. Aborted.\n"
 "Password unchanged.\n"
@@ -387,30 +387,30 @@ msgstr ""
 "För många försök. Avbröts.\n"
 "Lösenordet oförändrat.\n"
 
-#: src/yppasswd.c:776
+#: src/yppasswd.c:773
 msgid "Please enter new password:"
 msgstr "Ange det nya lösenordet:"
 
-#: src/yppasswd.c:779
+#: src/yppasswd.c:776
 #, c-format
 msgid "Password unchanged.\n"
 msgstr "Lösenordet oförändrat.\n"
 
-#: src/yppasswd.c:790
+#: src/yppasswd.c:787
 #, c-format
 msgid "Not a valid password: %s.\n"
 msgstr "Inte ett giltigt lösenord: %s.\n"
 
-#: src/yppasswd.c:800
+#: src/yppasswd.c:797
 msgid "Please retype new password:"
 msgstr "Ange det nya lösenordet igen:"
 
-#: src/yppasswd.c:805
+#: src/yppasswd.c:802
 #, c-format
 msgid "Mismatch - password unchanged.\n"
 msgstr "Stämmer inte - lösenordet oförändrat.\n"
 
-#: src/yppasswd.c:848
+#: src/yppasswd.c:845
 #, c-format
 msgid ""
 "\n"
@@ -423,23 +423,23 @@ msgstr ""
 "För att acceptera standardvärdet, tryck Return. För att ange ett\n"
 "tomt fält, skriv ordet \"none\".\n"
 
-#: src/yppasswd.c:856
+#: src/yppasswd.c:853
 msgid "Name"
 msgstr "Namn"
 
-#: src/yppasswd.c:860
+#: src/yppasswd.c:857
 msgid "Location"
 msgstr "Plats"
 
-#: src/yppasswd.c:864
+#: src/yppasswd.c:861
 msgid "Office Phone"
 msgstr "Arbetstelefon"
 
-#: src/yppasswd.c:868
+#: src/yppasswd.c:865
 msgid "Home Phone"
 msgstr "Hemtelefon"
 
-#: src/yppasswd.c:882
+#: src/yppasswd.c:879
 #, c-format
 msgid ""
 "\n"
@@ -452,15 +452,15 @@ msgstr ""
 "För att acceptera standardvärdet, tryck Return. För att använda\n"
 "systemets standardskal, skriv in ordet \"none\".\n"
 
-#: src/yppasswd.c:887
+#: src/yppasswd.c:884
 msgid "Login shell"
 msgstr "Inloggningsskal"
 
-#: src/yppasswd.c:909
+#: src/yppasswd.c:906
 msgid "Error while changing the NIS password."
 msgstr "Fel vid ändring av NIS-lösenordet."
 
-#: src/yppasswd.c:911
+#: src/yppasswd.c:908
 #, c-format
 msgid ""
 "\n"
@@ -471,7 +471,7 @@ msgstr ""
 "NIS-lösenordet kan inte ändrats på %s.\n"
 "\n"
 
-#: src/yppasswd.c:915
+#: src/yppasswd.c:912
 #, c-format
 msgid ""
 "\n"
@@ -482,11 +482,11 @@ msgstr ""
 "NIS-lösenordet har ändrats på %s.\n"
 "\n"
 
-#: src/yppasswd.c:924
+#: src/yppasswd.c:921
 msgid "Error while changing the GECOS information."
 msgstr "Fel vid ändring av GECOS-informationen."
 
-#: src/yppasswd.c:926
+#: src/yppasswd.c:923
 #, c-format
 msgid ""
 "\n"
@@ -497,7 +497,7 @@ msgstr ""
 "GECOS-informationen har inte ändrats på %s.\n"
 "\n"
 
-#: src/yppasswd.c:931
+#: src/yppasswd.c:928
 #, c-format
 msgid ""
 "\n"
@@ -508,11 +508,11 @@ msgstr ""
 "GECOS-informationen har ändrats på %s.\n"
 "\n"
 
-#: src/yppasswd.c:940
+#: src/yppasswd.c:937
 msgid "Error while changing the login shell."
 msgstr "Fel vid ändring av inloggningsskalet."
 
-#: src/yppasswd.c:942
+#: src/yppasswd.c:939
 #, c-format
 msgid ""
 "\n"
@@ -523,7 +523,7 @@ msgstr ""
 "Inloggningsskalet har inte ändrats på %s.\n"
 "\n"
 
-#: src/yppasswd.c:947
+#: src/yppasswd.c:944
 #, c-format
 msgid ""
 "\n"
@@ -534,11 +534,11 @@ msgstr ""
 "Inloggningsskalet har ändrats på %s.\n"
 "\n"
 
-#: src/yppasswd.c:955
+#: src/yppasswd.c:952
 msgid "Error while changing the NIS account information."
 msgstr "Fel vid ändring av NIS-kontoinformationen."
 
-#: src/yppasswd.c:958
+#: src/yppasswd.c:955
 #, c-format
 msgid ""
 "\n"
@@ -549,7 +549,7 @@ msgstr ""
 "NIS-kontoinformationen har inte ändrats på %s.\n"
 "\n"
 
-#: src/yppasswd.c:963
+#: src/yppasswd.c:960
 #, c-format
 msgid ""
 "\n"
