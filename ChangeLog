@@ -1,3 +1,17 @@
+2013-04-08  Thorsten Kukuk  <kukuk@suse.de>
+
+	* release version 2.13
+
+	* config.sub: Update from autoconf 2.69
+	* config.guess: Likewise.
+
+	* src/yptest.c (main): order is unsigned int.
+
+2011-08-31  Thorsten Kukuk  <kukuk@suse.de>
+
+	* Adjust address of FSF.
+	Patch by Honza Horak <hhorak@redhat.com>.
+
 2010-04-21  Thorsten Kukuk  <kukuk@suse.de>
 
 	* release version 2.12

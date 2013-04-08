@@ -1,4 +1,4 @@
-/* Copyright (C) 2001, 2002 Thorsten Kukuk
+/* Copyright (C) 2001, 2002, 2013 Thorsten Kukuk
    This file is part of the yp-tools.
    Author: Thorsten Kukuk <kukuk@suse.de>
 
@@ -206,7 +206,7 @@ main (int argc, char **argv)
   char *Key2;
   int      ValLen;
   int status;
-  int order;
+  unsigned int order;
   struct ypall_callback Callback;
   struct ypmaplist *ypml, *y;
 
