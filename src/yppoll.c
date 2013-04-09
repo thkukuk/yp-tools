@@ -218,7 +218,10 @@ main (int argc, char **argv)
 
       hent = gethostbyaddr ((char *)&clnt_saddr.sin_addr.s_addr,
 			    sizeof (clnt_saddr.sin_addr.s_addr), AF_INET);
-      hostname = strdup (hent->h_name);
+      if (hent)
+	{
+          hostname = strdup (hent->h_name);
+      	}
     }
   else
     {
@@ -261,7 +264,7 @@ main (int argc, char **argv)
 			   &clnt_sock);
   if (client == NULL)
     {
-      fprintf (stderr, _("Can't create connection to %s.\n"), hostname);
+      fprintf (stderr, _("Can't create connection to %s.\n"), hostname ? hostname : "unknown");
       return 1;
     }
 
@@ -279,7 +282,7 @@ main (int argc, char **argv)
   if (clnt_res != TRUE)
     {
       fprintf (stdout, _("Domain %s is not supported by %s.\n"), domainname,
-	       hostname);
+	       hostname ? hostname : "unknown");
       return 1;
     }
 

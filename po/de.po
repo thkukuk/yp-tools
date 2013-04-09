@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yp-tools 2.5\n"
 "Report-Msgid-Bugs-To: kukuk@thkukuk.de\n"
-"POT-Creation-Date: 2010-04-21 11:26+0200\n"
+"POT-Creation-Date: 2013-04-09 16:28+0200\n"
 "PO-Revision-Date: 2004-06-21 14:24+02:00\n"
 "Last-Translator: Thorsten Kukuk <kukuk@suse.de>\n"
 "Language-Team: No Language-Team in the moment\n"
@@ -604,84 +604,84 @@ msgid " - ypbind not running ?\n"
 msgstr " - ypbind läuft nicht ?\n"
 
 # , c-format
-#: src/yppoll.c:233
+#: src/yppoll.c:236
 #, c-format
 msgid "Unknown host: %s\n"
 msgstr "Unbekannter Rechner: %s\n"
 
-#: src/yppoll.c:236
+#: src/yppoll.c:239
 #, c-format
 msgid "Host name lookup failure\n"
 msgstr "Fehler beim Suchen des Rechner Namens\n"
 
 # , c-format
-#: src/yppoll.c:239
+#: src/yppoll.c:242
 #, c-format
 msgid "No address associated with name: %s\n"
 msgstr "Zu dem Namen wurde keine Adresse gefunden: %s\n"
 
-#: src/yppoll.c:243
+#: src/yppoll.c:246
 #, c-format
 msgid "Unknown server error\n"
 msgstr "Unbekannter Server Fehler\n"
 
-#: src/yppoll.c:246
+#: src/yppoll.c:249
 #, c-format
 msgid "gethostbyname: Unknown error\n"
 msgstr "gethostbyname: Unbekanter Fehler\n"
 
 # , c-format
-#: src/yppoll.c:264 src/yppoll.c:273
+#: src/yppoll.c:267 src/yppoll.c:276
 #, c-format
 msgid "Can't create connection to %s.\n"
 msgstr "Kann keine Verbindung zu %s aufbauen.\n"
 
-#: src/yppoll.c:275 src/ypset.c:148
+#: src/yppoll.c:278 src/ypset.c:148
 msgid "Reason"
 msgstr "Grund"
 
 # , c-format
-#: src/yppoll.c:281
+#: src/yppoll.c:284
 #, c-format
 msgid "Domain %s is not supported by %s.\n"
 msgstr "Domain \"%s\" wird von »%s« nicht unterstützt.\n"
 
-#: src/yppoll.c:310
+#: src/yppoll.c:313
 msgid "Can't get any map parameter information.\n"
 msgstr "Kann keine Map Informationen bekommen.\n"
 
 # , c-format
-#: src/yppoll.c:312
+#: src/yppoll.c:315
 #, c-format
 msgid "Domain %s is supported.\n"
 msgstr "Domain \"%s\" wird unterstützt.\n"
 
 # , c-format
-#: src/yppoll.c:316
+#: src/yppoll.c:319
 #, c-format
 msgid "Can't get order number for map %s.\n"
 msgstr "Kann Zeitstempel für Map %s nicht bekommen.\n"
 
 # , c-format
-#: src/yppoll.c:317 src/yppoll.c:331
+#: src/yppoll.c:320 src/yppoll.c:334
 #, c-format
 msgid "\tReason: %s\n"
 msgstr "        Grund: %s\n"
 
 # , c-format
-#: src/yppoll.c:324
+#: src/yppoll.c:327
 #, c-format
 msgid "Map %s has order number %ld. [%s]\n"
 msgstr "Der Zeitstempel der Map »%s« ist %ld. [%s]\n"
 
 # , c-format
-#: src/yppoll.c:330
+#: src/yppoll.c:333
 #, c-format
 msgid "Can't get master for map %s.\n"
 msgstr "Kann Master Server der Map %s nicht bekommen.\n"
 
 # , c-format
-#: src/yppoll.c:334
+#: src/yppoll.c:337
 #, c-format
 msgid "The master server is %s.\n"
 msgstr "Der Master Server ist »%s«.\n"

@@ -1,3 +1,10 @@
+2012-04-09  Thorsten Kukuk  <kukuk@suse.de>
+
+	* release version 2.14
+
+	* man/ypmatch.1.in: Fix typo.
+	* src/yppoll.c: Check for Null-Pointer
+
 2013-04-08  Thorsten Kukuk  <kukuk@suse.de>
 
 	* release version 2.13
