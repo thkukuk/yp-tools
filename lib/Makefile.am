@@ -17,6 +17,6 @@ libyptools_a_SOURCES = nicknames.c yp_xdr.c yp_all_host.c
 libyptools_a_LIBADD = @LIBOBJS@
 
 localedir = $(datadir)/locale
-INCLUDES = -I../intl -DLOCALEDIR=\"$(localedir)\"
+AM_CPPFLAGS = -I../intl -DLOCALEDIR=\"$(localedir)\"
 
 CLEANFILES = *~
