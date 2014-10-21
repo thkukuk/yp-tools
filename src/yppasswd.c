@@ -20,25 +20,15 @@
 #include "config.h"
 #endif
 
-#define _GNU_SOURCE
-
 #define keydat_val dptr
 #define keydat_len dsize
 #define valdat_val dptr
 #define valdat_len dsize
 
 #include <pwd.h>
-#ifdef HAVE_XCRYPT_H
-#include <xcrypt.h>
-#elif defined (HAVE_CRYPT_H)
 #include <crypt.h>
-#endif
 #include <ctype.h>
-#ifdef HAVE_GETOPT_H
 #include <getopt.h>
-#else
-#include "lib/getopt.h"
-#endif
 #include <errno.h>
 #include <time.h>
 #include <netdb.h>

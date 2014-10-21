@@ -1,4 +1,4 @@
-/* Copyright (C) 1998, 1999, 2001 Thorsten Kukuk
+/* Copyright (C) 1998, 1999, 2001, 2014 Thorsten Kukuk
    This file is part of the yp-tools.
    Author: Thorsten Kukuk <kukuk@suse.de>
 
@@ -20,25 +20,23 @@
 #include "config.h"
 #endif
 
-#ifdef HAVE_GETOPT_H
 #include <getopt.h>
-#else
-#include "lib/getopt.h"
-#endif
 #include <locale.h>
 #include <libintl.h>
 #include <netdb.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <string.h>
-#include <rpc/rpc.h>
-#ifdef HAVE_RPC_CLNT_SOC_H
-#include <rpc/clnt_soc.h>
-#endif
-#include "lib/yp-tools.h"
+#include <rpcsvc/yp.h>
+#include <rpcsvc/ypclnt.h>
 #include "lib/nicknames.h"
+
+/* from ypbind-mt/ypbind.h */
+#define YPBINDPROC_OLDDOMAIN 1
+extern int yp_maplist (const char *, struct ypmaplist **);
 
 #ifndef _
 #define _(String) gettext (String)
@@ -54,7 +52,7 @@ print_version (void)
 Copyright (C) %s Thorsten Kukuk.\n\
 This is free software; see the source for copying conditions.  There is NO\n\
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\
-"), "1998");
+"), "2014");
   /* fprintf (stdout, _("Written by %s.\n"), "Thorsten Kukuk"); */
 }
 
@@ -98,35 +96,38 @@ print_error (void)
 /* bind to a special host and print the name ypbind running on this host
    is bound to */
 static int
-print_bindhost (char *domain, struct sockaddr_in *socka_in, int vers)
+print_bindhost (char *hostname, char *domain, int vers)
 {
-  struct hostent *host = NULL;
-  struct ypbind_resp yp_r;
+  int ret;
   struct timeval tv;
+  struct ypbind_resp yp_r;
   CLIENT *client;
-  int sock, ret;
-  struct in_addr saddr;
 
-  sock = RPC_ANYSOCK;
-  tv.tv_sec = 5;
-  tv.tv_usec = 0;
-  client = clntudp_create (socka_in, YPBINDPROG, vers, tv, &sock);
+  client = clnt_create(hostname, YPBINDPROG, vers, "udp");
   if (client == NULL)
     {
       fprintf (stderr, "ypwhich: %s\n", yperr_string (YPERR_YPBIND));
+#if 0
+      fprintf(stderr, "Error calling clnt_create()\n");
+      fprintf(stderr, "PROG: %i\tVERS: %i\tNET: %s\n",
+              YPBINDPROG, vers, "upd");
+      fprintf(stderr, "clnt_stat: %d\n", rpc_createerr.cf_stat);
+      fprintf(stderr, "re_errno: %d\n", rpc_createerr.cf_error.re_errno);      
+#endif
       return 1;
-    }
-
+    }  
+  
   tv.tv_sec = 15;
   tv.tv_usec = 0;
+
   if (vers == 1)
     ret = clnt_call (client, YPBINDPROC_OLDDOMAIN,
-		     (xdrproc_t) ytxdr_domainname,
-		     (caddr_t) &domain, (xdrproc_t) ytxdr_ypbind_resp,
+		     (xdrproc_t) xdr_domainname,
+		     (caddr_t) &domain, (xdrproc_t) xdr_ypbind_resp,
 		     (caddr_t) &yp_r, tv);
   else
-    ret = clnt_call (client, YPBINDPROC_DOMAIN, (xdrproc_t) ytxdr_domainname,
-		     (caddr_t) &domain, (xdrproc_t) ytxdr_ypbind_resp,
+    ret = clnt_call (client, YPBINDPROC_DOMAIN, (xdrproc_t) xdr_domainname,
+		     (caddr_t) &domain, (xdrproc_t) xdr_ypbind_resp,
 		     (caddr_t) &yp_r, tv);
 
   if (ret != RPC_SUCCESS)
@@ -140,19 +141,29 @@ print_bindhost (char *domain, struct sockaddr_in *socka_in, int vers)
       if (yp_r.ypbind_status != YPBIND_SUCC_VAL)
         {
           fprintf (stderr, _("can't yp_bind: Reason: %s\n"),
-                   ypbinderr_string (yp_r.ypbind_respbody.ypbind_error));
+                   ypbinderr_string (yp_r.ypbind_resp_u.ypbind_error));
           clnt_destroy (client);
           return 1;
         }
     }
   clnt_destroy (client);
+  
+  struct sockaddr_in sa;
+  char host[NI_MAXHOST];
+  sa.sin_family = AF_INET;
+  memcpy (&sa.sin_addr,
+	  yp_r.ypbind_resp_u.ypbind_bindinfo.ypbind_binding_addr, 
+	  sizeof (yp_r.ypbind_resp_u.ypbind_bindinfo.ypbind_binding_addr));
 
-  saddr = yp_r.ypbind_respbody.ypbind_bindinfo.ypbind_binding_addr;
-  host = gethostbyaddr ((char *) &saddr, sizeof (saddr), AF_INET);
-  if (host)
-    printf ("%s\n", host->h_name);
+  if (getnameinfo((struct sockaddr *)&sa, sizeof sa, 
+		  host, sizeof host, NULL, 0, 0) == 0)
+    printf ("%s\n", host);
   else
-    printf ("%s\n", inet_ntoa (saddr));
+    {
+      char straddr[INET6_ADDRSTRLEN];     
+      inet_ntop(sa.sin_family, &sa.sin_addr, straddr, sizeof(straddr));
+      printf ("%s\n", straddr);
+    }
   return 0;
 }
 
@@ -338,33 +349,16 @@ main (int argc, char **argv)
 	}
       else
 	{
-	  struct sockaddr_in sock_in;
-	  struct hostent *host;
-
-	  memset (&sock_in, 0, sizeof sock_in);
-	  sock_in.sin_family = AF_INET;
 	  if (hflag)
 	    {
-	      if (inet_aton (hostname, &sock_in.sin_addr) == 0)
-		{
-		  host = gethostbyname (hostname);
-		  if (!host)
-		    {
-		      fprintf (stderr, _("ypwhich: host %s unknown\n"),
-			       hostname);
-		      return 1;
-		    }
-		  memcpy (&sock_in.sin_addr, host->h_addr_list[0],
-			  sizeof (sock_in.sin_addr));
-		}
-	      if (print_bindhost (domainname, &sock_in, ypbind_version))
+	      if (print_bindhost (hostname, domainname, ypbind_version))
 		return 1;
 	    }
 	  else
 	    {
-	      sock_in.sin_addr.s_addr = htonl (INADDR_LOOPBACK);
+	      hostname = "localhost";
 
-	      if (print_bindhost (domainname, &sock_in, ypbind_version))
+	      if (print_bindhost (hostname, domainname, ypbind_version))
 		return 1;
 	    }
 	}

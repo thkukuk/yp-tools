@@ -1,5 +1,5 @@
 #
-# Copyright (c) 1998, 1999, 2001, 2006 Thorsten Kukuk, Germany
+# Copyright (c) 1998, 1999, 2001, 2006, 2014 Thorsten Kukuk, Germany
 #
 # Author: Thorsten Kukuk <kukuk@thkukuk.de>
 #
@@ -9,14 +9,12 @@ noinst_LIBRARIES = libyptools.a
 
 AM_CFLAGS = @WARNFLAGS@
 
-EXTRA_DIST = getopt.c getopt1.c getline.c ypbinderr_string.c
+noinst_HEADERS = nicknames.h yp_all_host.h
 
-noinst_HEADERS = getopt.h getline.h yp-tools.h nicknames.h yp_all_host.h
-
-libyptools_a_SOURCES = nicknames.c yp_xdr.c yp_all_host.c
-libyptools_a_LIBADD = @LIBOBJS@
+libyptools_a_SOURCES = nicknames.c yp_xdr.c yp_all_host.c \
+	yperr_string.c ypbinderr_string.c yp_get_default_domain.c
 
 localedir = $(datadir)/locale
-AM_CPPFLAGS = -I../intl -DLOCALEDIR=\"$(localedir)\"
+AM_CPPFLAGS = @TIRPC_CFLAGS@ -DLOCALEDIR=\"$(localedir)\"
 
 CLEANFILES = *~

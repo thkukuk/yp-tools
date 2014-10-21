@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(yp-tools, 2.14, kukuk@linux-nis.org)
+AC_INIT(yp-tools, 2.99.1, kukuk@linux-nis.org)
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([src/ypcat.c])
 AM_CONFIG_HEADER(config.h)
@@ -7,6 +7,8 @@ AC_PREFIX_DEFAULT(/usr)
 
 AC_SUBST(PACKAGE)
 AC_SUBST(VERSION)
+
+AC_GNU_SOURCE
 
 dnl Change libexec to lib/yp
 if test ${libexecdir} = '${exec_prefix}/libexec'
@@ -70,16 +72,8 @@ if test "${YPPASSWD_IS_DEPRECATED}" = "1"; then
 fi
 
 dnl Checks for libraries.
-dnl Replace `main' with a function in -lnsl:
-AC_CHECK_LIB(nsl, yp_get_default_domain)
-
-AC_CHECK_LIB(xcrypt,crypt,LIBCRYPT="-lxcrypt",LIBCRYPT="")
-if test -z "$LIBCRYPT" ; then
-  AC_CHECK_LIB(crypt,crypt,LIBCRYPT="-lcrypt",LIBCRYPT="")
-  AC_CHECK_HEADERS(crypt.h)
-else
-  AC_CHECK_HEADERS(xcrypt.h crypt.h)
-fi
+PKG_CHECK_MODULES([TIRPC], [libtirpc])
+AC_CHECK_LIB(crypt,crypt,LIBCRYPT="-lcrypt",LIBCRYPT="")
 AC_SUBST(LIBCRYPT)
 
 dnl Check for libcrack
@@ -95,20 +89,10 @@ AC_CHECK_HEADERS(getopt.h rpc/clnt_soc.h)
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
 
-dnl Checks for library functions.
-AC_CHECK_FUNC(getopt_long, , [AC_LIBOBJ(getopt) AC_LIBOBJ(getopt1)])
-
-AC_REPLACE_FUNCS(ypbinderr_string)
-
-AM_FUNC_GETLINE
-if test $am_cv_func_working_getline != yes; then
-  AC_CHECK_FUNCS(getdelim)
-else
-  AC_CHECK_FUNCS(getline)
-fi
+dnl AC_REPLACE_FUNCS(ypbinderr_string)
 
 dnl internationalization macros
-AM_GNU_GETTEXT_VERSION([0.17])
+AM_GNU_GETTEXT_VERSION([0.19.2])
 AM_GNU_GETTEXT([external])
 
 AC_OUTPUT([Makefile lib/Makefile src/Makefile man/Makefile

@@ -1,4 +1,4 @@
-/* Copyright (C) 1998, 1999, 2001 Thorsten Kukuk
+/* Copyright (C) 1998, 1999, 2001, 2014 Thorsten Kukuk
    This file is part of the yp-tools.
    Author: Thorsten Kukuk <kukuk@suse.de>
 
@@ -22,23 +22,16 @@
 
 #include <netdb.h>
 #include <stdio.h>
-#ifdef HAVE_GETOPT_H
 #include <getopt.h>
-#else
-#include "lib/getopt.h"
-#endif
 #include <locale.h>
 #include <libintl.h>
 #include <string.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include "lib/yp-tools.h"
-
-#if defined (__NetBSD__) || (defined(__GLIBC__) && (__GLIBC__ == 2 && __GLIBC_MINOR__ == 0))
-/* <rpc/rpc.h> is missing the prototype */
-int getrpcport(char *host, int prognum, int versnum, int proto);
-#endif
+#include <rpc/rpc.h>
+#include <rpcsvc/yp.h>
+#include <rpcsvc/ypclnt.h>
 
 #ifndef _
 #define _(String) gettext (String)
@@ -54,7 +47,7 @@ print_version (void)
 Copyright (C) %s Thorsten Kukuk.\n\
 This is free software; see the source for copying conditions.  There is NO\n\
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\
-"), "1998");
+"), "2014");
   /* fprintf (stdout, _("Written by %s.\n"), "Thorsten Kukuk"); */
 }
 
@@ -89,34 +82,34 @@ print_error (void)
 	   program, program);
 }
 
-/* bind to a special host and search the ypserv data */
+/* bind to a special host and set a new NIS server */
 static int
-bind_tohost (struct sockaddr_in *sock_in, char *domainname, char *server,
-	     char *host)
+bind_tohost (const char *hostname, char *domainname, char *new_server)
 {
   struct ypbind_setdom ypsd;
   const struct timeval tv = {15, 0};
   struct hostent *hp;
   CLIENT *client;
-  int sock, port;
+  int port;
+  int16_t port16;
   int res;
   struct in_addr server_addr;
 
-  if ((port = htons (getrpcport (server, YPPROG, YPPROC_NULL, IPPROTO_UDP)))
+  if ((port = htons (getrpcport (new_server, YPPROG, YPPROC_NULL, IPPROTO_UDP)))
       == 0)
     {
-      fprintf (stderr, _("%s not running ypserv.\n"), server);
+      fprintf (stderr, _("%s not running ypserv.\n"), new_server);
       exit (1);
     }
 
   memset (&ypsd, '\0', sizeof (ypsd));
 
-  if ((hp = gethostbyname (server)) != NULL)
+  if ((hp = gethostbyname (new_server)) != NULL)
     memcpy (&ypsd.ypsetdom_binding.ypbind_binding_addr, hp->h_addr_list[0],
 	    sizeof (ypsd.ypsetdom_binding.ypbind_binding_addr));
-  else if (inet_aton (server, &server_addr) == 0)
+  else if (inet_aton (new_server, &server_addr) == 0)
     {
-      fprintf (stderr, _("can't find address for %s\n"), server);
+      fprintf (stderr, _("can't find IPv4 address for %s\n"), new_server);
       exit (1);
     }
   else
@@ -124,11 +117,12 @@ bind_tohost (struct sockaddr_in *sock_in, char *domainname, char *server,
 	    sizeof (server_addr.s_addr));
 
   ypsd.ypsetdom_domain = domainname;
-  ypsd.ypsetdom_binding.ypbind_binding_port = port;
+  port16 = port;
+  memcpy (&ypsd.ypsetdom_binding.ypbind_binding_port, &port16,
+	  sizeof (ypsd.ypsetdom_binding.ypbind_binding_port));
   ypsd.ypsetdom_vers = YPVERS;
 
-  sock = RPC_ANYSOCK;
-  client = clntudp_create (sock_in, YPBINDPROG, YPBINDVERS, tv, &sock);
+  client = clnt_create (hostname, YPBINDPROG, YPBINDVERS, "udp");
   if (client == NULL)
     {
       fprintf (stderr, _("can't yp_bind: Reason: %s\n"),
@@ -139,12 +133,12 @@ bind_tohost (struct sockaddr_in *sock_in, char *domainname, char *server,
   client->cl_auth = authunix_create_default ();
 
   res = clnt_call (client, YPBINDPROC_SETDOM,
-		   (xdrproc_t) ytxdr_ypbind_setdom, (caddr_t) &ypsd,
+		   (xdrproc_t) xdr_ypbind_setdom, (caddr_t) &ypsd,
 		   (xdrproc_t) xdr_void, NULL, tv);
   if (res)
     {
       fprintf (stderr, _("Cannot ypset for domain %s on host %s.\n"),
-               domainname, host);
+               domainname, hostname);
       clnt_perror (client, _("Reason"));
       clnt_destroy (client);
       return YPERR_YPBIND;
@@ -212,8 +206,7 @@ main (int argc, char **argv)
     }
   else
     {
-      struct sockaddr_in sock_in;
-      char *server = argv[0];
+      char *new_server = argv[0];
 
       if (domainname == NULL)
 	{
@@ -227,29 +220,12 @@ main (int argc, char **argv)
 	    }
 	}
 
-      memset (&sock_in, '\0', sizeof (sock_in));
-      sock_in.sin_family = AF_INET;
-      if (hostname != NULL)
+      if (hostname == NULL)
 	{
-
-	  if (inet_aton (hostname, &sock_in.sin_addr) == 0)
-	    {
-	      struct hostent *hent = gethostbyname (hostname);
-
-	      if (hent == NULL)
-		{
-		  fprintf (stderr, _("ypset: host %s unknown\n"), hostname);
-		  return 1;
-		}
-	      memcpy (&sock_in.sin_addr, hent->h_addr_list[0],
-		      sizeof (sock_in.sin_addr));
-	    }
+	  hostname = "localhost";
 	}
-      else
-	{
-	  sock_in.sin_addr.s_addr = htonl (INADDR_LOOPBACK);
-	}
-      if (bind_tohost (&sock_in, domainname, server, hostname))
+
+      if (bind_tohost (hostname, domainname, new_server))
 	return 1;
     }
 

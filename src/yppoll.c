@@ -1,4 +1,4 @@
-/* Copyright (C) 1998, 1999, 2001 Thorsten Kukuk
+/* Copyright (C) 1998, 1999, 2001, 2014 Thorsten Kukuk
    This file is part of the yp-tools.
    Author: Thorsten Kukuk <kukuk@suse.de>
 
@@ -24,16 +24,13 @@
 #include <netdb.h>
 #include <unistd.h>
 #include <string.h>
-#ifdef HAVE_GETOPT_H
 #include <getopt.h>
-#else
-#include "lib/getopt.h"
-#endif
 #include <locale.h>
 #include <libintl.h>
 #include <rpc/rpc.h>
 #include <rpc/pmap_clnt.h>
-#include "lib/yp-tools.h"
+#include <rpcsvc/yp.h>
+#include <rpcsvc/ypclnt.h>
 
 #ifndef _
 #define _(String) gettext (String)
@@ -185,8 +182,8 @@ main (int argc, char **argv)
 	  return 1;
 	}
       if (clnt_call (client, YPBINDPROC_DOMAIN,
-		     (xdrproc_t) ytxdr_domainname, (caddr_t) &domainname,
-		     (xdrproc_t) ytxdr_ypbind_resp,
+		     (xdrproc_t) xdr_domainname, (caddr_t) &domainname,
+		     (xdrproc_t) xdr_ypbind_resp,
 		     (caddr_t) &ypbr, RPCTIMEOUT) != RPC_SUCCESS)
 	{
 	  clnt_perror (client, _("Couldn't get NIS server"));
@@ -201,7 +198,7 @@ main (int argc, char **argv)
 	{
 	  fputs (_("Couldn't get NIS server"), stderr);
 	  fputs (": ", stderr);
-	  fputs (ypbinderr_string (ypbr.ypbind_respbody.ypbind_error),
+	  fputs (ypbinderr_string (ypbr.ypbind_resp_u.ypbind_error),
 		 stderr);
 	  fputs ("\n", stderr);
 
@@ -210,10 +207,10 @@ main (int argc, char **argv)
       memset (&clnt_saddr, '\0', sizeof (clnt_saddr));
       clnt_saddr.sin_family = AF_INET;
       memcpy (&clnt_saddr.sin_port,
-	      &ypbr.ypbind_respbody.ypbind_bindinfo.ypbind_binding_port,
+	      &ypbr.ypbind_resp_u.ypbind_bindinfo.ypbind_binding_port,
 	      sizeof (clnt_saddr.sin_port));
       memcpy (&clnt_saddr.sin_addr.s_addr,
-	      &ypbr.ypbind_respbody.ypbind_bindinfo.ypbind_binding_addr,
+	      &ypbr.ypbind_resp_u.ypbind_bindinfo.ypbind_binding_addr,
 	      sizeof (clnt_saddr.sin_addr.s_addr));
 
       hent = gethostbyaddr ((char *)&clnt_saddr.sin_addr.s_addr,
@@ -268,7 +265,7 @@ main (int argc, char **argv)
       return 1;
     }
 
-  result = clnt_call (client, YPPROC_DOMAIN, (xdrproc_t) ytxdr_domainname,
+  result = clnt_call (client, YPPROC_DOMAIN, (xdrproc_t) xdr_domainname,
 		      (caddr_t) &domainname,  (xdrproc_t) xdr_bool,
 		      (caddr_t) &clnt_res, RPCTIMEOUT);
   if (result != RPC_SUCCESS)
@@ -289,24 +286,24 @@ main (int argc, char **argv)
   req.domain = domainname;
   req.map = argv[0];
   memset (&resp_o, '\0', sizeof (resp_o));
-  res1 = clnt_call (client, YPPROC_ORDER, (xdrproc_t) ytxdr_ypreq_nokey,
-		    (caddr_t) &req, (xdrproc_t) ytxdr_ypresp_order,
+  res1 = clnt_call (client, YPPROC_ORDER, (xdrproc_t) xdr_ypreq_nokey,
+		    (caddr_t) &req, (xdrproc_t) xdr_ypresp_order,
 		    (caddr_t) &resp_o, RPCTIMEOUT);
-  if (res1 == 0 && resp_o.status != YP_TRUE)
-    res1 = ypprot_err (resp_o.status);
+  if (res1 == 0 && resp_o.stat != YP_TRUE)
+    res1 = ypprot_err (resp_o.stat);
   else
     order = resp_o.ordernum;
-  xdr_free ((xdrproc_t) ytxdr_ypresp_order, (char *) &resp_o);
+  xdr_free ((xdrproc_t) xdr_ypresp_order, (char *) &resp_o);
 
   memset (&resp_m, '\0', sizeof (resp_m));
-  res2 =  clnt_call (client, YPPROC_MASTER, (xdrproc_t) ytxdr_ypreq_nokey,
-		     (caddr_t) &req, (xdrproc_t) ytxdr_ypresp_master,
+  res2 =  clnt_call (client, YPPROC_MASTER, (xdrproc_t) xdr_ypreq_nokey,
+		     (caddr_t) &req, (xdrproc_t) xdr_ypresp_master,
 		     (caddr_t) &resp_m, RPCTIMEOUT);
-  if (res2 == 0 && resp_m.status != YP_TRUE)
-    res2 = ypprot_err (resp_m.status);
+  if (res2 == 0 && resp_m.stat != YP_TRUE)
+    res2 = ypprot_err (resp_m.stat);
   else
-    master = strdup (resp_m.master);
-  xdr_free ((xdrproc_t) ytxdr_ypresp_master, (char *) &resp_m);
+    master = strdup (resp_m.peer);
+  xdr_free ((xdrproc_t) xdr_ypresp_master, (char *) &resp_m);
 
 
   if (res1 && res2)

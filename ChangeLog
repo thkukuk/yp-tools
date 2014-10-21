@@ -1,3 +1,7 @@
+2014-10-21  Thorsten Kukuk  <kukuk@suse.de>
+
+	* lib/yp_master.c (yp_master): New file.
+
 2012-04-09  Thorsten Kukuk  <kukuk@suse.de>
 
 	* release version 2.14

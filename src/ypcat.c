@@ -1,4 +1,4 @@
-/* Copyright (C) 1998, 1999, 2001 Thorsten Kukuk
+/* Copyright (C) 1998, 1999, 2001, 2014 Thorsten Kukuk
    This file is part of the yp-tools.
    Author: Thorsten Kukuk <kukuk@suse.de>
 
@@ -20,14 +20,12 @@
 #include "config.h"
 #endif
 
-#ifdef HAVE_GETOPT_H
 #include <getopt.h>
-#else
-#include "lib/getopt.h"
-#endif
 #include <locale.h>
 #include <libintl.h>
-#include "lib/yp-tools.h"
+#include <stdio.h>
+#include <rpcsvc/yp.h>
+#include <rpcsvc/ypclnt.h>
 #include "lib/nicknames.h"
 #include "lib/yp_all_host.h"
 
@@ -45,7 +43,7 @@ print_version (void)
 Copyright (C) %s Thorsten Kukuk.\n\
 This is free software; see the source for copying conditions.  There is NO\n\
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\
-"), "1998, 1999, 2001");
+"), "2014");
   fprintf (stdout, _("Written by %s.\n"), "Thorsten Kukuk");
 }
 

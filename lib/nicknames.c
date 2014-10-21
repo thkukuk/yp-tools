@@ -16,8 +16,6 @@
    along with this program; if not, write to the Free Software Foundation,
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
-#define _GNU_SOURCE
-
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
@@ -30,7 +28,6 @@
 #include <string.h>
 #include <sys/types.h>
 
-#include "getline.h"
 #include "nicknames.h"
 
 #ifndef _
@@ -73,7 +70,7 @@ load_nicknames (void)
       ssize_t n;
       char *cp;
 
-      n = yp_getline (&line, &len, fp);
+      n = getline (&line, &len, fp);
       if (n < 0)
         break;
       ++i;
