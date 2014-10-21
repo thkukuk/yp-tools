@@ -1,8 +1,12 @@
 yp-tools NEWS -- history of user-visible changes.
 
-Copyright (C) 1998-2013 Thorsten Kukuk
+Copyright (C) 1998-2014 Thorsten Kukuk
 
 Please send bug reports, questions and suggestions to <kukuk@linux-nis.org>.
+
+Version 2.99.1
+* Port to TI-RPC
+* ypwhich and ypset use now IPv6 for communication
 
 Version 2.15
 * Update autoconf/automake
