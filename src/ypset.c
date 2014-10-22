@@ -104,7 +104,7 @@ bind_tohost (const char *hostname, char *domainname, char *new_server)
 
   memset (&ypsd, '\0', sizeof (ypsd));
 
-  if ((hp = gethostbyname (new_server)) != NULL)
+  if ((hp = gethostbyname2 (new_server, AF_INET)) != NULL)
     memcpy (&ypsd.ypsetdom_binding.ypbind_binding_addr, hp->h_addr_list[0],
 	    sizeof (ypsd.ypsetdom_binding.ypbind_binding_addr));
   else if (inet_aton (new_server, &server_addr) == 0)

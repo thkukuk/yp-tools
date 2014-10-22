@@ -1,0 +1,7 @@
+
+See the file COPYING for copying restrictions.
+
+This package contains ypcat, ypmatch, ypset, ypwhich, yppasswd,
+domainname, nisdomainname and ypdomainname. It is a complete
+rewrite of the old yp-tools 1.4.x package. It fixes a lot of bugs
+and problems with the old version.

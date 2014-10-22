@@ -12,9 +12,10 @@ AM_CFLAGS = @WARNFLAGS@
 noinst_HEADERS = nicknames.h yp_all_host.h
 
 libyptools_a_SOURCES = nicknames.c yp_xdr.c yp_all_host.c \
+	do_ypcall.c \
 	yperr_string.c ypbinderr_string.c yp_get_default_domain.c
 
 localedir = $(datadir)/locale
-AM_CPPFLAGS = @TIRPC_CFLAGS@ -DLOCALEDIR=\"$(localedir)\"
+AM_CPPFLAGS = -I. @TIRPC_CFLAGS@ -DLOCALEDIR=\"$(localedir)\"
 
 CLEANFILES = *~
