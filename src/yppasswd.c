@@ -44,16 +44,7 @@
 #include <fcntl.h>
 #include <rpcsvc/yp_prot.h>
 #include <rpcsvc/ypclnt.h>
-#ifdef HAVE_RPC_CLNT_SOC_H
-#include <rpc/clnt_soc.h>
-#endif
-
-#include "yppasswd.h"
-
-#if defined (__NetBSD__) || (defined(__GLIBC__) && (__GLIBC__ == 2 && __GLIBC_MINOR__ == 0))
-/* <rpc/rpc.h> is missing the prototype */
-int getrpcport(char *host, int prognum, int versnum, int proto);
-#endif
+#include <rpcsvc/yppasswd.h>
 
 #ifndef _
 #define _(String) gettext (String)

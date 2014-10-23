@@ -367,3 +367,152 @@ do_ypcall_tr (const char *domain, u_long prog, xdrproc_t xargs,
     status = ypprot_err (((struct ypresp_val *) resp)->status);
   return status;
 }
+
+/* XXX move into own C file */
+
+struct ypresp_all_data
+{
+  unsigned long status;
+  void *data;
+  int (*foreach) (int status, char *key, int keylen,
+                  char *val, int vallen, char *data);
+};
+
+static bool_t
+__xdr_ypresp_all (XDR *xdrs, struct ypresp_all_data *objp)
+{
+  while (1)
+    {
+      struct ypresp_all resp;
+
+      memset (&resp, '\0', sizeof (struct ypresp_all));
+      if (!xdr_ypresp_all (xdrs, &resp))
+        {
+          xdr_free ((xdrproc_t) xdr_ypresp_all, (char *) &resp);
+          objp->status = YP_YPERR;
+          return FALSE;
+        }
+      if (resp.more == 0)
+        {
+          xdr_free ((xdrproc_t) xdr_ypresp_all, (char *) &resp);
+          objp->status = YP_NOMORE;
+          return TRUE;
+        }
+
+      switch (resp.ypresp_all_u.val.status)
+        {
+        case YP_TRUE:
+          {
+            char key[resp.ypresp_all_u.val.keydat.keydat_len + 1];
+            char val[resp.ypresp_all_u.val.valdat.valdat_len + 1];
+            int keylen = resp.ypresp_all_u.val.keydat.keydat_len;
+            int vallen = resp.ypresp_all_u.val.valdat.valdat_len;
+
+            /* We are not allowed to modify the key and val data.
+               But we are allowed to add data behind the buffer,
+               if we don't modify the length. So add an extra NUL
+               character to avoid trouble with broken code. */
+            objp->status = YP_TRUE;
+	    memcpy (key, resp.ypresp_all_u.val.keydat.keydat_val,
+		    keylen);
+	    key[keylen] = '\0';
+	    memcpy (val, resp.ypresp_all_u.val.valdat.valdat_val,
+		    vallen);
+	    val[vallen] = '\0';
+
+            xdr_free ((xdrproc_t) xdr_ypresp_all, (char *) &resp);
+            if ((*objp->foreach) (objp->status, key, keylen,
+                                  val, vallen, objp->data))
+              return TRUE;
+          }
+          break;
+        default:
+          objp->status = resp.ypresp_all_u.val.status;
+          xdr_free ((xdrproc_t) xdr_ypresp_all, (char *) &resp);
+          /* Sun says we don't need to make this call, but must return
+             immediately. Since Solaris makes this call, we will call
+             the callback function, too. */
+          (*objp->foreach) (objp->status, NULL, 0, NULL, 0, objp->data);
+          return TRUE;
+        }
+    }
+}
+
+
+int
+yp_all (const char *indomain, const char *inmap,
+        const struct ypall_callback *incallback)
+{
+  struct ypreq_nokey req;
+  dom_binding *ydb = NULL;
+  int try, res;
+  enum clnt_stat result;
+  struct sockaddr_in clnt_sin;
+  CLIENT *clnt;
+  struct ypresp_all_data data;
+  int clnt_sock;
+  int saved_errno = errno;
+
+  if (indomain == NULL || indomain[0] == '\0'
+      || inmap == NULL || inmap[0] == '\0')
+    return YPERR_BADARGS;
+
+  try = 0;
+  res = YPERR_YPERR;
+
+  while (try < MAXTRIES && res != YPERR_SUCCESS)
+    {
+      if (__yp_bind (indomain, &ydb) != 0)
+        {
+	  errno = saved_errno;
+          return YPERR_DOMAIN;
+        }
+
+      clnt_sock = RPC_ANYSOCK;
+      clnt_sin = ydb->dom_server_addr;
+      clnt_sin.sin_port = 0;
+
+      /* We don't need the UDP connection anymore.  */
+      __yp_unbind (ydb);
+      ydb = NULL;
+
+      clnt = clnttcp_create (&clnt_sin, YPPROG, YPVERS, &clnt_sock, 0, 0);
+      if (clnt == NULL)
+        {
+          errno = saved_errno;
+          return YPERR_PMAP;
+        }
+      req.domain = (char *) indomain;
+      req.map = (char *) inmap;
+
+      data.foreach = incallback->foreach;
+      data.data = (void *) incallback->data;
+
+      result = clnt_call (clnt, YPPROC_ALL, (xdrproc_t) xdr_ypreq_nokey,
+                          (caddr_t) &req, (xdrproc_t) __xdr_ypresp_all,
+                          (caddr_t) &data, RPCTIMEOUT);
+
+      if (result != RPC_SUCCESS)
+        {
+          /* Print the error message only on the last try.  */
+          if (try == MAXTRIES - 1)
+            clnt_perror (clnt, "yp_all: clnt_call");
+          res = YPERR_RPC;
+        }
+      else
+        res = YPERR_SUCCESS;
+
+      clnt_destroy (clnt);
+
+      if (res == YPERR_SUCCESS && data.status != YP_NOMORE)
+        {
+	  errno = saved_errno;
+          return ypprot_err (data.status);
+        }
+      ++try;
+    }
+
+  errno = saved_errno;
+
+  return res;
+}

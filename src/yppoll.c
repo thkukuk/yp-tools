@@ -29,8 +29,8 @@
 #include <libintl.h>
 #include <rpc/rpc.h>
 #include <rpc/pmap_clnt.h>
-#include <rpcsvc/yp.h>
 #include <rpcsvc/ypclnt.h>
+#include <rpcsvc/yp_prot.h>
 
 #ifndef _
 #define _(String) gettext (String)
@@ -46,7 +46,7 @@ print_version (void)
 Copyright (C) %s Thorsten Kukuk.\n\
 This is free software; see the source for copying conditions.  There is NO\n\
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\
-"), "1998");
+"), "2014");
   /* fprintf (stdout, _("Written by %s.\n"), "Thorsten Kukuk"); */
 }
 
@@ -87,10 +87,8 @@ int
 main (int argc, char **argv)
 {
   static struct timeval RPCTIMEOUT = {25, 0};
-  static struct timeval UDPTIMEOUT = {5, 0};
   char *hostname = NULL, *domainname = NULL, *master = NULL;
-  struct sockaddr_in clnt_saddr;
-  int clnt_sock, result;
+  int result;
   time_t order;
   CLIENT *client;
   bool_t clnt_res;
@@ -163,9 +161,11 @@ main (int argc, char **argv)
 	}
     }
 
+
+#if 0
   if (hostname == NULL)
     {
-      struct ypbind_resp ypbr;
+      struct ypbind2_resp ypbr;
       struct hostent *hent;
 
       memset (&clnt_saddr, '\0', sizeof clnt_saddr);
@@ -183,7 +183,7 @@ main (int argc, char **argv)
 	}
       if (clnt_call (client, YPBINDPROC_DOMAIN,
 		     (xdrproc_t) xdr_domainname, (caddr_t) &domainname,
-		     (xdrproc_t) xdr_ypbind_resp,
+		     (xdrproc_t) xdr_ypbind2_resp,
 		     (caddr_t) &ypbr, RPCTIMEOUT) != RPC_SUCCESS)
 	{
 	  clnt_perror (client, _("Couldn't get NIS server"));
@@ -198,7 +198,7 @@ main (int argc, char **argv)
 	{
 	  fputs (_("Couldn't get NIS server"), stderr);
 	  fputs (": ", stderr);
-	  fputs (ypbinderr_string (ypbr.ypbind_resp_u.ypbind_error),
+	  fputs (ypbinderr_string (ypbr.ypbind_respbody.ypbind_error),
 		 stderr);
 	  fputs ("\n", stderr);
 
@@ -207,10 +207,10 @@ main (int argc, char **argv)
       memset (&clnt_saddr, '\0', sizeof (clnt_saddr));
       clnt_saddr.sin_family = AF_INET;
       memcpy (&clnt_saddr.sin_port,
-	      &ypbr.ypbind_resp_u.ypbind_bindinfo.ypbind_binding_port,
+	      &ypbr.ypbind_respbody.ypbind_bindinfo.ypbind_binding_port,
 	      sizeof (clnt_saddr.sin_port));
       memcpy (&clnt_saddr.sin_addr.s_addr,
-	      &ypbr.ypbind_resp_u.ypbind_bindinfo.ypbind_binding_addr,
+	      &ypbr.ypbind_respbody.ypbind_bindinfo.ypbind_binding_addr,
 	      sizeof (clnt_saddr.sin_addr.s_addr));
 
       hent = gethostbyaddr ((char *)&clnt_saddr.sin_addr.s_addr,
@@ -264,6 +264,12 @@ main (int argc, char **argv)
       fprintf (stderr, _("Can't create connection to %s.\n"), hostname ? hostname : "unknown");
       return 1;
     }
+#endif
+
+  if (!hostname)
+    hostname = "localhost"; /* XXX Move ypwhich code into seperate function */
+
+  client = clnt_create (hostname, YPPROG, YPVERS, "udp");
 
   result = clnt_call (client, YPPROC_DOMAIN, (xdrproc_t) xdr_domainname,
 		      (caddr_t) &domainname,  (xdrproc_t) xdr_bool,
@@ -289,8 +295,8 @@ main (int argc, char **argv)
   res1 = clnt_call (client, YPPROC_ORDER, (xdrproc_t) xdr_ypreq_nokey,
 		    (caddr_t) &req, (xdrproc_t) xdr_ypresp_order,
 		    (caddr_t) &resp_o, RPCTIMEOUT);
-  if (res1 == 0 && resp_o.stat != YP_TRUE)
-    res1 = ypprot_err (resp_o.stat);
+  if (res1 == 0 && resp_o.status != YP_TRUE)
+    res1 = ypprot_err (resp_o.status);
   else
     order = resp_o.ordernum;
   xdr_free ((xdrproc_t) xdr_ypresp_order, (char *) &resp_o);
@@ -299,10 +305,10 @@ main (int argc, char **argv)
   res2 =  clnt_call (client, YPPROC_MASTER, (xdrproc_t) xdr_ypreq_nokey,
 		     (caddr_t) &req, (xdrproc_t) xdr_ypresp_master,
 		     (caddr_t) &resp_m, RPCTIMEOUT);
-  if (res2 == 0 && resp_m.stat != YP_TRUE)
-    res2 = ypprot_err (resp_m.stat);
+  if (res2 == 0 && resp_m.status != YP_TRUE)
+    res2 = ypprot_err (resp_m.status);
   else
-    master = strdup (resp_m.peer);
+    master = strdup (resp_m.master);
   xdr_free ((xdrproc_t) xdr_ypresp_master, (char *) &resp_m);
 
 

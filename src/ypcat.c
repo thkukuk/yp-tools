@@ -24,8 +24,8 @@
 #include <locale.h>
 #include <libintl.h>
 #include <stdio.h>
-#include <rpcsvc/yp.h>
 #include <rpcsvc/ypclnt.h>
+#include <rpcsvc/yp_prot.h>
 #include "lib/nicknames.h"
 #include "lib/yp_all_host.h"
 

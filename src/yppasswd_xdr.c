@@ -15,10 +15,11 @@
    along with this program; if not, write to the Free Software Foundation,
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
-#include "yppasswd.h"
+#include <pwd.h>
+#include <rpcsvc/yppasswd.h>
 
-static bool_t
-xdr_passwd (XDR *xdrs, xpasswd *objp)
+bool_t
+xdr_passwd (XDR *xdrs, struct passwd *objp)
 {
   if (!xdr_string (xdrs, &objp->pw_name, ~0))
     return FALSE;
