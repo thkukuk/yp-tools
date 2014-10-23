@@ -172,7 +172,7 @@ main (int argc, char **argv)
       clnt_saddr.sin_family = AF_INET;
       clnt_saddr.sin_addr.s_addr = htonl (INADDR_LOOPBACK);
       clnt_sock = RPC_ANYSOCK;
-      client = clnttcp_create (&clnt_saddr, YPBINDPROG, YPBINDVERS,
+      client = clnttcp_create (&clnt_saddr, YPBINDPROG, YPBINDVERS_2,
 			       &clnt_sock, 0, 0);
       if (client == NULL)
 	{

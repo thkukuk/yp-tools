@@ -5,10 +5,11 @@
 #
 
 AM_CFLAGS = @WARNFLAGS@
-LDADD = ../lib/libyptools.a @TIRPC_LIBS@ -lnsl
+LDADD = ../lib/libyptools.a @TIRPC_LIBS@
 
 localedir = $(datadir)/locale
-AM_CPPFLAGS = -I$(srcdir) -I$(top_srcdir) -DLOCALEDIR=\"$(localedir)\"
+AM_CPPFLAGS = -I$(top_srcdir)/lib -I$(srcdir) -I$(top_srcdir) \
+	-DLOCALEDIR=\"$(localedir)\"
 
 CLEANFILES = *~ domainname
 

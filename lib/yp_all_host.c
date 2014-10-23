@@ -1,4 +1,4 @@
-/* Copyright (C) 2001, 2003 Thorsten Kukuk
+/* Copyright (C) 2001, 2003, 2014 Thorsten Kukuk
    This file is part of the yp-tools.
    Author: Thorsten Kukuk <kukuk@suse.de>
 
@@ -26,9 +26,9 @@
 #include <string.h>
 #include <unistd.h>
 #include <rpc/rpc.h>
-#include <rpcsvc/yp.h>
-#include <rpcsvc/ypclnt.h>
 #include <arpa/inet.h>
+#include <rpcsvc/ypclnt.h>
+#include <rpcsvc/yp_prot.h>
 #include "yp_all_host.h"
 
 static struct timeval RPCTIMEOUT = {10, 0};
@@ -58,23 +58,23 @@ __xdr_ypresp_all (XDR *xdrs, u_long *objp)
           return TRUE;
         }
 
-      switch (resp.ypresp_all_u.val.stat)
+      switch (resp.ypresp_all_u.val.status)
         {
         case YP_TRUE:
           {
-            char key[resp.ypresp_all_u.val.key.keydat_len + 1];
-            char val[resp.ypresp_all_u.val.val.valdat_len + 1];
-            int keylen = resp.ypresp_all_u.val.key.keydat_len;
-            int vallen = resp.ypresp_all_u.val.val.valdat_len;
+            char key[resp.ypresp_all_u.val.keydat.keydat_len + 1];
+            char val[resp.ypresp_all_u.val.valdat.valdat_len + 1];
+            int keylen = resp.ypresp_all_u.val.keydat.keydat_len;
+            int vallen = resp.ypresp_all_u.val.valdat.valdat_len;
 
             /* We are not allowed to modify the key and val data.
                But we are allowed to add data behind the buffer,
                if we don't modify the length. So add an extra NUL
                character to avoid trouble with broken code. */
             *objp = YP_TRUE;
-            memcpy (key, resp.ypresp_all_u.val.key.keydat_val, keylen);
+            memcpy (key, resp.ypresp_all_u.val.keydat.keydat_val, keylen);
             key[keylen] = '\0';
-            memcpy (val, resp.ypresp_all_u.val.val.valdat_val, vallen);
+            memcpy (val, resp.ypresp_all_u.val.valdat.valdat_val, vallen);
             val[vallen] = '\0';
             xdr_free ((xdrproc_t) xdr_ypresp_all, (char *) &resp);
             if ((*ypall_foreach) (*objp, key, keylen,
@@ -83,7 +83,7 @@ __xdr_ypresp_all (XDR *xdrs, u_long *objp)
           }
           break;
         default:
-          *objp = resp.ypresp_all_u.val.stat;
+          *objp = resp.ypresp_all_u.val.status;
           xdr_free ((xdrproc_t) xdr_ypresp_all, (char *) &resp);
           /* Sun says we don't need to make this call, but must return
              immediatly. Since Solaris makes this call, we will call

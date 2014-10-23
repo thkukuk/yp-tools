@@ -122,7 +122,7 @@ bind_tohost (const char *hostname, char *domainname, char *new_server)
 	  sizeof (ypsd.ypsetdom_binding.ypbind_binding_port));
   ypsd.ypsetdom_vers = YPVERS;
 
-  client = clnt_create (hostname, YPBINDPROG, YPBINDVERS, "udp");
+  client = clnt_create (hostname, YPBINDPROG, YPBINDVERS_2, "udp");
   if (client == NULL)
     {
       fprintf (stderr, _("can't yp_bind: Reason: %s\n"),

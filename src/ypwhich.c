@@ -30,8 +30,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <string.h>
-#include <rpcsvc/yp.h>
-#include <rpcsvc/ypclnt.h>
+#include <rpcsvc/yp_prot.h>
 #include "lib/nicknames.h"
 
 /* from ypbind-mt/ypbind.h */
@@ -100,7 +99,7 @@ print_bindhost (char *hostname, char *domain, int vers)
 {
   int ret;
   struct timeval tv;
-  struct ypbind_resp yp_r;
+  struct ypbind2_resp yp2_r;
   CLIENT *client;
 
   client = clnt_create(hostname, YPBINDPROG, vers, "udp");
@@ -112,23 +111,23 @@ print_bindhost (char *hostname, char *domain, int vers)
       fprintf(stderr, "PROG: %i\tVERS: %i\tNET: %s\n",
               YPBINDPROG, vers, "upd");
       fprintf(stderr, "clnt_stat: %d\n", rpc_createerr.cf_stat);
-      fprintf(stderr, "re_errno: %d\n", rpc_createerr.cf_error.re_errno);      
+      fprintf(stderr, "re_errno: %d\n", rpc_createerr.cf_error.re_errno);
 #endif
       return 1;
-    }  
-  
+    }
+
   tv.tv_sec = 15;
   tv.tv_usec = 0;
 
   if (vers == 1)
     ret = clnt_call (client, YPBINDPROC_OLDDOMAIN,
 		     (xdrproc_t) xdr_domainname,
-		     (caddr_t) &domain, (xdrproc_t) xdr_ypbind_resp,
-		     (caddr_t) &yp_r, tv);
+		     (caddr_t) &domain, (xdrproc_t) xdr_ypbind2_resp,
+		     (caddr_t) &yp2_r, tv);
   else
     ret = clnt_call (client, YPBINDPROC_DOMAIN, (xdrproc_t) xdr_domainname,
-		     (caddr_t) &domain, (xdrproc_t) xdr_ypbind_resp,
-		     (caddr_t) &yp_r, tv);
+		     (caddr_t) &domain, (xdrproc_t) xdr_ypbind2_resp,
+		     (caddr_t) &yp2_r, tv);
 
   if (ret != RPC_SUCCESS)
     {
@@ -138,29 +137,27 @@ print_bindhost (char *hostname, char *domain, int vers)
     }
   else
     {
-      if (yp_r.ypbind_status != YPBIND_SUCC_VAL)
+      if (yp2_r.ypbind_status != YPBIND_SUCC_VAL)
         {
           fprintf (stderr, _("can't yp_bind: Reason: %s\n"),
-                   ypbinderr_string (yp_r.ypbind_resp_u.ypbind_error));
+                   ypbinderr_string (yp2_r.ypbind_respbody.ypbind_error));
           clnt_destroy (client);
           return 1;
         }
     }
   clnt_destroy (client);
-  
+
   struct sockaddr_in sa;
   char host[NI_MAXHOST];
   sa.sin_family = AF_INET;
-  memcpy (&sa.sin_addr,
-	  yp_r.ypbind_resp_u.ypbind_bindinfo.ypbind_binding_addr, 
-	  sizeof (yp_r.ypbind_resp_u.ypbind_bindinfo.ypbind_binding_addr));
+  sa.sin_addr =  yp2_r.ypbind_respbody.ypbind_bindinfo.ypbind_binding_addr;
 
-  if (getnameinfo((struct sockaddr *)&sa, sizeof sa, 
+  if (getnameinfo((struct sockaddr *)&sa, sizeof sa,
 		  host, sizeof host, NULL, 0, 0) == 0)
     printf ("%s\n", host);
   else
     {
-      char straddr[INET6_ADDRSTRLEN];     
+      char straddr[INET6_ADDRSTRLEN];
       inet_ntop(sa.sin_family, &sa.sin_addr, straddr, sizeof(straddr));
       printf ("%s\n", straddr);
     }

@@ -18,41 +18,29 @@
 #include "config.h"
 #endif
 
-#include <locale.h>
-#include <libintl.h>
 #include <rpcsvc/ypclnt.h>
 #include <rpcsvc/yp_prot.h>
 
-#ifndef _
-#define _(String) gettext (String)
-#endif
+static const int8_t yp_2_yperr[] =
+  {
+#define YP2YPERR(yp, yperr)  [YP_##yp - YP_VERS] = YPERR_##yperr
+    YP2YPERR (TRUE, SUCCESS),
+    YP2YPERR (NOMORE, NOMORE),
+    YP2YPERR (FALSE, YPERR),
+    YP2YPERR (NOMAP, MAP),
+    YP2YPERR (NODOM, DOMAIN),
+    YP2YPERR (NOKEY, KEY),
+    YP2YPERR (BADOP, YPERR),
+    YP2YPERR (BADDB, BADDB),
+    YP2YPERR (YPERR, YPERR),
+    YP2YPERR (BADARGS, BADARGS),
+    YP2YPERR (VERS, VERS)
+  };
 
-#ifndef N_
-#define N_(String) String
-#endif
-
-
-const char *
-ypbinderr_string (const int error)
+int
+ypprot_err (const int code)
 {
-  const char *str;
-  switch (error)
-    {
-    case 0:
-      str = N_("Success");
-      break;
-    case YPBIND_ERR_ERR:
-      str = N_("Internal ypbind error");
-      break;
-    case YPBIND_ERR_NOSERV:
-      str = N_("Domain not bound");
-      break;
-    case YPBIND_ERR_RESC:
-      str = N_("System resource allocation failure");
-      break;
-    default:
-      str = N_("Unknown ypbind error");
-      break;
-    }
-  return _(str);
+  if (code < YP_VERS || code > YP_NOMORE)
+    return YPERR_YPERR;
+  return yp_2_yperr[code - YP_VERS];
 }

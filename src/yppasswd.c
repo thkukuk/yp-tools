@@ -619,33 +619,6 @@ main (int argc, char **argv)
 		     strerror (errno));
 	}
     }
-
-  if (l_flag)
-    {
-      struct stat st;
-      if (stat (CHSH_PROG, &st) == 0)
-	{
-	  printf (_("ypchsh is deprecated, use %s instead\n\n"),
-		  CHSH_PROG);
-	  if (execl (CHSH_PROG, "chsh", user, NULL) == -1)
-	    fprintf (stderr, _("Calling %s failed: %s\n"), CHSH_PROG,
-		     strerror (errno));
-	}
-    }
-
-  if (f_flag)
-    {
-      struct stat st;
-      if (stat (CHFN_PROG, &st) == 0)
-	{
-	  printf (_("ypchfn is deprecated, use %s instead\n\n"),
-		  CHFN_PROG);
-
-	  if (execl (CHFN_PROG, "chfn", user, NULL) == -1)
-	    fprintf (stderr, _("Calling %s failed: %s\n"), CHFN_PROG,
-		     strerror (errno));
-	}
-    }
 #endif
 
   if ((error = yp_get_default_domain (&domainname)) != 0)

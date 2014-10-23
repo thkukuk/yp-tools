@@ -29,10 +29,9 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <rpcsvc/yp.h>
+//#include <rpcsvc/yp.h>
+#include <rpcsvc/yp_prot.h>
 #include <rpcsvc/ypclnt.h>
-
-#define libnsl_hidden_def(x)
 
 /* The NIS v2 protocol suggests 1024 bytes as a maximum length of all fields.
    Current Linux systems don't use this limit. To remain compatible with
@@ -47,137 +46,117 @@ xdr_ypstat (XDR *xdrs, ypstat *objp)
 {
   return xdr_enum (xdrs, (enum_t *) objp);
 }
-libnsl_hidden_def (xdr_ypstat)
 
 bool_t
-xdr_ypxfrstat (XDR *xdrs, ypxfrstat *objp)
-{
-  return xdr_enum (xdrs, (enum_t *) objp);
-}
-libnsl_hidden_def (xdr_ypxfrstat)
-
-bool_t
-xdr_domainname (XDR *xdrs, domainname *objp)
+xdr_domainname (XDR *xdrs, char **objp)
 {
   return xdr_string (xdrs, objp, XDRMAXNAME);
 }
-libnsl_hidden_def (xdr_domainname)
 
-bool_t
-xdr_mapname (XDR *xdrs, mapname *objp)
-{
-  return xdr_string (xdrs, objp, XDRMAXNAME);
-}
-libnsl_hidden_def (xdr_mapname)
-
-bool_t
-xdr_peername (XDR *xdrs, peername *objp)
-{
-  return xdr_string (xdrs, objp, XDRMAXNAME);
-}
-libnsl_hidden_def (xdr_peername)
-
-bool_t
-xdr_keydat (XDR *xdrs, keydat *objp)
+static bool_t /* XXX */
+xdr_keydat (XDR *xdrs, keydat_t *objp)
 {
   return xdr_bytes (xdrs, (char **) &objp->keydat_val,
 		    (u_int *) &objp->keydat_len, XDRMAXRECORD);
 }
-libnsl_hidden_def (xdr_keydat)
 
-bool_t
-xdr_valdat (XDR *xdrs, valdat *objp)
+static bool_t /* XXX */
+xdr_valdat (XDR *xdrs, valdat_t *objp)
 {
   return xdr_bytes (xdrs, (char **) &objp->valdat_val,
 		    (u_int *) &objp->valdat_len, XDRMAXRECORD);
 }
-libnsl_hidden_def (xdr_valdat)
 
 bool_t
-xdr_ypmap_parms (XDR *xdrs, ypmap_parms *objp)
+xdr_ypmap_parms (XDR *xdrs, struct ypmap_parms *objp)
 {
   if (!xdr_domainname (xdrs, &objp->domain))
     return FALSE;
-  if (!xdr_mapname (xdrs, &objp->map))
+  if (!xdr_string (xdrs, &objp->map, XDRMAXNAME))
     return FALSE;
   if (!xdr_u_int (xdrs, &objp->ordernum))
     return FALSE;
-  return xdr_peername (xdrs, &objp->peer);
+  return xdr_string (xdrs, &objp->owner, XDRMAXNAME);
 }
-libnsl_hidden_def (xdr_ypmap_parms)
 
 bool_t
-xdr_ypreq_key (XDR *xdrs, ypreq_key *objp)
+xdr_ypreq_key (XDR *xdrs, struct ypreq_key *objp)
 {
   if (!xdr_domainname (xdrs, &objp->domain))
     return FALSE;
-  if (!xdr_mapname (xdrs, &objp->map))
+  if (!xdr_string (xdrs, &objp->map, XDRMAXNAME))
     return FALSE;
-  return xdr_keydat (xdrs, &objp->key);
+  return xdr_keydat (xdrs, &objp->keydat);
 }
-libnsl_hidden_def (xdr_ypreq_key)
 
 bool_t
-xdr_ypreq_nokey (XDR *xdrs, ypreq_nokey *objp)
+xdr_ypreq_nokey (XDR *xdrs, struct ypreq_nokey *objp)
 {
   if (!xdr_domainname (xdrs, &objp->domain))
     return FALSE;
-  return xdr_mapname (xdrs, &objp->map);
+  return xdr_string (xdrs, &objp->map, XDRMAXNAME);
 }
-libnsl_hidden_def (xdr_ypreq_nokey)
 
 bool_t
-xdr_ypreq_xfr (XDR *xdrs, ypreq_xfr *objp)
+xdr_ypreq_xfr (XDR *xdrs, struct ypreq_xfr *objp)
 {
   if (!xdr_ypmap_parms (xdrs, &objp->map_parms))
     return FALSE;
   if (!xdr_u_int (xdrs, &objp->transid))
     return FALSE;
-  if (!xdr_u_int (xdrs, &objp->prog))
+  if (!xdr_u_int (xdrs, &objp->proto))
     return FALSE;
   return xdr_u_int (xdrs, &objp->port);
 }
 
 bool_t
-xdr_ypresp_val (XDR *xdrs, ypresp_val *objp)
+xdr_ypreq_newxfr (XDR *xdrs, struct ypreq_newxfr *objp)
 {
-  if (!xdr_ypstat (xdrs, &objp->stat))
+  if (!xdr_ypmap_parms (xdrs, &objp->map_parms))
     return FALSE;
-  return xdr_valdat (xdrs, &objp->val);
+  if (!xdr_u_int (xdrs, &objp->transid))
+    return FALSE;
+  if (!xdr_u_int (xdrs, &objp->proto))
+    return FALSE;
+  return xdr_string (xdrs, &objp->name, XDRMAXNAME);
 }
-libnsl_hidden_def (xdr_ypresp_val)
 
 bool_t
-xdr_ypresp_key_val (XDR *xdrs, ypresp_key_val *objp)
+xdr_ypresp_val (XDR *xdrs, struct ypresp_val *objp)
 {
-  if (!xdr_ypstat (xdrs, &objp->stat))
+  if (!xdr_ypstat (xdrs, &objp->status))
     return FALSE;
-  if (!xdr_valdat (xdrs, &objp->val))
-    return FALSE;
-  return xdr_keydat (xdrs, &objp->key);
+  return xdr_valdat (xdrs, &objp->valdat);
 }
-libnsl_hidden_def (xdr_ypresp_key_val)
 
 bool_t
-xdr_ypresp_master (XDR *xdrs, ypresp_master *objp)
+xdr_ypresp_key_val (XDR *xdrs, struct ypresp_key_val *objp)
 {
-  if (!xdr_ypstat (xdrs, &objp->stat))
+  if (!xdr_ypstat (xdrs, &objp->status))
     return FALSE;
-  return xdr_peername (xdrs, &objp->peer);
+  if (!xdr_valdat (xdrs, &objp->valdat))
+    return FALSE;
+  return xdr_keydat (xdrs, &objp->keydat);
 }
-libnsl_hidden_def (xdr_ypresp_master)
 
 bool_t
-xdr_ypresp_order (XDR *xdrs, ypresp_order *objp)
+xdr_ypresp_master (XDR *xdrs, struct ypresp_master *objp)
 {
-  if (!xdr_ypstat (xdrs, &objp->stat))
+  if (!xdr_ypstat (xdrs, &objp->status))
+    return FALSE;
+  return xdr_string (xdrs, &objp->master, XDRMAXNAME);
+}
+
+bool_t
+xdr_ypresp_order (XDR *xdrs, struct ypresp_order *objp)
+{
+  if (!xdr_ypstat (xdrs, &objp->status))
     return FALSE;
   return xdr_u_int (xdrs, &objp->ordernum);
 }
-libnsl_hidden_def (xdr_ypresp_order)
 
 bool_t
-xdr_ypresp_all (XDR *xdrs, ypresp_all *objp)
+xdr_ypresp_all (XDR *xdrs, struct ypresp_all *objp)
 {
   if (!xdr_bool (xdrs, &objp->more))
     return FALSE;
@@ -192,47 +171,39 @@ xdr_ypresp_all (XDR *xdrs, ypresp_all *objp)
     }
   return TRUE;
 }
-libnsl_hidden_def (xdr_ypresp_all)
 
-bool_t
-xdr_ypresp_xfr (XDR *xdrs, ypresp_xfr *objp)
+static bool_t
+xdr_ypmaplist (XDR *xdrs, struct ypmaplist *objp)
 {
-  if (!xdr_u_int (xdrs, &objp->transid))
-    return FALSE;
-  return xdr_ypxfrstat (xdrs, &objp->xfrstat);
-}
-
-bool_t
-xdr_ypmaplist (XDR *xdrs, ypmaplist *objp)
-{
-  if (!xdr_mapname (xdrs, &objp->map))
+  char **tp;
+  if (!xdr_string (xdrs, &objp->map, XDRMAXNAME))
     return FALSE;
   /* Prevent gcc warning about alias violation.  */
-  char **tp = (void *) &objp->next;
-  return xdr_pointer (xdrs, tp, sizeof (ypmaplist), (xdrproc_t) xdr_ypmaplist);
+  tp = (void *) &objp->next;
+  return xdr_pointer (xdrs, tp, sizeof (struct ypmaplist),
+		      (xdrproc_t) xdr_ypmaplist);
 }
-libnsl_hidden_def (xdr_ypmaplist)
 
 bool_t
-xdr_ypresp_maplist (XDR *xdrs, ypresp_maplist *objp)
+xdr_ypresp_maplist (XDR *xdrs, struct ypresp_maplist *objp)
 {
-  if (!xdr_ypstat (xdrs, &objp->stat))
+  char **tp;
+  if (!xdr_ypstat (xdrs, &objp->status))
     return FALSE;
   /* Prevent gcc warning about alias violation.  */
-  char **tp = (void *) &objp->maps;
-  return xdr_pointer (xdrs, tp, sizeof (ypmaplist), (xdrproc_t) xdr_ypmaplist);
+  tp = (void *) &objp->list;
+  return xdr_pointer (xdrs, tp, sizeof (struct ypmaplist),
+		      (xdrproc_t) xdr_ypmaplist);
 }
-libnsl_hidden_def (xdr_ypresp_maplist)
 
-bool_t
-xdr_yppush_status (XDR *xdrs, yppush_status *objp)
+static bool_t
+xdr_yppush_status (XDR *xdrs, enum yppush_status *objp)
 {
   return xdr_enum (xdrs, (enum_t *) objp);
 }
-libnsl_hidden_def (xdr_yppush_status)
 
 bool_t
-xdr_yppushresp_xfr (XDR *xdrs, yppushresp_xfr *objp)
+xdr_yppushresp_xfr (XDR *xdrs, struct yppushresp_xfr *objp)
 {
   if (!xdr_u_int (xdrs, &objp->transid))
     return FALSE;
@@ -240,43 +211,40 @@ xdr_yppushresp_xfr (XDR *xdrs, yppushresp_xfr *objp)
 }
 
 bool_t
-xdr_ypbind_resptype (XDR *xdrs, ypbind_resptype *objp)
+xdr_ypbind_resptype (XDR *xdrs, enum ypbind_resptype *objp)
 {
   return xdr_enum (xdrs, (enum_t *) objp);
 }
-libnsl_hidden_def (xdr_ypbind_resptype)
 
 bool_t
-xdr_ypbind_binding (XDR *xdrs, ypbind_binding *objp)
+xdr_ypbind2_binding (XDR *xdrs, struct ypbind2_binding *objp)
 {
-  if (!xdr_opaque (xdrs, objp->ypbind_binding_addr, 4))
+  if (!xdr_opaque (xdrs, (char *)&objp->ypbind_binding_addr, 4))
     return FALSE;
-  return xdr_opaque (xdrs, objp->ypbind_binding_port, 2);
+  return xdr_opaque (xdrs, (char *)&objp->ypbind_binding_port, 2);
 }
-libnsl_hidden_def (xdr_ypbind_binding)
 
 bool_t
-xdr_ypbind_resp (XDR *xdrs, ypbind_resp *objp)
+xdr_ypbind2_resp (XDR *xdrs, struct ypbind2_resp *objp)
 {
   if (!xdr_ypbind_resptype (xdrs, &objp->ypbind_status))
     return FALSE;
   switch (objp->ypbind_status)
     {
     case YPBIND_FAIL_VAL:
-      return xdr_u_int (xdrs, &objp->ypbind_resp_u.ypbind_error);
+      return xdr_u_int (xdrs, &objp->ypbind_respbody.ypbind_error);
     case YPBIND_SUCC_VAL:
-      return xdr_ypbind_binding (xdrs, &objp->ypbind_resp_u.ypbind_bindinfo);
+      return xdr_ypbind2_binding (xdrs, &objp->ypbind_respbody.ypbind_bindinfo);
     }
   return FALSE;
 }
-libnsl_hidden_def (xdr_ypbind_resp)
 
 bool_t
-xdr_ypbind_setdom (XDR *xdrs, ypbind_setdom *objp)
+xdr_ypbind2_setdom (XDR *xdrs, struct ypbind2_setdom *objp)
 {
   if (!xdr_domainname (xdrs, &objp->ypsetdom_domain))
     return FALSE;
-  if (!xdr_ypbind_binding (xdrs, &objp->ypsetdom_binding))
+  if (!xdr_ypbind2_binding (xdrs, &objp->ypsetdom_binding))
     return FALSE;
   return xdr_u_int (xdrs, &objp->ypsetdom_vers);
 }
