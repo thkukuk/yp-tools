@@ -30,8 +30,8 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <rpc/rpc.h>
-#include <rpcsvc/yp.h>
 #include <rpcsvc/ypclnt.h>
+#include <rpcsvc/yp_prot.h>
 
 #ifndef _
 #define _(String) gettext (String)
@@ -86,7 +86,7 @@ print_error (void)
 static int
 bind_tohost (const char *hostname, char *domainname, char *new_server)
 {
-  struct ypbind_setdom ypsd;
+  struct ypbind2_setdom ypsd;
   const struct timeval tv = {15, 0};
   struct hostent *hp;
   CLIENT *client;
@@ -133,7 +133,7 @@ bind_tohost (const char *hostname, char *domainname, char *new_server)
   client->cl_auth = authunix_create_default ();
 
   res = clnt_call (client, YPBINDPROC_SETDOM,
-		   (xdrproc_t) xdr_ypbind_setdom, (caddr_t) &ypsd,
+		   (xdrproc_t) xdr_ypbind2_setdom, (caddr_t) &ypsd,
 		   (xdrproc_t) xdr_void, NULL, tv);
   if (res)
     {

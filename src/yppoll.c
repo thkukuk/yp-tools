@@ -270,6 +270,20 @@ main (int argc, char **argv)
     hostname = "localhost"; /* XXX Move ypwhich code into seperate function */
 
   client = clnt_create (hostname, YPPROG, YPVERS, "udp");
+  if (client == NULL)
+    {
+      fprintf (stderr, "Cannot contact %s, no NIS server running or wrong protocol?\n",
+	       hostname);
+#if 0
+      /* if we failed, print out all appropriate error messages and exit */
+      fprintf(stderr, "Error calling clnt_create()\n");
+      fprintf(stderr, "PROG: %lu\tVERS: %lu\tNET: %s\n",
+              YPPROG, YPVERS, "udp");
+      fprintf(stderr, "clnt_stat: %d\n", rpc_createerr.cf_stat);
+      fprintf(stderr, "re_errno: %d\n", rpc_createerr.cf_error.re_errno);
+#endif
+      return 1;
+   }
 
   result = clnt_call (client, YPPROC_DOMAIN, (xdrproc_t) xdr_domainname,
 		      (caddr_t) &domainname,  (xdrproc_t) xdr_bool,
