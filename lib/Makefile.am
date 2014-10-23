@@ -13,6 +13,7 @@ noinst_HEADERS = nicknames.h yp_all_host.h
 
 libyptools_a_SOURCES = nicknames.c yp_xdr.c yp_all_host.c \
 	do_ypcall.c yp_master.c yp_maplist.c ypprot_err.c \
+	yp_match.c \
 	yperr_string.c ypbinderr_string.c yp_get_default_domain.c
 
 localedir = $(datadir)/locale

@@ -17,37 +17,51 @@
 #include "config.h"
 #endif
 
-#include <rpc/clnt.h>
 #include <rpcsvc/ypclnt.h>
 #include <rpcsvc/yp_prot.h>
 
 #include "internal.h"
 
 int
-yp_master (const char *indomain, const char *inmap, char **outname)
+yp_match (const char *indomain, const char *inmap, const char *inkey,
+          const int inkeylen, char **outval, int *outvallen)
 {
-  struct ypreq_nokey req;
-  struct ypresp_master resp;
+  ypreq_key req;
+  ypresp_val resp;
   enum clnt_stat result;
 
   if (indomain == NULL || indomain[0] == '\0' ||
-      inmap == NULL || inmap[0] == '\0')
+      inmap == NULL || inmap[0] == '\0' ||
+      inkey == NULL || inkey[0] == '\0' || inkeylen <= 0)
     return YPERR_BADARGS;
 
   req.domain = (char *) indomain;
   req.map = (char *) inmap;
+  req.keydat.keydat_val = (char *) inkey;
+  req.keydat.keydat_len = inkeylen;
 
-  memset (&resp, '\0', sizeof (struct ypresp_master));
+  *outval = NULL;
+  *outvallen = 0;
+  memset (&resp, '\0', sizeof (resp));
 
-  result = do_ypcall_tr (indomain, YPPROC_MASTER, (xdrproc_t) xdr_ypreq_nokey,
-                         (caddr_t) &req, (xdrproc_t) xdr_ypresp_master,
+  result = do_ypcall_tr (indomain, YPPROC_MATCH, (xdrproc_t) xdr_ypreq_key,
+                         (caddr_t) &req, (xdrproc_t) xdr_ypresp_val,
                          (caddr_t) &resp);
 
   if (result != YPERR_SUCCESS)
     return result;
 
-  *outname = strdup (resp.master);
-  xdr_free ((xdrproc_t) xdr_ypresp_master, (char *) &resp);
+  *outvallen = resp.valdat.valdat_len;
+  *outval = malloc (*outvallen + 1);
+  int status = YPERR_RESRC;
+  if (*outval != NULL)
+    {
+      memcpy (*outval, resp.valdat.valdat_val, *outvallen);
+      (*outval)[*outvallen] = '\0';
+      status = YPERR_SUCCESS;
+    }
 
-  return *outname == NULL ? YPERR_YPERR : YPERR_SUCCESS;
+  xdr_free ((xdrproc_t) xdr_ypresp_val, (char *) &resp);
+
+  return status;
 }
