@@ -8,8 +8,6 @@ AC_PREFIX_DEFAULT(/usr)
 AC_SUBST(PACKAGE)
 AC_SUBST(VERSION)
 
-AC_GNU_SOURCE
-
 dnl Change libexec to lib/yp
 if test ${libexecdir} = '${exec_prefix}/libexec'
 then
@@ -54,6 +52,7 @@ AC_ARG_ENABLE(call-passwd,
 
 dnl Checks for programs.
 AC_PROG_CC
+AC_GNU_SOURCE
 AM_PROG_CC_C_O
 dnl If we're using gcc, we want warning flags
 dnl test -n "$GCC" && WARNFLAGS="-Wall"
@@ -64,6 +63,8 @@ AC_ISC_POSIX
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 AC_PROG_RANLIB
+AC_PROG_LIBTOOL
+LT_INIT
 
 if test "${YPPASSWD_IS_DEPRECATED}" = "1"; then
   AC_PATH_PROG([PASSWD_PROG], [passwd], [/usr/bin/passwd])
@@ -96,6 +97,7 @@ AM_GNU_GETTEXT_VERSION([0.19.2])
 AM_GNU_GETTEXT([external])
 
 AC_OUTPUT([Makefile lib/Makefile src/Makefile man/Makefile
-	   etc/Makefile po/Makefile.in man/domainname.8 man/nicknames.5
+	   etc/Makefile po/Makefile.in libnis.pc
+	   man/domainname.8 man/nicknames.5
 	   man/ypcat.1 man/ypmatch.1 man/yppasswd.1 man/yppoll.8
 	   man/ypset.8 man/yptest.8 man/ypwhich.1])

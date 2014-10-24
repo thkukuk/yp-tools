@@ -5,18 +5,32 @@
 #
 # Process this file with automake to produce Makefile.in.
 #
-noinst_LIBRARIES = libyptools.a
-
-AM_CFLAGS = @WARNFLAGS@
-
-noinst_HEADERS = nicknames.h yp_all_host.h
-
-libyptools_a_SOURCES = nicknames.c yp_xdr.c yp_all_host.c \
-	do_ypcall.c yp_master.c yp_maplist.c ypprot_err.c \
-	yp_match.c \
-	yperr_string.c ypbinderr_string.c yp_get_default_domain.c
-
-localedir = $(datadir)/locale
-AM_CPPFLAGS = -I. @TIRPC_CFLAGS@ -DLOCALEDIR=\"$(localedir)\"
 
 CLEANFILES = *~
+
+EXTRA_DIST = libnis.map
+
+localedir = $(datadir)/locale
+rpcsvcdir = $(includedir)/rpcsvc
+
+AM_CFLAGS = @WARNFLAGS@ -D_REENTRANT=1
+AM_CPPFLAGS = -I. @TIRPC_CFLAGS@ -DLOCALEDIR=\"$(localedir)\"
+
+rpcsvc_HEADERS = rpcsvc/ypclnt.h rpcsvc/yppasswd.x rpcsvc/ypupd.h \
+	rpcsvc/yppasswd.h rpcsvc/yp_prot.h rpcsvc/yp.x
+
+noinst_HEADERS = nicknames.h yp_all_host.h internal.h
+
+noinst_LIBRARIES = libyptools.a
+lib_LTLIBRARIES = libnis.la
+
+libnis_la_LDFLAGS = -version-info 1:0:0 \
+	-Wl,--version-script=$(srcdir)/libnis.map
+libnis_la_LIBADD = @TIRPC_LIBS@
+
+libyptools_a_SOURCES = nicknames.c yp_all_host.c
+
+libnis_la_SOURCES = yp_xdr.c \
+	do_ypcall.c yp_master.c yp_maplist.c ypprot_err.c \
+	yp_match.c taddr2host.c taddr2ipstr.c \
+	yperr_string.c ypbinderr_string.c yp_get_default_domain.c

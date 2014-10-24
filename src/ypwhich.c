@@ -30,6 +30,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <string.h>
+#include <rpc/rpc.h>
 #include <rpcsvc/yp_prot.h>
 #include "lib/nicknames.h"
 
@@ -58,7 +59,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\
 static void
 print_usage (FILE *stream)
 {
-  fputs (_("Usage: ypwhich [-d domain] [[-t] -m [mname]|[-Vn] hostname] | -x\n"),
+  fputs (_("Usage: ypwhich [-d domain] [[-t] -m [mname]|[-n]|[-Vn] hostname] | -x\n"),
 	 stream);
 }
 
@@ -72,8 +73,9 @@ print_help (void)
 	 stdout);
   fputs (_("  -m mname       Find the master NIS server for the map 'mname'\n"),
 	 stdout);
+  fputs (_("  -n             Don't convert addresses to names\n"), stdout);
   fputs (_("  -t             Inhibits map nickname translation\n"), stdout);
-  fputs (_("  -V n           Version of ypbind, V2 is default\n"), stdout);
+  fputs (_("  -V n           Version of ypbind, V3 is default\n"), stdout);
   fputs (_("  -x             Display the map nickname translation table\n"),
 	 stdout);
   fputs (_("  -?, --help     Give this help list\n"), stdout);
@@ -95,11 +97,10 @@ print_error (void)
 /* bind to a special host and print the name ypbind running on this host
    is bound to */
 static int
-print_bindhost (char *hostname, char *domain, int vers)
+print_bindhost (char *hostname, char *domain, int vers, int nflag)
 {
   int ret;
   struct timeval tv;
-  struct ypbind2_resp yp2_r;
   CLIENT *client;
 
   client = clnt_create(hostname, YPBINDPROG, vers, "udp");
@@ -119,47 +120,135 @@ print_bindhost (char *hostname, char *domain, int vers)
   tv.tv_sec = 15;
   tv.tv_usec = 0;
 
-  if (vers == 1)
-    ret = clnt_call (client, YPBINDPROC_OLDDOMAIN,
-		     (xdrproc_t) xdr_domainname,
-		     (caddr_t) &domain, (xdrproc_t) xdr_ypbind2_resp,
-		     (caddr_t) &yp2_r, tv);
-  else
-    ret = clnt_call (client, YPBINDPROC_DOMAIN, (xdrproc_t) xdr_domainname,
-		     (caddr_t) &domain, (xdrproc_t) xdr_ypbind2_resp,
-		     (caddr_t) &yp2_r, tv);
-
-  if (ret != RPC_SUCCESS)
+  if (vers < 3)
     {
-      fprintf (stderr, "ypwhich: %s\n", yperr_string (YPERR_YPBIND));
+      struct ypbind2_resp yp2_r;
+      struct sockaddr_in sa;
+      char host[NI_MAXHOST];
+
+      memset (&yp2_r, 0, sizeof (struct ypbind2_resp));
+
+      if (vers == 1)
+	ret = clnt_call (client, YPBINDPROC_OLDDOMAIN,
+			 (xdrproc_t) xdr_domainname,
+			 (caddr_t) &domain, (xdrproc_t) xdr_ypbind2_resp,
+			 (caddr_t) &yp2_r, tv);
+      else
+	ret = clnt_call (client, YPBINDPROC_DOMAIN, (xdrproc_t) xdr_domainname,
+			 (caddr_t) &domain, (xdrproc_t) xdr_ypbind2_resp,
+			 (caddr_t) &yp2_r, tv);
+
+      if (ret != RPC_SUCCESS)
+	{
+	  fprintf (stderr, "ypwhich: %s\n", yperr_string (YPERR_YPBIND));
+	  clnt_destroy (client);
+	  return 1;
+	}
+      else
+	{
+	  if (yp2_r.ypbind_status != YPBIND_SUCC_VAL ||
+	      /* that's an ugly hack, but ypbind of Solaris reports for V1 and V2
+		 YPBIND_SUCC_VAL if it is bound to a server with IPv6 address. */
+	      yp2_r.ypbind_respbody.ypbind_bindinfo.ypbind_binding_port == 0)
+	    {
+	      fprintf (stderr, _("Error from ypbind on '%s': %s\n"),
+		       hostname,
+		       ypbinderr_string (yp2_r.ypbind_respbody.ypbind_error));
+	      clnt_destroy (client);
+	      return 1;
+	    }
+	}
       clnt_destroy (client);
-      return 1;
-    }
-  else
-    {
-      if (yp2_r.ypbind_status != YPBIND_SUCC_VAL)
-        {
-          fprintf (stderr, _("can't yp_bind: Reason: %s\n"),
-                   ypbinderr_string (yp2_r.ypbind_respbody.ypbind_error));
-          clnt_destroy (client);
-          return 1;
-        }
-    }
-  clnt_destroy (client);
 
-  struct sockaddr_in sa;
-  char host[NI_MAXHOST];
-  sa.sin_family = AF_INET;
-  sa.sin_addr =  yp2_r.ypbind_respbody.ypbind_bindinfo.ypbind_binding_addr;
+      sa.sin_family = AF_INET;
+      sa.sin_addr =  yp2_r.ypbind_respbody.ypbind_bindinfo.ypbind_binding_addr;
 
-  if (getnameinfo((struct sockaddr *)&sa, sizeof sa,
-		  host, sizeof host, NULL, 0, 0) == 0)
-    printf ("%s\n", host);
-  else
+      if (!nflag && getnameinfo((struct sockaddr *)&sa, sizeof sa,
+				host, sizeof host, NULL, 0, 0) == 0)
+	printf ("%s\n", host);
+      else
+	{
+	  char straddr[INET_ADDRSTRLEN];
+	  inet_ntop(sa.sin_family, &sa.sin_addr, straddr, sizeof(straddr));
+	  printf ("%s\n", straddr);
+	}
+    }
+  else /* YPBINDVERS >= 3 */
     {
-      char straddr[INET6_ADDRSTRLEN];
-      inet_ntop(sa.sin_family, &sa.sin_addr, straddr, sizeof(straddr));
-      printf ("%s\n", straddr);
+      struct ypbind3_resp yp3_r;
+
+      memset (&yp3_r, 0, sizeof (struct ypbind3_resp));
+
+      ret = clnt_call (client, YPBINDPROC_DOMAIN, (xdrproc_t) xdr_domainname,
+		       (caddr_t) &domain, (xdrproc_t) xdr_ypbind3_resp,
+		       (caddr_t) &yp3_r, tv);
+
+      if (ret != RPC_SUCCESS)
+	{
+	  fprintf (stderr, "ypwhich: %s\n", yperr_string (YPERR_YPBIND));
+	  clnt_destroy (client);
+	  return 1;
+	}
+      else
+	{
+	  if (yp3_r.ypbind_status != YPBIND_SUCC_VAL)
+	    {
+	      fprintf (stderr, _("Error from ypbind on '%s': %s\n"),
+				 hostname,
+				 ypbinderr_string (yp3_r.ypbind_respbody.ypbind_error));
+	      clnt_destroy (client);
+	      return 1;
+	    }
+	}
+      clnt_destroy (client);
+
+      if (yp3_r.ypbind3_servername)
+	printf ("%s\n", yp3_r.ypbind3_servername);
+      else if (yp3_r.ypbind3_nconf && yp3_r.ypbind3_svcaddr)
+	{
+	  if (nflag)
+	    {
+	      char namebuf6[INET6_ADDRSTRLEN];
+
+	      printf ("%s\n", taddr2ipstr (yp3_r.ypbind3_nconf,
+					   yp3_r.ypbind3_svcaddr,
+					   namebuf6, sizeof namebuf6));
+	    }
+	  else
+	    {
+	      char hostbuf[NI_MAXHOST];
+	      const char *host;
+
+	      host = taddr2host (yp3_r.ypbind3_nconf, yp3_r.ypbind3_svcaddr,
+				 hostbuf, sizeof hostbuf);
+
+	      if (host)
+		printf ("%s\n", host);
+	      else
+		{
+		  fprintf (stderr, _("ERROR: taddr2host failed!\n"));
+		  return 1;
+		}
+	    }
+	}
+      else
+	{
+	  fprintf (stderr, _("Error: no server information gotten from ypbind on '%s'\n"),
+		   hostname);
+	  return 1;
+	}
+
+#if 0 /* Dump struct for debugging */
+      if (yp3_r.ypbind3_nconf && yp3_r.ypbind3_svcaddr)
+	printf ("ypbind_netbuf: %s\n", taddr2uaddr (yp3_r.ypbind3_nconf,
+						    yp3_r.ypbind3_svcaddr));
+      if (yp3_r.ypbind3_servername)
+	printf ("ypbind_servername: %s\n", yp3_r.ypbind3_servername);
+      else
+	printf ("ypbind_servername: NULL\n");
+      printf ("ypbind_hi_vers: %u\n", (u_int32_t)yp3_r.ypbind3_hi_vers);
+      printf ("ypbind_lo_vers: %u\n", (u_int32_t)yp3_r.ypbind3_lo_vers);
+#endif
     }
   return 0;
 }
@@ -168,9 +257,9 @@ print_bindhost (char *hostname, char *domain, int vers)
 int
 main (int argc, char **argv)
 {
-  int dflag = 0, mflag = 0, tflag = 0, Vflag = 0, xflag = 0, hflag = 0;
+  int dflag = 0, mflag = 0, tflag = 0, Vflag = 0, xflag = 0, hflag = 0, nflag=0;
   char *hostname = NULL, *domainname = NULL, *mname = NULL;
-  int ypbind_version = 2;
+  int ypbind_version = 3;
 
   setlocale (LC_MESSAGES, "");
   setlocale (LC_CTYPE, "");
@@ -189,7 +278,7 @@ main (int argc, char **argv)
         {NULL, 0, NULL, '\0'}
       };
 
-      c = getopt_long (argc, argv, "d:mtV:x?", long_options, &option_index);
+      c = getopt_long (argc, argv, "d:mntV:x?", long_options, &option_index);
       if (c == (-1))
         break;
       switch (c)
@@ -201,13 +290,16 @@ main (int argc, char **argv)
 	case 'm':
 	  mflag = 1;
 	  break;
+	case 'n':
+	  nflag = 1;
+	  break;
 	case 't':
 	  tflag = 1;
 	  break;
 	case 'V':
 	  Vflag = 1;
 	  ypbind_version = atoi (optarg);
-	  if (ypbind_version < 1 || ypbind_version > 2)
+	  if (ypbind_version < 1 || ypbind_version > 3)
 	    {
 	      print_error ();
 	      return 1;
@@ -251,7 +343,7 @@ main (int argc, char **argv)
     }
 
 
-  if ((xflag && (dflag || mflag || tflag || Vflag || hflag)) ||
+  if ((xflag && (dflag || mflag || nflag || tflag || Vflag || hflag)) ||
       ((tflag || mflag) && (Vflag || hflag)) || (tflag && !mflag))
     {
       print_error ();
@@ -348,14 +440,14 @@ main (int argc, char **argv)
 	{
 	  if (hflag)
 	    {
-	      if (print_bindhost (hostname, domainname, ypbind_version))
+	      if (print_bindhost (hostname, domainname, ypbind_version, nflag))
 		return 1;
 	    }
 	  else
 	    {
 	      hostname = "localhost";
 
-	      if (print_bindhost (hostname, domainname, ypbind_version))
+	      if (print_bindhost (hostname, domainname, ypbind_version, nflag))
 		return 1;
 	    }
 	}

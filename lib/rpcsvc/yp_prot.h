@@ -220,7 +220,7 @@ typedef struct ypresp_maplist ypresp_maplist;
 #define YPPROC_MASTER	9
 #define YPPROC_ORDER	10
 #define YPPROC_MAPLIST	11
-#define	YPPROC_NEWXFR	12
+#define YPPROC_NEWXFR	12
 
 /*
  *		Protocol between clients and NIS binder servers
@@ -240,7 +240,7 @@ typedef struct ypresp_maplist ypresp_maplist;
 /* Program and version symbols, magic numbers */
 
 #define YPBINDPROG		100007
-#define YPBINDVERS              3
+#define YPBINDVERS		3
 #define YPBINDVERS_2		2
 #define YPBINDVERS_1		1
 
@@ -256,6 +256,7 @@ typedef struct ypresp_maplist ypresp_maplist;
  */
 
 enum ypreqtype {YPREQ_KEY = 1, YPREQ_NOKEY = 2, YPREQ_MAP_PARMS = 3};
+
 struct yprequest {
   enum ypreqtype yp_reqtype;
   union {
@@ -266,6 +267,7 @@ struct yprequest {
 };
 
 enum ypresptype {YPRESP_VAL = 1, YPRESP_KEY_VAL = 2, YPRESP_MAP_PARMS = 3};
+
 struct ypresponse {
   enum ypresptype yp_resptype;
   union {
@@ -277,10 +279,12 @@ struct ypresponse {
 
 
 enum ypbind_resptype {YPBIND_SUCC_VAL = 1, YPBIND_FAIL_VAL = 2};
+
 struct ypbind2_binding {
   struct in_addr ypbind_binding_addr;	        /* In network order */
   unsigned short int ypbind_binding_port;	/* In network order */
 };
+typedef struct ypbind2_binding ypbind2_binding;
 
 struct ypbind2_resp {
   enum ypbind_resptype ypbind_status;
@@ -289,6 +293,49 @@ struct ypbind2_resp {
     struct ypbind2_binding ypbind_bindinfo;
   } ypbind_respbody;
 };
+typedef struct ypbind2_resp ypbind2_resp;
+
+struct ypbind2_setdom {
+  char *ypsetdom_domain;
+  struct ypbind2_binding ypsetdom_binding;
+  u_int ypsetdom_vers;
+};
+typedef struct ypbind2_setdom ypbind2_setdom;
+#define ypsetdom_addr ypsetdom_binding.ypbind_binding_addr
+#define ypsetdom_port ypsetdom_binding.ypbind_binding_port
+
+struct ypbind3_binding {
+  struct netconfig *ypbind_nconf;
+  struct netbuf *ypbind_svcaddr;
+  char *ypbind_servername;
+  /* that's the highest version number that the used
+     ypserv supports, normally YPVERS */
+  rpcvers_t ypbind_hi_vers;
+  /* the lowest version number that the used
+     ypserv supports, on Solaris 0 or YPVERS, too */
+  rpcvers_t ypbind_lo_vers;
+};
+typedef struct ypbind3_binding ypbind3_binding;
+
+struct ypbind3_resp {
+  enum ypbind_resptype ypbind_status;
+  union {
+    u_long ypbind_error;
+    struct ypbind3_binding *ypbind_bindinfo;
+  } ypbind_respbody;
+};
+typedef struct ypbind_resp ypbind_resp;
+#define ypbind3_nconf ypbind_respbody.ypbind_bindinfo->ypbind_nconf
+#define ypbind3_svcaddr ypbind_respbody.ypbind_bindinfo->ypbind_svcaddr
+#define ypbind3_servername ypbind_respbody.ypbind_bindinfo->ypbind_servername
+#define ypbind3_hi_vers ypbind_respbody.ypbind_bindinfo->ypbind_hi_vers
+#define ypbind3_lo_vers ypbind_respbody.ypbind_bindinfo->ypbind_lo_vers
+
+struct ypbind3_setdom {
+  char *ypsetdom_domain;
+  struct ypbind3_binding *ypsetdom_bindinfo;
+};
+ typedef struct ypbind3_setdom ypbind3_setdom;
 
 
 /* Detailed failure reason codes for response field ypbind_error*/
@@ -296,17 +343,7 @@ struct ypbind2_resp {
 #define YPBIND_ERR_ERR 1		/* Internal error */
 #define YPBIND_ERR_NOSERV 2		/* No bound server for passed domain */
 #define YPBIND_ERR_RESC 3		/* System resource allocation failure */
-
-/*
- * Request data structure for ypbind "Set domain" procedure.
- */
-struct ypbind2_setdom {
-  char *ypsetdom_domain;
-  struct ypbind2_binding ypsetdom_binding;
-  u_int ypsetdom_vers;
-};
-#define ypsetdom_addr ypsetdom_binding.ypbind_binding_addr
-#define ypsetdom_port ypsetdom_binding.ypbind_binding_port
+#define YPBIND_ERR_NODOMAIN 4	/* Domain doesn't exist */
 
 /*
  *		Protocol between clients (ypxfr, only) and yppush
@@ -374,25 +411,36 @@ struct ypresp_all {
   } ypresp_all_u;
 };
 
-extern bool_t xdr_ypreq_key (XDR *__xdrs, struct ypreq_key * __objp);
-extern bool_t xdr_ypreq_nokey (XDR *__xdrs, struct ypreq_nokey * __objp);
-extern bool_t xdr_ypreq_xfr (XDR *__xdrs, struct ypreq_xfr * __objp);
-extern bool_t xdr_ypreq_newxfr (XDR *__xdrs, struct ypreq_newxfr * __objp);
-extern bool_t xdr_ypresp_val (XDR *__xdrs, struct ypresp_val * __objp);
-extern bool_t xdr_ypresp_key_val (XDR *__xdrs, struct ypresp_key_val * __objp);
+extern bool_t xdr_domainname (XDR *__xdrs, char ** __objp);
+extern bool_t xdr_ypall (XDR *__xdrs, struct ypall_callback * __objp);
+extern bool_t xdr_ypbind2_binding (XDR *__xdrs, struct ypbind2_binding * __objp);
 extern bool_t xdr_ypbind2_resp (XDR *__xdrs, struct ypbind2_resp * __objp);
 extern bool_t xdr_ypbind2_setdom (XDR *__xdrs, struct ypbind2_setdom * __objp);
+extern bool_t xdr_ypbind3_binding (XDR *__xdrs, struct ypbind3_binding * __objp);
+extern bool_t xdr_ypbind3_resp (XDR *__xdrs, struct ypbind3_resp * __objp);
+extern bool_t xdr_ypbind3_setdom (XDR *__xdrs, struct ypbind3_setdom * __objp);
+extern bool_t xdr_ypbind_resptype (XDR *__xdrs, enum ypbind_resptype * __objp);
 extern bool_t xdr_ypmap_parms (XDR *__xdrs, struct ypmap_parms * __objp);
 extern bool_t xdr_yppushresp_xfr (XDR *__xdrs, struct yppushresp_xfr * __objp);
-extern bool_t xdr_ypresp_order (XDR *__xdrs, struct ypresp_order  * __objp);
-extern bool_t xdr_ypresp_master (XDR *__xdrs, struct ypresp_master * __objp);
-extern bool_t xdr_ypall (XDR *__xdrs, struct ypall_callback * __objp);
-extern bool_t xdr_ypresp_maplist (XDR *__xdrs, struct ypresp_maplist * __objp);
-extern bool_t xdr_ypbind2_binding (XDR *__xdrs, struct ypbind2_binding * __objp);
-extern bool_t xdr_ypbind_resptype (XDR *__xdrs, enum ypbind_resptype * __objp);
-extern bool_t xdr_ypstat (XDR *__xdrs, enum ypstat * __objp);
+extern bool_t xdr_ypreq_key (XDR *__xdrs, struct ypreq_key * __objp);
+extern bool_t xdr_ypreq_newxfr (XDR *__xdrs, struct ypreq_newxfr * __objp);
+extern bool_t xdr_ypreq_nokey (XDR *__xdrs, struct ypreq_nokey * __objp);
+extern bool_t xdr_ypreq_xfr (XDR *__xdrs, struct ypreq_xfr * __objp);
 extern bool_t xdr_ypresp_all (XDR *__xdrs, struct ypresp_all  * __objp);
-extern bool_t xdr_domainname (XDR *__xdrs, char ** __objp);
+extern bool_t xdr_ypresp_key_val (XDR *__xdrs, struct ypresp_key_val * __objp);
+extern bool_t xdr_ypresp_maplist (XDR *__xdrs, struct ypresp_maplist * __objp);
+extern bool_t xdr_ypresp_master (XDR *__xdrs, struct ypresp_master * __objp);
+extern bool_t xdr_ypresp_order (XDR *__xdrs, struct ypresp_order  * __objp);
+extern bool_t xdr_ypresp_val (XDR *__xdrs, struct ypresp_val * __objp);
+extern bool_t xdr_ypstat (XDR *__xdrs, enum ypstat * __objp);
+
+/* Not really for this, but missing better place: */
+extern const char *
+taddr2host (const struct netconfig *__nconf, const struct netbuf *__nbuf,
+	    char *__host, size_t __hostlen);
+extern const char *
+taddr2ipstr (const struct netconfig *__nconf, const struct netbuf *__nbuf,
+            char *__buf, size_t __buflen);
 
 #ifdef __cplusplus
 }

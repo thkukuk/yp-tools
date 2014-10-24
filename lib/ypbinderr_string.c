@@ -50,6 +50,9 @@ ypbinderr_string (const int error)
     case YPBIND_ERR_RESC:
       str = N_("System resource allocation failure");
       break;
+    case YPBIND_ERR_NODOMAIN:
+      str = N_("Domain doesn't exist");
+      break;
     default:
       str = N_("Unknown ypbind error");
       break;

@@ -4,9 +4,10 @@ Copyright (C) 1998-2014 Thorsten Kukuk
 
 Please send bug reports, questions and suggestions to <kukuk@linux-nis.org>.
 
-Version 2.99.1
+Version 2.99.2
 * Port to TI-RPC
-* ypwhich and ypset use now IPv6 for communication
+* ypwhich supports IPv6 and ypbind v3 protocol, which is now default
+* Add libnis library
 
 Version 2.15
 * Update autoconf/automake

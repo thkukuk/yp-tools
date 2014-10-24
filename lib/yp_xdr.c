@@ -29,7 +29,9 @@
  *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//#include <rpcsvc/yp.h>
+#include <netconfig.h>
+#include <rpc/types.h>
+#include <rpc/xdr.h>
 #include <rpcsvc/yp_prot.h>
 #include <rpcsvc/ypclnt.h>
 
@@ -247,6 +249,81 @@ xdr_ypbind2_setdom (XDR *xdrs, struct ypbind2_setdom *objp)
   if (!xdr_ypbind2_binding (xdrs, &objp->ypsetdom_binding))
     return FALSE;
   return xdr_u_int (xdrs, &objp->ypsetdom_vers);
+}
+
+static bool_t
+xdr_netconfig (XDR *xdrs, struct netconfig *objp)
+{
+  if (!xdr_string(xdrs, &objp->nc_netid, ~0))
+    return FALSE;
+  if (!xdr_u_int (xdrs, &objp->nc_semantics))
+    return FALSE;
+  if (!xdr_u_int (xdrs, &objp->nc_flag))
+    return FALSE;
+  if (!xdr_string (xdrs, &objp->nc_protofmly, ~0))
+    return FALSE;
+  if (!xdr_string (xdrs, &objp->nc_proto, ~0))
+    return FALSE;
+  if (!xdr_string(xdrs, &objp->nc_device, ~0))
+    return FALSE;
+  if (!xdr_array(xdrs, (char **)&objp->nc_lookups,
+		 (uint32_t *)&objp->nc_nlookups, 100, sizeof (char *),
+		 (xdrproc_t)xdr_wrapstring))
+    return FALSE;
+  return xdr_vector (xdrs, (char *)objp->nc_unused,
+		     8, sizeof (uint32_t), (xdrproc_t)xdr_u_int);
+}
+
+#undef xdr_rpcvers
+#define xdr_rpcvers(xdrs, versp) xdr_u_int32_t(xdrs, versp)
+
+bool_t
+xdr_ypbind3_binding (XDR *xdrs,  struct ypbind3_binding *objp)
+{
+  if (!xdr_pointer (xdrs, (char **)&objp->ypbind_nconf,
+		    sizeof (struct netconfig), (xdrproc_t) xdr_netconfig))
+    return FALSE;
+  if (!xdr_pointer(xdrs, (char **)&objp->ypbind_svcaddr,
+		   sizeof (struct netbuf), (xdrproc_t) xdr_netbuf))
+    return FALSE;
+  if (!xdr_string(xdrs, &objp->ypbind_servername, ~0))
+    return FALSE;
+  if (!xdr_rpcvers(xdrs, &objp->ypbind_hi_vers))
+    return FALSE;
+  return xdr_rpcvers(xdrs, &objp->ypbind_lo_vers);
+}
+
+
+bool_t
+xdr_ypbind3_resp (XDR *xdrs, struct ypbind3_resp *objp)
+{
+  if (!xdr_ypbind_resptype(xdrs, &objp->ypbind_status))
+    return FALSE;
+  switch (objp->ypbind_status)
+    {
+    case YPBIND_FAIL_VAL:
+      if (!xdr_u_int(xdrs, &objp->ypbind_respbody.ypbind_error))
+	return FALSE;
+      break;
+    case YPBIND_SUCC_VAL:
+      if (!xdr_pointer (xdrs,
+			(char **)&objp->ypbind_respbody.ypbind_bindinfo,
+			sizeof (struct ypbind3_binding), (xdrproc_t) xdr_ypbind3_binding))
+	return FALSE;
+      break;
+    default:
+      return FALSE;
+    }
+  return TRUE;
+}
+
+bool_t
+xdr_ypbind3_setdom (XDR *xdrs, ypbind3_setdom *objp)
+{
+  if (!xdr_string (xdrs, &objp->ypsetdom_domain, YPMAXDOMAIN))
+    return FALSE;
+  return xdr_pointer (xdrs, (char **)&objp->ypsetdom_bindinfo,
+		      sizeof (struct ypbind3_binding), (xdrproc_t) xdr_ypbind3_binding);
 }
 
 #if 0 /* XXX */

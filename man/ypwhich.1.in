@@ -1,5 +1,5 @@
 .\" -*- nroff -*-
-.\" Copyright (C) 1998, 1999, 2007, 2010 Thorsten Kukuk
+.\" Copyright (C) 1998, 1999, 2007, 2010, 2014 Thorsten Kukuk
 .\" This file is part of the yp-tools.
 .\" Author: Thorsten Kukuk <kukuk@linux-nis.org>
 .\"
@@ -78,13 +78,16 @@ is omitted,
 .B ypwhich
 will produce a list of available maps.
 .TP
+.B \-n
+Don't convert addresses to names.
+.TP
 .B \-x
 Display the map nickname translation table.
 .TP
 .B \-Vn
 Version of
 .BR ypbind (8),
-V2 is default.
+V3 is default. Use V2 for NIS clients not supporting IPv6.
 
 .SH FILES
 .TP

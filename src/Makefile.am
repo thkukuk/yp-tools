@@ -4,12 +4,13 @@
 # Author: Thorsten Kukuk <kukuk@thkukuk.de>
 #
 
-AM_CFLAGS = @WARNFLAGS@
-LDADD = ../lib/libyptools.a @TIRPC_LIBS@
-
 localedir = $(datadir)/locale
+
 AM_CPPFLAGS = -I$(top_srcdir)/lib -I$(srcdir) -I$(top_srcdir) \
 	-DLOCALEDIR=\"$(localedir)\"
+AM_CFLAGS = @WARNFLAGS@ @TIRPC_CFLAGS@
+LDADD = ../lib/libyptools.a ../lib/libnis.la
+
 
 CLEANFILES = *~ domainname
 
@@ -17,12 +18,11 @@ EXTRA_PROGRAMS = domainname yptest
 bin_PROGRAMS = ypwhich ypmatch ypcat yppasswd @DOMAINNAME@
 sbin_PROGRAMS = yppoll ypset
 
-yppasswd_SOURCES = yppasswd.c yppasswd_xdr.c yppasswd.h
+yppasswd_SOURCES = yppasswd.c yppasswd_xdr.c
 yppasswd_LDADD = ${LDADD} @LIBCRYPT@ @LIBCRACK@
 yppasswd_CFLAGS = -DPASSWD_PROG=\"${PASSWD_PROG}\" \
 	-DCHFN_PROG=\"${CHFN_PROG}\" -DCHSH_PROG=\"${CHSH_PROG}\"
-ypmatch_SOURCES = ypmatch.c 
-#ypclnt.c
+domainname_LDADD = ../lib/yp_get_default_domain.o ../lib/yperr_string.o
 
 install-exec-hook:
 	ln -f ${DESTDIR}${bindir}/yppasswd ${DESTDIR}${bindir}/ypchsh

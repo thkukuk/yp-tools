@@ -16,3 +16,6 @@ ltmain.sh
 compile
 missing
 depcomp
+libnis.pc
+*.tar.gz
+*.tar.bz2
