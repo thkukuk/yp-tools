@@ -1,3 +1,4 @@
+/* Modified and extended by Thorsten Kukuk <kukuk@thkukuk.de>, 2014 */
 /*
  * Copyright (c) 2010, Oracle America, Inc.
  *
@@ -262,14 +263,45 @@ xdr_ypbind2_setdom (XDR *xdrs, struct ypbind2_setdom *objp)
   return xdr_u_int (xdrs, &objp->ypsetdom_vers);
 }
 
+/* Same values in netconfig are u_long with TI-RPC on
+   Linux, but u_int on Solaris */
+static bool_t
+xdr_fake_u_int (XDR *xdrs, unsigned long *objp)
+{
+  switch (xdrs->x_op)
+    {
+    case XDR_DECODE:
+      {
+        uint32_t tmp;
+
+        if (!xdr_u_int (xdrs, &tmp))
+          return FALSE;
+	*objp = tmp;
+	return TRUE;
+      }
+    case XDR_ENCODE:
+      {
+	uint32_t tmp = *objp;
+
+	if (!xdr_u_int (xdrs, &tmp))
+          return FALSE;
+	return TRUE;
+      }
+    case XDR_FREE:
+      return TRUE;
+    }
+  return FALSE;
+}
+
 static bool_t
 xdr_netconfig (XDR *xdrs, struct netconfig *objp)
 {
   if (!xdr_string(xdrs, &objp->nc_netid, ~0))
     return FALSE;
-  if (!xdr_u_int (xdrs, &objp->nc_semantics))
+
+  if (!xdr_fake_u_int (xdrs, &objp->nc_semantics))
     return FALSE;
-  if (!xdr_u_int (xdrs, &objp->nc_flag))
+  if (!xdr_fake_u_int (xdrs, &objp->nc_flag))
     return FALSE;
   if (!xdr_string (xdrs, &objp->nc_protofmly, ~0))
     return FALSE;
@@ -313,7 +345,7 @@ xdr_ypbind3_resp (XDR *xdrs, struct ypbind3_resp *objp)
   switch (objp->ypbind_status)
     {
     case YPBIND_FAIL_VAL:
-      if (!xdr_u_int(xdrs, &objp->ypbind_respbody.ypbind_error))
+      if (!xdr_fake_u_int(xdrs, &objp->ypbind_respbody.ypbind_error))
 	return FALSE;
       break;
     case YPBIND_SUCC_VAL:

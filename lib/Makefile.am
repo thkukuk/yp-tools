@@ -13,7 +13,7 @@ EXTRA_DIST = libnis.map
 localedir = $(datadir)/locale
 rpcsvcdir = $(includedir)/rpcsvc
 
-AM_CFLAGS = @WARNFLAGS@ -D_REENTRANT=1
+AM_CFLAGS = @WARNFLAGS@ -D_REENTRANT=1 -fmessage-length=0 -O2 -Wall -D_FORTIFY_SOURCE=2 -fstack-protector -funwind-tables -fasynchronous-unwind-tables
 AM_CPPFLAGS = -I. @TIRPC_CFLAGS@ -DLOCALEDIR=\"$(localedir)\"
 
 rpcsvc_HEADERS = rpcsvc/ypclnt.h rpcsvc/yppasswd.x rpcsvc/ypupd.h \

@@ -9,7 +9,7 @@ localedir = $(datadir)/locale
 AM_CPPFLAGS = -I$(top_srcdir)/lib -I$(srcdir) -I$(top_srcdir) \
 	-DLOCALEDIR=\"$(localedir)\"
 AM_CFLAGS = @WARNFLAGS@ @TIRPC_CFLAGS@
-LDADD = ../lib/libyptools.a ../lib/libnis.la
+LDADD = ../lib/libnis.la
 
 
 CLEANFILES = *~ domainname

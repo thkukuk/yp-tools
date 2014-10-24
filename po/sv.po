@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yp-tools 2.9\n"
 "Report-Msgid-Bugs-To: kukuk@linux-nis.org\n"
-"POT-Creation-Date: 2014-10-24 19:00+0200\n"
+"POT-Creation-Date: 2014-10-24 23:13+0200\n"
 "PO-Revision-Date: 2006-11-12 17:34+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -155,12 +155,12 @@ msgid "  -x             Display the map nickname translation table\n"
 msgstr "  -x             Visa kartans översättningstabell för smeknamn\n"
 
 #: src/ypcat.c:207 src/ypmatch.c:171 src/yppasswd.c:617 src/yppoll.c:158
-#: src/ypset.c:217 src/ypwhich.c:369
+#: src/ypset.c:217 src/ypwhich.c:376
 #, c-format
 msgid "%s: can't get local yp domain: %s\n"
 msgstr "%s: kan inte få lokal yp-domän: %s\n"
 
-#: src/ypcat.c:230 src/ypmatch.c:203 src/ypwhich.c:397
+#: src/ypcat.c:230 src/ypmatch.c:203 src/ypwhich.c:404
 #, c-format
 msgid "No running ypbind\n"
 msgstr "Ingen körande ypbind\n"
@@ -800,37 +800,42 @@ msgstr "  -q             Var tyst, skriv inte ut meddelanden\n"
 msgid "  -V n           Version of ypbind, V3 is default\n"
 msgstr "  -V n           Version av ypbind, V2 är standard\n"
 
-#: src/ypwhich.c:154 src/ypwhich.c:201
+#: src/ypwhich.c:145 src/ypwhich.c:198
+#, fuzzy, c-format
+msgid "ypwhich: can't call ypbind on '%s'"
+msgstr "kan inte yp_bind: Anledning: %s\n"
+
+#: src/ypwhich.c:158 src/ypwhich.c:208
 #, c-format
 msgid "Error from ypbind on '%s': %s\n"
 msgstr ""
 
-#: src/ypwhich.c:235
+#: src/ypwhich.c:242
 #, c-format
 msgid "ERROR: taddr2host failed!\n"
 msgstr ""
 
-#: src/ypwhich.c:242
+#: src/ypwhich.c:249
 #, c-format
 msgid "Error: no server information gotten from ypbind on '%s'\n"
 msgstr ""
 
-#: src/ypwhich.c:401
+#: src/ypwhich.c:408
 #, c-format
 msgid "Can't find master for map \"%s\". Reason: %s\n"
 msgstr "Kan inte hitta master för kartan \"%s\". Anledning: %s\n"
 
-#: src/ypwhich.c:425
+#: src/ypwhich.c:432
 #, c-format
 msgid "Can't find master for map %s. Reason: %s\n"
 msgstr "Kan inte hitta master för kartan %s. Anledning: %s\n"
 
-#: src/ypwhich.c:435
+#: src/ypwhich.c:442
 #, c-format
 msgid "No running ypbind.\n"
 msgstr "Ingen körande ypbind.\n"
 
-#: src/ypwhich.c:439
+#: src/ypwhich.c:446
 #, c-format
 msgid "Can't get map list for domain %s. Reason: %s\n"
 msgstr "Kan inte få kartlista för domänen %s. Anledning: %s\n"

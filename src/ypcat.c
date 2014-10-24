@@ -219,7 +219,7 @@ main (int argc, char **argv)
       ypcb.data = NULL;
 
       if (hflag)
-	res = yp_all_host (hostname, domainname, map, &ypcb);
+	res = yp_all_host (domainname, map, &ypcb, hostname);
       else
 	res = yp_all (domainname, map, &ypcb);
       switch (res)

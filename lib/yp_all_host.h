@@ -18,8 +18,8 @@
 #ifndef __YP_ALL_HOST_H__
 #define __YP_ALL_HOST_H__
 
-extern int yp_all_host (const char *hostname, const char *indomain,
-			const char *inmap,
-			const struct ypall_callback *incallback);
+extern int yp_all_host (const char *indomain, const char *inmap,
+			const struct ypall_callback *incallback,
+			const char *hostname);
 
 #endif /* __YP_ALL_HOST_H__ */
