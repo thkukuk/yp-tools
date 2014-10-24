@@ -185,7 +185,12 @@ print_bindhost (char *hostname, char *domain, int vers, int nflag)
 
       if (ret != RPC_SUCCESS)
 	{
-	  fprintf (stderr, "ypwhich: %s\n", yperr_string (YPERR_YPBIND));
+	  /* XXX if we have a RPC version mismatch, try version 2 */
+	  if (ret == RPC_PROGVERSMISMATCH)
+	    return print_bindhost (hostname, domain, 2, nflag);
+
+	  fprintf (stderr, "ypwhich: %s (%i)\n",
+		   yperr_string (YPERR_YPBIND), ret);
 	  clnt_destroy (client);
 	  return 1;
 	}
@@ -438,18 +443,11 @@ main (int argc, char **argv)
 	}
       else
 	{
-	  if (hflag)
-	    {
-	      if (print_bindhost (hostname, domainname, ypbind_version, nflag))
-		return 1;
-	    }
-	  else
-	    {
-	      hostname = "localhost";
+	  if (!hflag)
+	    hostname = "localhost";
 
-	      if (print_bindhost (hostname, domainname, ypbind_version, nflag))
-		return 1;
-	    }
+	  if (print_bindhost (hostname, domainname, ypbind_version, nflag))
+	    return 1;
 	}
     }
 

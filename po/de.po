@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yp-tools 2.5\n"
 "Report-Msgid-Bugs-To: kukuk@linux-nis.org\n"
-"POT-Creation-Date: 2014-10-24 14:35+0200\n"
+"POT-Creation-Date: 2014-10-24 16:46+0200\n"
 "PO-Revision-Date: 2004-06-21 14:24+02:00\n"
 "Last-Translator: Thorsten Kukuk <kukuk@suse.de>\n"
 "Language-Team: No Language-Team in the moment\n"
@@ -155,12 +155,12 @@ msgstr "  -x             Zeige die Nickname Übersetzungstabelle an\n"
 
 # , c-format
 #: src/ypcat.c:207 src/ypmatch.c:171 src/yppasswd.c:617 src/yppoll.c:158
-#: src/ypset.c:217 src/ypwhich.c:363
+#: src/ypset.c:217 src/ypwhich.c:368
 #, c-format
 msgid "%s: can't get local yp domain: %s\n"
 msgstr "%s: Kann die lokale NIS Domain nicht bestimmen: %s\n"
 
-#: src/ypcat.c:230 src/ypmatch.c:203 src/ypwhich.c:391
+#: src/ypcat.c:230 src/ypmatch.c:203 src/ypwhich.c:396
 #, c-format
 msgid "No running ypbind\n"
 msgstr "ypbind ist nicht am laufen\n"
@@ -833,42 +833,42 @@ msgstr "  -q             Gib keine Meldungen aus\n"
 msgid "  -V n           Version of ypbind, V3 is default\n"
 msgstr "  -V n           Version des ypbinds Protokoll, V2 ist default\n"
 
-#: src/ypwhich.c:154 src/ypwhich.c:196
+#: src/ypwhich.c:154 src/ypwhich.c:201
 #, c-format
 msgid "Error from ypbind on '%s': %s\n"
 msgstr ""
 
-#: src/ypwhich.c:229
+#: src/ypwhich.c:234
 #, c-format
 msgid "ERROR: taddr2host failed!\n"
 msgstr ""
 
-#: src/ypwhich.c:236
+#: src/ypwhich.c:241
 #, c-format
 msgid "Error: no server information gotten from ypbind on '%s'\n"
 msgstr ""
 
 # , c-format
-#: src/ypwhich.c:395
+#: src/ypwhich.c:400
 #, c-format
 msgid "Can't find master for map \"%s\". Reason: %s\n"
 msgstr "Kann Master Server der Map \"%s\" nicht finden. Grund: %s\n"
 
 # , c-format
-#: src/ypwhich.c:419
+#: src/ypwhich.c:424
 #, c-format
 msgid "Can't find master for map %s. Reason: %s\n"
 msgstr ""
 "Kann Master Server der Map %s nicht finden.\n"
 "Grund: %s\n"
 
-#: src/ypwhich.c:429
+#: src/ypwhich.c:434
 #, c-format
 msgid "No running ypbind.\n"
 msgstr "ypbind ist nicht am laufen.\n"
 
 # , c-format
-#: src/ypwhich.c:433
+#: src/ypwhich.c:438
 #, c-format
 msgid "Can't get map list for domain %s. Reason: %s\n"
 msgstr ""
