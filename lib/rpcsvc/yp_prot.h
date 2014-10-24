@@ -279,6 +279,7 @@ struct ypresponse {
 
 
 enum ypbind_resptype {YPBIND_SUCC_VAL = 1, YPBIND_FAIL_VAL = 2};
+typedef enum ypbind_resptype ypbind_resptype;
 
 struct ypbind2_binding {
   struct in_addr ypbind_binding_addr;	        /* In network order */
@@ -294,6 +295,14 @@ struct ypbind2_resp {
   } ypbind_respbody;
 };
 typedef struct ypbind2_resp ypbind2_resp;
+
+struct ypbind_oldsetdom {
+        char ypoldsetdom_domain[YPMAXDOMAIN];
+        ypbind2_binding ypoldsetdom_binding;
+};
+typedef struct ypbind_oldsetdom ypbind_oldsetdom;
+#define ypoldsetdom_addr ypoldsetdom_binding.ypbind_binding_addr
+#define ypoldsetdom_port ypoldsetdom_binding.ypbind_binding_port
 
 struct ypbind2_setdom {
   char *ypsetdom_domain;
@@ -324,7 +333,7 @@ struct ypbind3_resp {
     struct ypbind3_binding *ypbind_bindinfo;
   } ypbind_respbody;
 };
-typedef struct ypbind_resp ypbind_resp;
+typedef struct ypbind3_resp ypbind3_resp;
 #define ypbind3_nconf ypbind_respbody.ypbind_bindinfo->ypbind_nconf
 #define ypbind3_svcaddr ypbind_respbody.ypbind_bindinfo->ypbind_svcaddr
 #define ypbind3_servername ypbind_respbody.ypbind_bindinfo->ypbind_servername
