@@ -27,6 +27,7 @@
 #include <getopt.h>
 #include <locale.h>
 #include <libintl.h>
+#include <arpa/inet.h>
 #include <rpc/rpc.h>
 #include <rpc/pmap_clnt.h>
 #include <rpcsvc/ypclnt.h>
@@ -161,118 +162,59 @@ main (int argc, char **argv)
 	}
     }
 
-
-#if 0
-  if (hostname == NULL)
-    {
-      struct ypbind2_resp ypbr;
-      struct hostent *hent;
-
-      memset (&clnt_saddr, '\0', sizeof clnt_saddr);
-      clnt_saddr.sin_family = AF_INET;
-      clnt_saddr.sin_addr.s_addr = htonl (INADDR_LOOPBACK);
-      clnt_sock = RPC_ANYSOCK;
-      client = clnttcp_create (&clnt_saddr, YPBINDPROG, YPBINDVERS_2,
-			       &clnt_sock, 0, 0);
-      if (client == NULL)
-	{
-	  fputs (_("Couldn't get NIS server"), stderr);
-	  fputs (_(" - ypbind not running ?\n"),
-		 stderr);
-	  return 1;
-	}
-      if (clnt_call (client, YPBINDPROC_DOMAIN,
-		     (xdrproc_t) xdr_domainname, (caddr_t) &domainname,
-		     (xdrproc_t) xdr_ypbind2_resp,
-		     (caddr_t) &ypbr, RPCTIMEOUT) != RPC_SUCCESS)
-	{
-	  clnt_perror (client, _("Couldn't get NIS server"));
-	  clnt_destroy (client);
-	  close (clnt_sock);
-	  return 1;
-	}
-
-      clnt_destroy (client);
-      close (clnt_sock);
-      if (ypbr.ypbind_status != YPBIND_SUCC_VAL)
-	{
-	  fputs (_("Couldn't get NIS server"), stderr);
-	  fputs (": ", stderr);
-	  fputs (ypbinderr_string (ypbr.ypbind_respbody.ypbind_error),
-		 stderr);
-	  fputs ("\n", stderr);
-
-	  return 1;
-	}
-      memset (&clnt_saddr, '\0', sizeof (clnt_saddr));
-      clnt_saddr.sin_family = AF_INET;
-      memcpy (&clnt_saddr.sin_port,
-	      &ypbr.ypbind_respbody.ypbind_bindinfo.ypbind_binding_port,
-	      sizeof (clnt_saddr.sin_port));
-      memcpy (&clnt_saddr.sin_addr.s_addr,
-	      &ypbr.ypbind_respbody.ypbind_bindinfo.ypbind_binding_addr,
-	      sizeof (clnt_saddr.sin_addr.s_addr));
-
-      hent = gethostbyaddr ((char *)&clnt_saddr.sin_addr.s_addr,
-			    sizeof (clnt_saddr.sin_addr.s_addr), AF_INET);
-      if (hent)
-	{
-          hostname = strdup (hent->h_name);
-      	}
-    }
-  else
-    {
-      struct hostent *hent;
-
-      hent = gethostbyname (hostname);
-      if (!hent)
-	{
-	  switch (h_errno)
-	    {
-	    case HOST_NOT_FOUND:
-	      fprintf (stderr, _("Unknown host: %s\n"), hostname);
-	      break;
-	    case TRY_AGAIN:
-	      fprintf (stderr, _("Host name lookup failure\n"));
-	      break;
-	    case NO_DATA:
-	      fprintf (stderr, _("No address associated with name: %s\n"),
-		       hostname);
-	      break;
-	    case NO_RECOVERY:
-	      fprintf (stderr, _("Unknown server error\n"));
-	      break;
-	    default:
-	      fprintf (stderr, _("gethostbyname: Unknown error\n"));
-	      break;
-	    }
-	  return 1;
-	}
-      clnt_saddr.sin_family = AF_INET;
-      memcpy (&clnt_saddr.sin_addr.s_addr,hent->h_addr_list[0],
-	      hent->h_length);
-      clnt_saddr.sin_port = htons (pmap_getport (&clnt_saddr,
-						 YPPROG, YPVERS,
-						 IPPROTO_UDP));
-    }
-
-  clnt_sock = RPC_ANYSOCK;
-  client = clntudp_create (&clnt_saddr, YPPROG, YPVERS, UDPTIMEOUT,
-			   &clnt_sock);
-  if (client == NULL)
-    {
-      fprintf (stderr, _("Can't create connection to %s.\n"), hostname ? hostname : "unknown");
-      return 1;
-    }
-#endif
-
   if (!hostname)
-    hostname = "localhost"; /* XXX Move ypwhich code into seperate function */
+    {
+      int ret;
+      struct ypbind3_resp yp3_r;
+      memset (&yp3_r, 0, sizeof (struct ypbind3_resp));
+
+      /* ask local ypbind for NIS server */
+      ret = rpc_call ("localhost", YPBINDPROG, YPBINDVERS, YPBINDPROC_DOMAIN,
+		      (xdrproc_t) xdr_domainname, (caddr_t) &domainname,
+		      (xdrproc_t) xdr_ypbind3_resp, (caddr_t) &yp3_r,
+		      "udp");
+      if (ret == RPC_SUCCESS)
+	hostname = yp3_r.ypbind3_servername;
+      else if (ret == RPC_PROGVERSMISMATCH)
+	{
+	  /* Looks like ypbind does not support V3 yet, fallback
+	     to V2 */
+	  struct ypbind2_resp yp2_r;
+	  memset (&yp2_r, 0, sizeof (struct ypbind2_resp));
+
+	  /* ask local ypbind for NIS server */
+	  ret = rpc_call ("localhost", YPBINDPROG, YPBINDVERS_2,
+			  YPBINDPROC_DOMAIN,
+			  (xdrproc_t) xdr_domainname, (caddr_t) &domainname,
+			  (xdrproc_t) xdr_ypbind2_resp, (caddr_t) &yp2_r,
+			  "udp");
+	  if (ret == RPC_SUCCESS)
+	    {
+	      static char straddr[INET_ADDRSTRLEN];
+	      struct sockaddr_in sa;
+	      sa.sin_family = AF_INET;
+	      sa.sin_addr =
+		yp2_r.ypbind_respbody.ypbind_bindinfo.ypbind_binding_addr;
+
+	      inet_ntop(sa.sin_family, &sa.sin_addr,
+			straddr, sizeof(straddr));
+
+	      hostname = straddr;
+	    }
+	}
+
+      /* Both rpc_call fail */
+      if (ret != RPC_SUCCESS)
+	{
+	  fprintf (stderr, _("Error getting NIS server (%i)\n"), ret);
+	  return 1;
+	}
+    }
 
   client = clnt_create (hostname, YPPROG, YPVERS, "udp");
   if (client == NULL)
     {
-      fprintf (stderr, "Cannot contact %s, no NIS server running or wrong protocol?\n",
+      fprintf (stderr, _("Cannot contact %s, no NIS server running or wrong protocol?\n"),
 	       hostname);
 #if 0
       /* if we failed, print out all appropriate error messages and exit */
