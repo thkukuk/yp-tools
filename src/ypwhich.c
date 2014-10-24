@@ -140,7 +140,11 @@ print_bindhost (char *hostname, char *domain, int vers, int nflag)
 
       if (ret != RPC_SUCCESS)
 	{
-	  fprintf (stderr, "ypwhich: %s\n", yperr_string (YPERR_YPBIND));
+	  char *err = NULL;
+
+	  asprintf (&err, _("ypwhich: can't call ypbind on '%s'"), hostname);
+	  (void) clnt_perror(client, err);
+	  free (err);
 	  clnt_destroy (client);
 	  return 1;
 	}
@@ -185,12 +189,15 @@ print_bindhost (char *hostname, char *domain, int vers, int nflag)
 
       if (ret != RPC_SUCCESS)
 	{
-	  /* XXX if we have a RPC version mismatch, try version 2 */
+	  char *err = NULL;
+
+	  /* if we have a RPC version mismatch, try version 2 */
 	  if (ret == RPC_PROGVERSMISMATCH)
 	    return print_bindhost (hostname, domain, 2, nflag);
 
-	  fprintf (stderr, "ypwhich: %s (%i)\n",
-		   yperr_string (YPERR_YPBIND), ret);
+	  asprintf (&err, _("ypwhich: can't call ypbind on '%s'"), hostname);
+	  (void) clnt_perror(client, err);
+	  free (err);
 	  clnt_destroy (client);
 	  return 1;
 	}
