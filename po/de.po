@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yp-tools 2.5\n"
 "Report-Msgid-Bugs-To: kukuk@linux-nis.org\n"
-"POT-Creation-Date: 2014-10-24 16:46+0200\n"
+"POT-Creation-Date: 2014-10-24 19:00+0200\n"
 "PO-Revision-Date: 2004-06-21 14:24+02:00\n"
 "Last-Translator: Thorsten Kukuk <kukuk@suse.de>\n"
 "Language-Team: No Language-Team in the moment\n"
@@ -155,12 +155,12 @@ msgstr "  -x             Zeige die Nickname Übersetzungstabelle an\n"
 
 # , c-format
 #: src/ypcat.c:207 src/ypmatch.c:171 src/yppasswd.c:617 src/yppoll.c:158
-#: src/ypset.c:217 src/ypwhich.c:368
+#: src/ypset.c:217 src/ypwhich.c:369
 #, c-format
 msgid "%s: can't get local yp domain: %s\n"
 msgstr "%s: Kann die lokale NIS Domain nicht bestimmen: %s\n"
 
-#: src/ypcat.c:230 src/ypmatch.c:203 src/ypwhich.c:396
+#: src/ypcat.c:230 src/ypmatch.c:203 src/ypwhich.c:397
 #, c-format
 msgid "No running ypbind\n"
 msgstr "ypbind ist nicht am laufen\n"
@@ -838,37 +838,37 @@ msgstr "  -V n           Version des ypbinds Protokoll, V2 ist default\n"
 msgid "Error from ypbind on '%s': %s\n"
 msgstr ""
 
-#: src/ypwhich.c:234
+#: src/ypwhich.c:235
 #, c-format
 msgid "ERROR: taddr2host failed!\n"
 msgstr ""
 
-#: src/ypwhich.c:241
+#: src/ypwhich.c:242
 #, c-format
 msgid "Error: no server information gotten from ypbind on '%s'\n"
 msgstr ""
 
 # , c-format
-#: src/ypwhich.c:400
+#: src/ypwhich.c:401
 #, c-format
 msgid "Can't find master for map \"%s\". Reason: %s\n"
 msgstr "Kann Master Server der Map \"%s\" nicht finden. Grund: %s\n"
 
 # , c-format
-#: src/ypwhich.c:424
+#: src/ypwhich.c:425
 #, c-format
 msgid "Can't find master for map %s. Reason: %s\n"
 msgstr ""
 "Kann Master Server der Map %s nicht finden.\n"
 "Grund: %s\n"
 
-#: src/ypwhich.c:434
+#: src/ypwhich.c:435
 #, c-format
 msgid "No running ypbind.\n"
 msgstr "ypbind ist nicht am laufen.\n"
 
 # , c-format
-#: src/ypwhich.c:438
+#: src/ypwhich.c:439
 #, c-format
 msgid "Can't get map list for domain %s. Reason: %s\n"
 msgstr ""

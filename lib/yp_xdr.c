@@ -242,6 +242,17 @@ xdr_ypbind2_resp (XDR *xdrs, struct ypbind2_resp *objp)
 }
 
 bool_t
+xdr_ypbind_oldsetdom (XDR *xdrs, struct ypbind_oldsetdom *objp)
+{
+  if (!xdr_vector (xdrs, (char *)objp->ypoldsetdom_domain, YPMAXDOMAIN,
+                   sizeof (char), (xdrproc_t) xdr_char))
+    return FALSE;
+  if (!xdr_ypbind2_binding (xdrs, &objp->ypoldsetdom_binding))
+    return FALSE;
+  return TRUE;
+}
+
+bool_t
 xdr_ypbind2_setdom (XDR *xdrs, struct ypbind2_setdom *objp)
 {
   if (!xdr_domainname (xdrs, &objp->ypsetdom_domain))

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yp-tools 2.9\n"
 "Report-Msgid-Bugs-To: kukuk@linux-nis.org\n"
-"POT-Creation-Date: 2014-10-24 16:46+0200\n"
+"POT-Creation-Date: 2014-10-24 19:00+0200\n"
 "PO-Revision-Date: 2006-11-12 17:34+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -155,12 +155,12 @@ msgid "  -x             Display the map nickname translation table\n"
 msgstr "  -x             Visa kartans översättningstabell för smeknamn\n"
 
 #: src/ypcat.c:207 src/ypmatch.c:171 src/yppasswd.c:617 src/yppoll.c:158
-#: src/ypset.c:217 src/ypwhich.c:368
+#: src/ypset.c:217 src/ypwhich.c:369
 #, c-format
 msgid "%s: can't get local yp domain: %s\n"
 msgstr "%s: kan inte få lokal yp-domän: %s\n"
 
-#: src/ypcat.c:230 src/ypmatch.c:203 src/ypwhich.c:396
+#: src/ypcat.c:230 src/ypmatch.c:203 src/ypwhich.c:397
 #, c-format
 msgid "No running ypbind\n"
 msgstr "Ingen körande ypbind\n"
@@ -805,32 +805,32 @@ msgstr "  -V n           Version av ypbind, V2 är standard\n"
 msgid "Error from ypbind on '%s': %s\n"
 msgstr ""
 
-#: src/ypwhich.c:234
+#: src/ypwhich.c:235
 #, c-format
 msgid "ERROR: taddr2host failed!\n"
 msgstr ""
 
-#: src/ypwhich.c:241
+#: src/ypwhich.c:242
 #, c-format
 msgid "Error: no server information gotten from ypbind on '%s'\n"
 msgstr ""
 
-#: src/ypwhich.c:400
+#: src/ypwhich.c:401
 #, c-format
 msgid "Can't find master for map \"%s\". Reason: %s\n"
 msgstr "Kan inte hitta master för kartan \"%s\". Anledning: %s\n"
 
-#: src/ypwhich.c:424
+#: src/ypwhich.c:425
 #, c-format
 msgid "Can't find master for map %s. Reason: %s\n"
 msgstr "Kan inte hitta master för kartan %s. Anledning: %s\n"
 
-#: src/ypwhich.c:434
+#: src/ypwhich.c:435
 #, c-format
 msgid "No running ypbind.\n"
 msgstr "Ingen körande ypbind.\n"
 
-#: src/ypwhich.c:438
+#: src/ypwhich.c:439
 #, c-format
 msgid "Can't get map list for domain %s. Reason: %s\n"
 msgstr "Kan inte få kartlista för domänen %s. Anledning: %s\n"

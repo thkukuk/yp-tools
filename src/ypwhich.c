@@ -207,7 +207,8 @@ print_bindhost (char *hostname, char *domain, int vers, int nflag)
 	}
       clnt_destroy (client);
 
-      if (yp3_r.ypbind3_servername)
+      if (!(nflag && yp3_r.ypbind3_nconf && yp3_r.ypbind3_svcaddr)
+	  && yp3_r.ypbind3_servername)
 	printf ("%s\n", yp3_r.ypbind3_servername);
       else if (yp3_r.ypbind3_nconf && yp3_r.ypbind3_svcaddr)
 	{
