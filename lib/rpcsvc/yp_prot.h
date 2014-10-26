@@ -255,29 +255,6 @@ typedef struct ypresp_maplist ypresp_maplist;
  * Success and failure represent two separate response message types.
  */
 
-enum ypreqtype {YPREQ_KEY = 1, YPREQ_NOKEY = 2, YPREQ_MAP_PARMS = 3};
-
-struct yprequest {
-  enum ypreqtype yp_reqtype;
-  union {
-    struct ypreq_key yp_req_keytype;
-    struct ypreq_nokey yp_req_nokeytype;
-    struct ypmap_parms yp_req_map_parmstype;
-  }yp_reqbody;
-};
-
-enum ypresptype {YPRESP_VAL = 1, YPRESP_KEY_VAL = 2, YPRESP_MAP_PARMS = 3};
-
-struct ypresponse {
-  enum ypresptype yp_resptype;
-  union {
-    struct ypresp_val yp_resp_valtype;
-    struct ypresp_key_val yp_resp_key_valtype;
-    struct ypmap_parms yp_resp_map_parmstype;
-  } yp_respbody;
-};
-
-
 enum ypbind_resptype {YPBIND_SUCC_VAL = 1, YPBIND_FAIL_VAL = 2};
 typedef enum ypbind_resptype ypbind_resptype;
 
@@ -295,6 +272,9 @@ struct ypbind2_resp {
   } ypbind_respbody;
 };
 typedef struct ypbind2_resp ypbind2_resp;
+#define ypbind2_error ypbind_respbody.ypbind_error
+#define ypbind2_addr ypbind_respbody.ypbind_bindinfo.ypbind_binding_addr
+#define ypbind2_port ypbind_respbody.ypbind_bindinfo.ypbind_binding_port
 
 struct ypbind_oldsetdom {
         char ypoldsetdom_domain[YPMAXDOMAIN];
