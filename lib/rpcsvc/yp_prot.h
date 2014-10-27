@@ -314,6 +314,7 @@ struct ypbind3_resp {
   } ypbind_respbody;
 };
 typedef struct ypbind3_resp ypbind3_resp;
+#define ypbind3_error ypbind_respbody.ypbind_error
 #define ypbind3_nconf ypbind_respbody.ypbind_bindinfo->ypbind_nconf
 #define ypbind3_svcaddr ypbind_respbody.ypbind_bindinfo->ypbind_svcaddr
 #define ypbind3_servername ypbind_respbody.ypbind_bindinfo->ypbind_servername
@@ -324,7 +325,12 @@ struct ypbind3_setdom {
   char *ypsetdom_domain;
   struct ypbind3_binding *ypsetdom_bindinfo;
 };
- typedef struct ypbind3_setdom ypbind3_setdom;
+typedef struct ypbind3_setdom ypbind3_setdom;
+#define ypsetdom3_nconf ypsetdom_bindinfo->ypbind_nconf
+#define ypsetdom3_svcaddr ypsetdom_bindinfo->ypbind_svcaddr
+#define ypsetdom3_servername ypsetdom_bindinfo->ypbind_servername
+#define ypsetdom3_hi_vers ypsetdom_bindinfo->ypbind_hi_vers
+#define ypsetdom3_lo_vers ypsetdom_bindinfo->ypbind_lo_vers
 
 
 /* Detailed failure reason codes for response field ypbind_error*/
@@ -425,12 +431,15 @@ extern bool_t xdr_ypresp_val (XDR *__xdrs, struct ypresp_val * __objp);
 extern bool_t xdr_ypstat (XDR *__xdrs, enum ypstat * __objp);
 
 /* Not really for this, but missing better place: */
-extern const char *
-taddr2host (const struct netconfig *__nconf, const struct netbuf *__nbuf,
-	    char *__host, size_t __hostlen);
-extern const char *
-taddr2ipstr (const struct netconfig *__nconf, const struct netbuf *__nbuf,
-            char *__buf, size_t __buflen);
+extern const char *taddr2host (const struct netconfig *__nconf,
+			       const struct netbuf *__nbuf,
+	                       char *__host, size_t __hostlen);
+extern const char *taddr2ipstr (const struct netconfig *__nconf,
+                                const struct netbuf *__nbuf,
+                                char *__buf, size_t __buflen);
+extern unsigned short taddr2port (const struct netconfig *__nconf,
+                                  const struct netbuf *__nbuf);
+extern struct ypbind3_binding *__host2ypbind3_binding (const char *__host);
 
 #ifdef __cplusplus
 }

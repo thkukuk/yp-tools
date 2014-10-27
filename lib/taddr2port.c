@@ -18,52 +18,39 @@
 #endif
 
 #include <netdb.h>
+#include <stddef.h>
 #include <rpc/rpc.h>
 #include <rpcsvc/yp_prot.h>
 
 #include "internal.h"
 
-const char *
-taddr2host (const struct netconfig *nconf, const struct netbuf *nbuf,
-	    char *host, size_t hostlen)
+unsigned short
+taddr2port (const struct netconfig *nconf, const struct netbuf *nbuf)
 {
-  int error;
+  unsigned short port = 0;
   struct __rpc_sockinfo si;
   struct sockaddr_in *sin;
   struct sockaddr_in6 *sin6;
 
   if (nconf == NULL || nbuf == NULL || nbuf->len <= 0)
-    return NULL;
+    return 0;
 
-  if (!__rpc_nconf2sockinfo (nconf, &si))
-    return NULL;
+  if (!__rpc_nconf2sockinfo(nconf, &si))
+    return 0;
 
-  switch (si.si_af) {
-  case AF_INET:
-    sin = nbuf->buf;
-    sin->sin_family = si.si_af;
-    error = getnameinfo((struct sockaddr *)sin,
-			sizeof (struct sockaddr_in),
-			host, hostlen, NULL, 0, 0);
-    if (error)
-      fprintf (stderr, "getnameinfo(): %s\n",  gai_strerror(error));
-    break;
-  case AF_INET6:
-    sin6 = nbuf->buf;
-    sin6->sin6_family = si.si_af;
-    error = getnameinfo((struct sockaddr *)sin6,
-			sizeof (struct sockaddr_in6),
-			host, hostlen, NULL, 0, 0);
-    if (error)
-      fprintf (stderr, "getnameinfo(): %s\n",  gai_strerror(error));
-    break;
-  default:
-    error = 1;
-    break;
-  }
+  switch (si.si_af)
+    {
+    case AF_INET:
+      sin = nbuf->buf;
+      port = sin->sin_port;
+      break;
+    case AF_INET6:
+      sin6 = nbuf->buf;
+      port = sin6->sin6_port;
+      break;
+    default:
+      break;
+    }
 
-  if (error)
-    return NULL;
-  else
-    return host;
+  return htons (port);
 }

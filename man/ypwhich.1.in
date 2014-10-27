@@ -78,9 +78,6 @@ is omitted,
 .B ypwhich
 will produce a list of available maps.
 .TP
-.B \-n
-Don't convert addresses to names.
-.TP
 .B \-x
 Display the map nickname translation table.
 .TP

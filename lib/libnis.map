@@ -2,6 +2,7 @@ LIBNIS_1.0 {
   global:
     taddr2host;
     taddr2ipstr;
+    taddr2port;
     xdr_domainname;
     xdr_ypbind_oldsetdom;
     xdr_ypbind2_binding;

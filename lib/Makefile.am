@@ -32,5 +32,5 @@ libyptools_a_SOURCES = nicknames.c yp_all_host.c
 
 libnis_la_SOURCES = yp_xdr.c \
 	do_ypcall.c yp_master.c yp_maplist.c ypprot_err.c \
-	yp_match.c taddr2host.c taddr2ipstr.c \
+	yp_match.c taddr2host.c taddr2ipstr.c taddr2port.c \
 	yperr_string.c ypbinderr_string.c yp_get_default_domain.c
