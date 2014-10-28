@@ -35,3 +35,6 @@ libnis_la_SOURCES = yp_xdr.c \
 	yp_match.c taddr2host.c taddr2ipstr.c taddr2port.c \
 	host2ypbind3_binding.c ypbind3_binding_dup.c ypbind3_binding_free.c \
 	yperr_string.c ypbinderr_string.c yp_get_default_domain.c
+
+noinst_PROGRAMS=xdrfile-test
+xdrfile_test_LDADD = libnis.la

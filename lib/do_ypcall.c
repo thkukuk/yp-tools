@@ -94,12 +94,13 @@ yp_bind_file (const char *domain, dom_binding *ysd)
   FILE *in = fopen (path, "rce");
   if (in != NULL)
     {
-      struct ypbind3_binding *ypb3 = NULL;
+      struct ypbind3_binding ypb3;
       bool_t status;
 
       XDR xdrs;
       xdrstdio_create (&xdrs, in, XDR_DECODE);
-      status = xdr_ypbind3_binding (&xdrs, ypb3);
+      memset (ypb3, 0, sizeof (ypb3));
+      status = xdr_ypbind3_binding (&xdrs, &ypb3);
       xdr_destroy (&xdrs);
 
       if (!status)
