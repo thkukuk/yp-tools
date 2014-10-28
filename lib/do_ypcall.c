@@ -66,7 +66,6 @@ yp_bind_client_create_v3 (const char *domain, dom_binding *ysd,
   if (ysd->server)
     free (ysd->server);
   ysd->server = strdup (get_server_str (ypb3, buf, sizeof(buf)));
-  __ypbind3_binding_free (ypb3);
   strncpy (ysd->dom_domain, domain, YPMAXDOMAIN);
   ysd->dom_domain[YPMAXDOMAIN] = '\0';
 
@@ -99,17 +98,17 @@ yp_bind_file (const char *domain, dom_binding *ysd)
 
       XDR xdrs;
       xdrstdio_create (&xdrs, in, XDR_DECODE);
-      memset (ypb3, 0, sizeof (ypb3));
+      memset (&ypb3, 0, sizeof (ypb3));
       status = xdr_ypbind3_binding (&xdrs, &ypb3);
       xdr_destroy (&xdrs);
 
       if (!status)
         {
-          xdr_free ((xdrproc_t)xdr_ypbind3_binding, ypb3);
+          xdr_free ((xdrproc_t)xdr_ypbind3_binding, &ypb3);
 	  goto version2;
         }
-      yp_bind_client_create_v3 (domain, ysd, ypb3);
-      __ypbind3_binding_free (ypb3);
+      yp_bind_client_create_v3 (domain, ysd, &ypb3);
+      xdr_free ((xdrproc_t)xdr_ypbind3_binding, &ypb3);
     }
   else
     {
