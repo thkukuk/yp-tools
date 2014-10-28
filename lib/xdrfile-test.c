@@ -133,7 +133,6 @@ static void
 read_ypbind3_binding (struct ypbind3_binding *ypb3)
 {
   char path[100];
-  struct ypbind3_binding res;
 
   snprintf (path, sizeof (path), "binding.3");
 

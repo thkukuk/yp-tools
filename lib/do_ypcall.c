@@ -444,10 +444,6 @@ do_ypcall_tr (const char *domain, u_long prog, xdrproc_t xargs,
   return status;
 }
 
-#if 0
-
-/* XXX move into own C file */
-
 struct ypresp_all_data
 {
   unsigned long status;
@@ -593,4 +589,3 @@ yp_all (const char *indomain, const char *inmap,
 
   return res;
 }
-#endif
