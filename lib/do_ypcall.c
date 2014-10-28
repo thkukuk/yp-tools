@@ -22,8 +22,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <libintl.h>
-#include <sys/socket.h>
-#include <sys/uio.h>
+#include <arpa/inet.h>
 #include <rpcsvc/yp_prot.h>
 
 #include "internal.h"
@@ -37,8 +36,7 @@ struct dom_binding
   {
     struct dom_binding *dom_pnext;
     char dom_domain[YPMAXDOMAIN + 1];
-    struct sockaddr_in dom_server_addr;
-    int dom_socket;
+    char *server;
     CLIENT *dom_client;
   };
 typedef struct dom_binding dom_binding;
@@ -49,34 +47,41 @@ static int const MAXTRIES = 2;
 // XXX __libc_lock_define_initialized (static, ypbindlist_lock)
 static dom_binding *ypbindlist = NULL;
 
+static const char *
+get_server_str (struct ypbind3_binding *ypb3, char *buf, size_t buflen)
+{
+  if (ypb3->ypbind_servername != NULL)
+    return ypb3->ypbind_servername;
+
+  return taddr2ipstr (ypb3->ypbind_nconf, ypb3->ypbind_svcaddr,
+		      buf, buflen);
+}
 
 static void
-yp_bind_client_create (const char *domain, dom_binding *ysd,
-		       struct ypbind2_resp *ypbr)
+yp_bind_client_create_v3 (const char *domain, dom_binding *ysd,
+			  struct ypbind3_binding *ypb3)
 {
-  ysd->dom_server_addr.sin_family = AF_INET;
-  ysd->dom_server_addr.sin_port =
-    ypbr->ypbind_respbody.ypbind_bindinfo.ypbind_binding_port;
-  ysd->dom_server_addr.sin_addr =
-    ypbr->ypbind_respbody.ypbind_bindinfo.ypbind_binding_addr;
+  char buf[INET6_ADDRSTRLEN];
 
+  if (ysd->server)
+    free (ysd->server);
+  ysd->server = strdup (get_server_str (ypb3, buf, sizeof(buf)));
+  __ypbind3_binding_free (ypb3);
   strncpy (ysd->dom_domain, domain, YPMAXDOMAIN);
   ysd->dom_domain[YPMAXDOMAIN] = '\0';
 
-  ysd->dom_socket = RPC_ANYSOCK;
-  ysd->dom_client = clntudp_bufcreate (&ysd->dom_server_addr, YPPROG,
-				       YPVERS, UDPTIMEOUT,
-				       &ysd->dom_socket,
-				       UDPMSGSIZE, UDPMSGSIZE);
+  ysd->dom_client = clnt_create (ysd->server, YPPROG, YPVERS, "udp");
+}
 
-  if (ysd->dom_client != NULL)
-    {
-#ifndef SOCK_CLOEXEC
-      /* If the program exits, close the socket */
-      if (fcntl (ysd->dom_socket, F_SETFD, FD_CLOEXEC) == -1)
-	perror ("fcntl: F_SETFD");
-#endif
-    }
+static void
+yp_bind_client_create_v2 (const char *domain, dom_binding *ysd,
+			  struct ypbind2_resp *ypbr)
+{
+  ysd->server = strdup (inet_ntoa (ypbr->ypbind_respbody.ypbind_bindinfo.ypbind_binding_addr));
+  strncpy (ysd->dom_domain, domain, YPMAXDOMAIN);
+  ysd->dom_domain[YPMAXDOMAIN] = '\0';
+
+  ysd->dom_client = clnt_create (ysd->server, YPPROG, YPVERS, "udp");
 }
 
 static void
@@ -84,68 +89,137 @@ yp_bind_file (const char *domain, dom_binding *ysd)
 {
   char path[sizeof (BINDINGDIR) + strlen (domain) + 3 * sizeof (unsigned) + 3];
 
-  snprintf (path, sizeof (path), "%s/%s.%u", BINDINGDIR, domain, YPBINDVERS_2);
-  int fd = open (path, O_RDONLY);
-  if (fd >= 0)
+  snprintf (path, sizeof (path), "%s/%s.%u", BINDINGDIR, domain, YPBINDVERS);
+
+  FILE *in = fopen (path, "rce");
+  if (in != NULL)
     {
-      /* We have a binding file and could save a RPC call.  The file
-	 contains a port number and the YPBIND_RESP record.  The port
-	 number (16 bits) can be ignored.  */
-      struct ypbind2_resp ypbr;
+      struct ypbind3_binding *ypb3 = NULL;
+      bool_t status;
 
-      if (pread (fd, &ypbr, sizeof (ypbr), 2) == sizeof (ypbr))
-	yp_bind_client_create (domain, ysd, &ypbr);
+      XDR xdrs;
+      xdrstdio_create (&xdrs, in, XDR_DECODE);
+      status = xdr_ypbind3_binding (&xdrs, ypb3);
+      xdr_destroy (&xdrs);
 
-      close (fd);
+      if (!status)
+        {
+          xdr_free ((xdrproc_t)xdr_ypbind3_binding, ypb3);
+	  goto version2;
+        }
+      yp_bind_client_create_v3 (domain, ysd, ypb3);
+      __ypbind3_binding_free (ypb3);
+    }
+  else
+    {
+      int fd;
+    version2:
+
+      fd = open (path, O_RDONLY);
+      if (fd >= 0)
+	{
+	  /* We have a binding file and could save a RPC call.  The file
+	     contains a port number and the YPBIND_RESP record.  The port
+	     number (16 bits) can be ignored.  */
+	  struct ypbind2_resp ypbr;
+
+	  if (pread (fd, &ypbr, sizeof (ypbr), 2) == sizeof (ypbr))
+	    yp_bind_client_create_v2 (domain, ysd, &ypbr);
+
+	  close (fd);
+	}
     }
 }
 
 static int
 yp_bind_ypbindprog (const char *domain, dom_binding *ysd)
 {
-  struct sockaddr_in clnt_saddr;
-  struct ypbind2_resp ypbr;
-  int clnt_sock;
   CLIENT *client;
 
-  clnt_saddr.sin_family = AF_INET;
-  clnt_saddr.sin_port = 0;
-  clnt_saddr.sin_addr.s_addr = htonl (INADDR_LOOPBACK);
-  clnt_sock = RPC_ANYSOCK;
-  client = clnttcp_create (&clnt_saddr, YPBINDPROG, YPBINDVERS_2,
-			   &clnt_sock, 0, 0);
-  if (client == NULL)
-    return YPERR_YPBIND;
+  fprintf (stderr, "yp_bind_ypbindprog (%s, %s)\n",
+	   domain, ysd->server);
 
-  /* Check the port number -- should be < IPPORT_RESERVED.
-     If not, it's possible someone has registered a bogus
-     ypbind with the portmapper and is trying to trick us. */
-  if (ntohs (clnt_saddr.sin_port) >= IPPORT_RESERVED)
+  client = clnt_create ("localhost", YPBINDPROG, YPBINDVERS, "tcp");
+  if (client != NULL)
     {
+      struct ypbind3_resp ypbr;
+
+#if 0 /* XXX */
+      /* Check the port number -- should be < IPPORT_RESERVED.
+	 If not, it's possible someone has registered a bogus
+	 ypbind with the portmapper and is trying to trick us. */
+      if (ntohs (clnt_saddr.sin_port) >= IPPORT_RESERVED)
+	{
+	  clnt_destroy (client);
+	  return YPERR_YPBIND;
+	}
+#endif
+
+      if (clnt_call (client, YPBINDPROC_DOMAIN,
+		     (xdrproc_t) xdr_domainname, (caddr_t) &domain,
+		     (xdrproc_t) xdr_ypbind3_resp,
+		     (caddr_t) &ypbr, RPCTIMEOUT) != RPC_SUCCESS)
+	{
+	  clnt_destroy (client);
+	  return YPERR_YPBIND;
+	}
+
       clnt_destroy (client);
-      return YPERR_YPBIND;
-    }
 
-  if (clnt_call (client, YPBINDPROC_DOMAIN,
-		 (xdrproc_t) xdr_domainname, (caddr_t) &domain,
-		 (xdrproc_t) xdr_ypbind2_resp,
-		 (caddr_t) &ypbr, RPCTIMEOUT) != RPC_SUCCESS)
+      if (ypbr.ypbind_status != YPBIND_SUCC_VAL)
+	{
+	  fprintf (stderr, "YPBINDPROC_DOMAIN: %s\n",
+		   ypbinderr_string (ypbr.ypbind3_error));
+	  return YPERR_DOMAIN;
+	}
+      free (ysd->server);
+      ysd->server = NULL;
+
+      yp_bind_client_create_v3 (domain, ysd, ypbr.ypbind_respbody.ypbind_bindinfo);
+    }
+  else
     {
+      struct ypbind2_resp ypbr;
+
+      /* Fallback to protocol v2 in error case */
+      client = clnt_create (ysd->server, YPBINDPROG, YPBINDVERS_2, "tcp");
+
+      if (client == NULL)
+	return YPERR_YPBIND;
+
+#if 0 /* XXX */
+      /* Check the port number -- should be < IPPORT_RESERVED.
+	 If not, it's possible someone has registered a bogus
+	 ypbind with the portmapper and is trying to trick us. */
+      if (ntohs (clnt_saddr.sin_port) >= IPPORT_RESERVED)
+	{
+	  clnt_destroy (client);
+	  return YPERR_YPBIND;
+	}
+#endif
+
+      if (clnt_call (client, YPBINDPROC_DOMAIN,
+		     (xdrproc_t) xdr_domainname, (caddr_t) &domain,
+		     (xdrproc_t) xdr_ypbind2_resp,
+		     (caddr_t) &ypbr, RPCTIMEOUT) != RPC_SUCCESS)
+	{
+	  clnt_destroy (client);
+	  return YPERR_YPBIND;
+	}
+
       clnt_destroy (client);
-      return YPERR_YPBIND;
+
+      if (ypbr.ypbind_status != YPBIND_SUCC_VAL)
+	{
+	  fprintf (stderr, "YPBINDPROC_DOMAIN: %s\n",
+		   ypbinderr_string (ypbr.ypbind_respbody.ypbind_error));
+	  return YPERR_DOMAIN;
+	}
+      free (ysd->server);
+      ysd->server = NULL;
+
+      yp_bind_client_create_v2 (domain, ysd, &ypbr);
     }
-
-  clnt_destroy (client);
-
-  if (ypbr.ypbind_status != YPBIND_SUCC_VAL)
-    {
-      fprintf (stderr, "YPBINDPROC_DOMAIN: %s\n",
-	       ypbinderr_string (ypbr.ypbind_respbody.ypbind_error));
-      return YPERR_DOMAIN;
-    }
-  memset (&ysd->dom_server_addr, '\0', sizeof ysd->dom_server_addr);
-
-  yp_bind_client_create (domain, ysd, &ypbr);
 
   return YPERR_SUCCESS;
 }
@@ -209,7 +283,10 @@ __yp_bind (const char *domain, dom_binding **ypdb)
 static void
 __yp_unbind (dom_binding *ydb)
 {
-  clnt_destroy (ydb->dom_client);
+  if (ydb->dom_client)
+    clnt_destroy (ydb->dom_client);
+  if (ydb->server)
+    free (ydb->server);
   free (ydb);
 }
 
@@ -372,6 +449,8 @@ do_ypcall_tr (const char *domain, u_long prog, xdrproc_t xargs,
   return status;
 }
 
+#if 0
+
 /* XXX move into own C file */
 
 struct ypresp_all_data
@@ -441,7 +520,6 @@ __xdr_ypresp_all (XDR *xdrs, struct ypresp_all_data *objp)
         }
     }
 }
-
 
 int
 yp_all (const char *indomain, const char *inmap,
@@ -520,3 +598,4 @@ yp_all (const char *indomain, const char *inmap,
 
   return res;
 }
+#endif
