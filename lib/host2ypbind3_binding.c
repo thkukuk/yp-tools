@@ -17,12 +17,12 @@
 #include "config.h"
 #endif
 
-#include <netdb.h>
-#include <rpc/rpc.h>
+// #include <netdb.h>
+// #include <rpc/rpc.h>
 #include <rpcsvc/yp_prot.h>
 
-static ypbind3_binding *
-host2ypbind3_binding (const char *host)
+struct ypbind3_binding *
+__host2ypbind3_binding (const char *host)
 {
   CLIENT *server;
   ypbind3_binding ypb3, *res;
@@ -43,7 +43,7 @@ host2ypbind3_binding (const char *host)
   ypb3.ypbind_hi_vers = YPVERS;
   ypb3.ypbind_lo_vers = YPVERS;
 
-  res = ypbind3_binding_dup (&ypb3);
+  res = __ypbind3_binding_dup (&ypb3);
 
   freenetconfigent (nconf);
 

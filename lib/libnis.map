@@ -1,16 +1,19 @@
 LIBNIS_1.0 {
   global:
+    __host2ypbind3_binding;
+    __ypbind3_binding_dup;
+    __ypbind3_binding_free;
     taddr2host;
     taddr2ipstr;
     taddr2port;
     xdr_domainname;
-    xdr_ypbind_oldsetdom;
     xdr_ypbind2_binding;
     xdr_ypbind2_resp;
     xdr_ypbind2_setdom;
     xdr_ypbind3_binding;
     xdr_ypbind3_resp;
     xdr_ypbind3_setdom;
+    xdr_ypbind_oldsetdom;
     xdr_ypbind_resptype;
     xdr_ypmap_parms;
     xdr_yppushresp_xfr;

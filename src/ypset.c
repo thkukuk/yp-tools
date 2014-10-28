@@ -84,7 +84,7 @@ print_error (void)
 
 /* bind to a special host and set a new NIS server */
 static int
-bind_tohost (const char *hostname, char *domainname, char *new_server)
+bind_tohost_v2 (const char *hostname, char *domainname, char *new_server)
 {
   struct ypbind2_setdom ypsd;
   const struct timeval tv = {15, 0};
@@ -134,6 +134,54 @@ bind_tohost (const char *hostname, char *domainname, char *new_server)
 
   res = clnt_call (client, YPBINDPROC_SETDOM,
 		   (xdrproc_t) xdr_ypbind2_setdom, (caddr_t) &ypsd,
+		   (xdrproc_t) xdr_void, NULL, tv);
+  if (res)
+    {
+      fprintf (stderr, _("Cannot ypset for domain %s on host %s.\n"),
+               domainname, hostname);
+      clnt_perror (client, _("Reason"));
+      clnt_destroy (client);
+      return YPERR_YPBIND;
+    }
+  clnt_destroy (client);
+  return 0;
+}
+
+/* bind to a special host and set a new NIS server */
+static int
+bind_tohost_v3 (const char *hostname, char *domainname, char *new_server)
+{
+  const struct timeval tv = {15, 0};
+  struct ypbind3_setdom ypsd;
+  enum clnt_stat res;
+  CLIENT *client;
+
+  client = clnt_create (hostname, YPBINDPROG, YPBINDVERS, "udp");
+  /* if V3 protocol does not work, try v2 as fallback */
+  if (client == NULL)
+    bind_tohost_v2 (hostname, domainname, new_server);
+#if 0
+    {
+      fprintf (stderr, _("can't yp_bind: Reason: %s\n"),
+               yperr_string (YPERR_YPBIND));
+      return YPERR_YPBIND;
+    }
+#endif
+
+  memset (&ypsd, '\0', sizeof (ypsd));
+  ypsd.ypsetdom_domain = domainname;
+  ypsd.ypsetdom_bindinfo = __host2ypbind3_binding (new_server);
+  if (ypsd.ypsetdom_bindinfo == NULL)
+    {
+      fprintf (stderr, _("%s not running ypserv.\n"), new_server);
+      exit (1);
+    }
+
+  /* Create unix credentials */
+  client->cl_auth = authunix_create_default ();
+
+  res = clnt_call (client, YPBINDPROC_SETDOM,
+		   (xdrproc_t) xdr_ypbind3_setdom, (caddr_t) &ypsd,
 		   (xdrproc_t) xdr_void, NULL, tv);
   if (res)
     {
@@ -221,11 +269,9 @@ main (int argc, char **argv)
 	}
 
       if (hostname == NULL)
-	{
-	  hostname = "localhost";
-	}
+	hostname = "localhost";
 
-      if (bind_tohost (hostname, domainname, new_server))
+      if (bind_tohost_v3 (hostname, domainname, new_server))
 	return 1;
     }
 

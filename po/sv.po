@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yp-tools 2.9\n"
 "Report-Msgid-Bugs-To: kukuk@linux-nis.org\n"
-"POT-Creation-Date: 2014-10-24 23:13+0200\n"
+"POT-Creation-Date: 2014-10-28 11:50+0100\n"
 "PO-Revision-Date: 2006-11-12 17:34+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -56,7 +56,7 @@ msgid "Unknown ypbind error"
 msgstr "Okänt ypbind-fel"
 
 #: src/domainname.c:45 src/ypcat.c:42 src/ypmatch.c:43 src/yppasswd.c:68
-#: src/yppoll.c:45 src/ypset.c:46 src/yptest.c:56 src/ypwhich.c:51
+#: src/yppoll.c:46 src/ypset.c:46 src/yptest.c:56 src/ypwhich.c:54
 #, c-format
 msgid ""
 "Copyright (C) %s Thorsten Kukuk.\n"
@@ -82,20 +82,20 @@ msgstr ""
 "\n"
 
 #: src/domainname.c:65 src/domainname.c:78 src/ypcat.c:72 src/ypmatch.c:70
-#: src/yppasswd.c:103 src/yppasswd.c:114 src/yppasswd.c:126 src/yppoll.c:70
-#: src/ypset.c:69 src/yptest.c:86 src/ypwhich.c:81
+#: src/yppasswd.c:103 src/yppasswd.c:114 src/yppasswd.c:126 src/yppoll.c:71
+#: src/ypset.c:69 src/yptest.c:86 src/ypwhich.c:85
 msgid "  -?, --help     Give this help list\n"
 msgstr "  -?, --help     Visa den här hjälplistan\n"
 
 #: src/domainname.c:66 src/domainname.c:79 src/ypcat.c:73 src/ypmatch.c:71
-#: src/yppasswd.c:104 src/yppasswd.c:115 src/yppasswd.c:127 src/yppoll.c:71
-#: src/ypset.c:70 src/yptest.c:87 src/ypwhich.c:82
+#: src/yppasswd.c:104 src/yppasswd.c:115 src/yppasswd.c:127 src/yppoll.c:72
+#: src/ypset.c:70 src/yptest.c:87 src/ypwhich.c:86
 msgid "      --usage    Give a short usage message\n"
 msgstr "      --usage    Visa ett kort användningsmeddelande\n"
 
 #: src/domainname.c:67 src/domainname.c:80 src/ypcat.c:74 src/ypmatch.c:72
-#: src/yppasswd.c:105 src/yppasswd.c:116 src/yppasswd.c:128 src/yppoll.c:72
-#: src/ypset.c:71 src/yptest.c:88 src/ypwhich.c:83
+#: src/yppasswd.c:105 src/yppasswd.c:116 src/yppasswd.c:128 src/yppoll.c:73
+#: src/ypset.c:71 src/yptest.c:88 src/ypwhich.c:87
 msgid "      --version  Print program version\n"
 msgstr "      --version  Skriv ut programversion\n"
 
@@ -109,7 +109,7 @@ msgstr ""
 "\n"
 
 #: src/domainname.c:88 src/ypcat.c:83 src/ypmatch.c:82 src/yppasswd.c:142
-#: src/yppoll.c:82 src/ypset.c:81 src/yptest.c:97 src/ypwhich.c:93
+#: src/yppoll.c:83 src/ypset.c:81 src/yptest.c:97 src/ypwhich.c:97
 #, c-format
 msgid "Try `%s --help' or `%s --usage' for more information.\n"
 msgstr "Prova \"%s --help\" eller \"%s --usage\" för mer information.\n"
@@ -131,8 +131,8 @@ msgstr ""
 "ypcat - skriv ut värden för alla nycklar i en NIS-databas\n"
 "\n"
 
-#: src/ypcat.c:63 src/ypmatch.c:64 src/yppoll.c:68 src/ypset.c:66
-#: src/yptest.c:77 src/ypwhich.c:72
+#: src/ypcat.c:63 src/ypmatch.c:64 src/yppoll.c:69 src/ypset.c:66
+#: src/yptest.c:77 src/ypwhich.c:75
 msgid "  -d domain      Use 'domain' instead of the default domain\n"
 msgstr "  -d domän       Använd \"domän\" istället för standarddomänen\n"
 
@@ -146,21 +146,21 @@ msgid "  -k             Display map keys\n"
 msgstr "  -k             Visa kartnycklar\n"
 
 # Inhibit = hindrar, hämmar?
-#: src/ypcat.c:69 src/ypmatch.c:67 src/ypwhich.c:77
+#: src/ypcat.c:69 src/ypmatch.c:67 src/ypwhich.c:80
 msgid "  -t             Inhibits map nickname translation\n"
 msgstr "  -t             Hindrar smeknamnsöversättning för kartan\n"
 
-#: src/ypcat.c:70 src/ypmatch.c:68 src/ypwhich.c:79
+#: src/ypcat.c:70 src/ypmatch.c:68 src/ypwhich.c:82
 msgid "  -x             Display the map nickname translation table\n"
 msgstr "  -x             Visa kartans översättningstabell för smeknamn\n"
 
-#: src/ypcat.c:207 src/ypmatch.c:171 src/yppasswd.c:617 src/yppoll.c:158
-#: src/ypset.c:217 src/ypwhich.c:376
+#: src/ypcat.c:207 src/ypmatch.c:171 src/yppasswd.c:617 src/yppoll.c:159
+#: src/ypset.c:265 src/ypwhich.c:384
 #, c-format
 msgid "%s: can't get local yp domain: %s\n"
 msgstr "%s: kan inte få lokal yp-domän: %s\n"
 
-#: src/ypcat.c:230 src/ypmatch.c:203 src/ypwhich.c:404
+#: src/ypcat.c:230 src/ypmatch.c:203 src/ypwhich.c:418
 #, c-format
 msgid "No running ypbind\n"
 msgstr "Ingen körande ypbind\n"
@@ -547,11 +547,11 @@ msgstr ""
 "NIS-kontoinformationen har ändrats på %s.\n"
 "\n"
 
-#: src/yppoll.c:56
+#: src/yppoll.c:57
 msgid "Usage: yppoll [-h host] [-d domain] mapname\n"
 msgstr "Användning: yppoll [-h värd] [-d domän] kartnamn\n"
 
-#: src/yppoll.c:64
+#: src/yppoll.c:65
 msgid ""
 "yppoll - return version and master server of a NIS map\n"
 "\n"
@@ -559,88 +559,65 @@ msgstr ""
 "yppoll - returnera version och masterserver för en NIS-karta\n"
 "\n"
 
-#: src/yppoll.c:67
+#: src/yppoll.c:68
 msgid "  -h host        Ask ypserv process at 'host'\n"
 msgstr "  -h värd        Fråga ypserv-processen på \"värd\"\n"
 
-#: src/yppoll.c:179 src/yppoll.c:189 src/yppoll.c:199
-msgid "Couldn't get NIS server"
+#: src/yppoll.c:209
+#, fuzzy, c-format
+msgid "Error getting NIS server (%i)\n"
 msgstr "Kunde inte få NIS-server"
 
-#: src/yppoll.c:180
-msgid " - ypbind not running ?\n"
-msgstr " - ypbind kör inte?\n"
-
-#: src/yppoll.c:233
+#: src/yppoll.c:217
 #, c-format
-msgid "Unknown host: %s\n"
-msgstr "Okänd värd: %s\n"
+msgid "Cannot contact %s, no NIS server running or wrong protocol?\n"
+msgstr ""
 
-#: src/yppoll.c:236
-#, c-format
-msgid "Host name lookup failure\n"
-msgstr "Misslyckades med att slå upp värdnamn\n"
-
-#: src/yppoll.c:239
-#, c-format
-msgid "No address associated with name: %s\n"
-msgstr "Ingen adress associerad med namnet: %s\n"
-
-#: src/yppoll.c:243
-#, c-format
-msgid "Unknown server error\n"
-msgstr "Okänt serverfel\n"
-
-#: src/yppoll.c:246
-#, c-format
-msgid "gethostbyname: Unknown error\n"
-msgstr "gethostbyname: Okänt fel\n"
-
-#: src/yppoll.c:264 src/yppoll.c:293
+#: src/yppoll.c:235
 #, c-format
 msgid "Can't create connection to %s.\n"
 msgstr "Kan inte etablera anslutning till %s.\n"
 
-#: src/yppoll.c:295 src/ypset.c:142
+#: src/yppoll.c:237 src/ypset.c:142 src/ypset.c:190
 msgid "Reason"
 msgstr "Anledning"
 
-#: src/yppoll.c:301
+#: src/yppoll.c:243
 #, c-format
 msgid "Domain %s is not supported by %s.\n"
 msgstr "Domänen %s stöds inte av %s.\n"
 
-#: src/yppoll.c:330
+#: src/yppoll.c:272
 msgid "Can't get any map parameter information.\n"
 msgstr "Kan inte få någon information om kartparameter.\n"
 
-#: src/yppoll.c:332
+#: src/yppoll.c:274
 #, c-format
 msgid "Domain %s is supported.\n"
 msgstr "Domänen %s stöds.\n"
 
-#: src/yppoll.c:336
+#: src/yppoll.c:278
 #, c-format
 msgid "Can't get order number for map %s.\n"
 msgstr "Kan inte få ordningsnumret för kartan %s.\n"
 
-#: src/yppoll.c:337 src/yppoll.c:351
+#: src/yppoll.c:279 src/yppoll.c:293
 #, c-format
 msgid "\tReason: %s\n"
 msgstr "\tAnledning: %s\n"
 
 # Vad är detta?
-#: src/yppoll.c:344
+#: src/yppoll.c:286
 #, c-format
 msgid "Map %s has order number %ld. [%s]\n"
 msgstr "Kartan %s har ordningsnummer %ld. [%s]\n"
 
-#: src/yppoll.c:350
+#: src/yppoll.c:292
 #, c-format
 msgid "Can't get master for map %s.\n"
 msgstr "Kan inte få master för kartan %s.\n"
 
-#: src/yppoll.c:354
+#: src/yppoll.c:296
 #, c-format
 msgid "The master server is %s.\n"
 msgstr "Masterservern är %s.\n"
@@ -661,7 +638,7 @@ msgstr ""
 msgid "  -h hostname    Set ypbind's binding on 'hostname'\n"
 msgstr "  -h värdnamn    Ställ in bindning av ypbind på \"värdnamn\"\n"
 
-#: src/ypset.c:101
+#: src/ypset.c:101 src/ypset.c:176
 #, c-format
 msgid "%s not running ypserv.\n"
 msgstr "%s kör inte ypserv.\n"
@@ -671,12 +648,12 @@ msgstr "%s kör inte ypserv.\n"
 msgid "can't find IPv4 address for %s\n"
 msgstr "kan inte hitta adress för %s\n"
 
-#: src/ypset.c:128 src/yptest.c:148
+#: src/ypset.c:128 src/ypset.c:165 src/yptest.c:148
 #, c-format
 msgid "can't yp_bind: Reason: %s\n"
 msgstr "kan inte yp_bind: Anledning: %s\n"
 
-#: src/ypset.c:140
+#: src/ypset.c:140 src/ypset.c:188
 #, c-format
 msgid "Cannot ypset for domain %s on host %s.\n"
 msgstr "Kan inte ypset för domänen %s på värden %s.\n"
@@ -773,12 +750,12 @@ msgstr "Alla tester klarades av\n"
 msgid "%d tests failed\n"
 msgstr "%d tester misslyckades\n"
 
-#: src/ypwhich.c:62
+#: src/ypwhich.c:65
 #, fuzzy
 msgid "Usage: ypwhich [-d domain] [[-t] -m [mname]|[-n]|[-Vn] hostname] | -x\n"
 msgstr "Användning: ypwhich [-d domän] [[-t] -m [knamn]|[-Vn] värdnamn] | -x\n"
 
-#: src/ypwhich.c:70
+#: src/ypwhich.c:73
 msgid ""
 "ypwhich - return name of NIS server or map master\n"
 "\n"
@@ -786,59 +763,90 @@ msgstr ""
 "ypwhich - returnera namnet på NIS-servern eller kartmastern\n"
 "\n"
 
-#: src/ypwhich.c:74
+#: src/ypwhich.c:77
 msgid "  -m mname       Find the master NIS server for the map 'mname'\n"
 msgstr "  -m knamn       Hitta NIS-masterservern för kartan \"knamn\"\n"
 
-#: src/ypwhich.c:76
+#: src/ypwhich.c:79
 #, fuzzy
 msgid "  -n             Don't convert addresses to names\n"
 msgstr "  -q             Var tyst, skriv inte ut meddelanden\n"
 
-#: src/ypwhich.c:78
+#: src/ypwhich.c:81
 #, fuzzy
 msgid "  -V n           Version of ypbind, V3 is default\n"
 msgstr "  -V n           Version av ypbind, V2 är standard\n"
 
-#: src/ypwhich.c:145 src/ypwhich.c:198
-#, fuzzy, c-format
-msgid "ypwhich: can't call ypbind on '%s'"
-msgstr "kan inte yp_bind: Anledning: %s\n"
-
-#: src/ypwhich.c:158 src/ypwhich.c:208
-#, c-format
-msgid "Error from ypbind on '%s': %s\n"
+#: src/ypwhich.c:84
+msgid " --verbose       Verbose output of result\n"
 msgstr ""
 
-#: src/ypwhich.c:242
+#: src/ypwhich.c:150 src/ypwhich.c:207
+#, fuzzy, c-format
+msgid ""
+"ypwhich: can't call ypbind on '%s'\n"
+"\t"
+msgstr "kan inte yp_bind: Anledning: %s\n"
+
+#: src/ypwhich.c:167 src/ypwhich.c:221
+#, c-format
+msgid ""
+"Error for domain '%s' from ypbind on '%s':\n"
+"\t%s\n"
+msgstr ""
+
+#: src/ypwhich.c:262
 #, c-format
 msgid "ERROR: taddr2host failed!\n"
 msgstr ""
 
-#: src/ypwhich.c:249
+#: src/ypwhich.c:268
 #, c-format
 msgid "Error: no server information gotten from ypbind on '%s'\n"
 msgstr ""
 
-#: src/ypwhich.c:408
+#: src/ypwhich.c:390
+#, fuzzy, c-format
+msgid "%s: no local yp domain set\n"
+msgstr "%s: kan inte få lokal yp-domän: %s\n"
+
+#: src/ypwhich.c:422
 #, c-format
 msgid "Can't find master for map \"%s\". Reason: %s\n"
 msgstr "Kan inte hitta master för kartan \"%s\". Anledning: %s\n"
 
-#: src/ypwhich.c:432
+#: src/ypwhich.c:446
 #, c-format
 msgid "Can't find master for map %s. Reason: %s\n"
 msgstr "Kan inte hitta master för kartan %s. Anledning: %s\n"
 
-#: src/ypwhich.c:442
+#: src/ypwhich.c:456
 #, c-format
 msgid "No running ypbind.\n"
 msgstr "Ingen körande ypbind.\n"
 
-#: src/ypwhich.c:446
+#: src/ypwhich.c:460
 #, c-format
 msgid "Can't get map list for domain %s. Reason: %s\n"
 msgstr "Kan inte få kartlista för domänen %s. Anledning: %s\n"
+
+#~ msgid " - ypbind not running ?\n"
+#~ msgstr " - ypbind kör inte?\n"
+
+#~ msgid "Unknown host: %s\n"
+#~ msgstr "Okänd värd: %s\n"
+
+#~ msgid "Host name lookup failure\n"
+#~ msgstr "Misslyckades med att slå upp värdnamn\n"
+
+#~ msgid "No address associated with name: %s\n"
+#~ msgstr "Ingen adress associerad med namnet: %s\n"
+
+#~ msgid "Unknown server error\n"
+#~ msgstr "Okänt serverfel\n"
+
+#~ msgid "gethostbyname: Unknown error\n"
+#~ msgstr "gethostbyname: Okänt fel\n"
 
 #~ msgid ""
 #~ "ypchsh is deprecated, use %s instead\n"
