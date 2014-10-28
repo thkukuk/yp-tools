@@ -136,12 +136,10 @@ yp_bind_ypbindprog (const char *domain, dom_binding *ysd)
 {
   CLIENT *client;
 
-  fprintf (stderr, "yp_bind_ypbindprog (%s, %s)\n",
-	   domain, ysd->server);
-
   client = clnt_create ("localhost", YPBINDPROG, YPBINDVERS, "tcp");
   if (client != NULL)
     {
+      enum clnt_stat ret;
       struct ypbind3_resp ypbr;
 
 #if 0 /* XXX */
@@ -155,23 +153,22 @@ yp_bind_ypbindprog (const char *domain, dom_binding *ysd)
 	}
 #endif
 
-      if (clnt_call (client, YPBINDPROC_DOMAIN,
-		     (xdrproc_t) xdr_domainname, (caddr_t) &domain,
-		     (xdrproc_t) xdr_ypbind3_resp,
-		     (caddr_t) &ypbr, RPCTIMEOUT) != RPC_SUCCESS)
+      if ((ret = clnt_call (client, YPBINDPROC_DOMAIN,
+			    (xdrproc_t) xdr_domainname, (caddr_t) &domain,
+			    (xdrproc_t) xdr_ypbind3_resp,
+			    (caddr_t) &ypbr, RPCTIMEOUT)) != RPC_SUCCESS)
 	{
 	  clnt_destroy (client);
+	  if (ret == RPC_PROGVERSMISMATCH)
+	    goto try_v2;
 	  return YPERR_YPBIND;
 	}
 
       clnt_destroy (client);
 
       if (ypbr.ypbind_status != YPBIND_SUCC_VAL)
-	{
-	  fprintf (stderr, "YPBINDPROC_DOMAIN: %s\n",
-		   ypbinderr_string (ypbr.ypbind3_error));
-	  return YPERR_DOMAIN;
-	}
+	return YPERR_DOMAIN;
+
       free (ysd->server);
       ysd->server = NULL;
 
@@ -181,8 +178,9 @@ yp_bind_ypbindprog (const char *domain, dom_binding *ysd)
     {
       struct ypbind2_resp ypbr;
 
+    try_v2:
       /* Fallback to protocol v2 in error case */
-      client = clnt_create (ysd->server, YPBINDPROG, YPBINDVERS_2, "tcp");
+      client = clnt_create ("localhost", YPBINDPROG, YPBINDVERS_2, "tcp");
 
       if (client == NULL)
 	return YPERR_YPBIND;
@@ -210,11 +208,8 @@ yp_bind_ypbindprog (const char *domain, dom_binding *ysd)
       clnt_destroy (client);
 
       if (ypbr.ypbind_status != YPBIND_SUCC_VAL)
-	{
-	  fprintf (stderr, "YPBINDPROC_DOMAIN: %s\n",
-		   ypbinderr_string (ypbr.ypbind_respbody.ypbind_error));
-	  return YPERR_DOMAIN;
-	}
+	return YPERR_DOMAIN;
+
       free (ysd->server);
       ysd->server = NULL;
 
