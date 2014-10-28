@@ -97,7 +97,7 @@ AM_GNU_GETTEXT_VERSION([0.19.2])
 AM_GNU_GETTEXT([external])
 
 AC_OUTPUT([Makefile lib/Makefile src/Makefile man/Makefile
-	   etc/Makefile po/Makefile.in libnis.pc
+	   etc/Makefile po/Makefile.in nss_nis6/Makefile libnis.pc
 	   man/domainname.8 man/nicknames.5
 	   man/ypcat.1 man/ypmatch.1 man/yppasswd.1 man/yppoll.8
 	   man/ypset.8 man/yptest.8 man/ypwhich.1])
