@@ -195,6 +195,7 @@ struct ypmaplist {
   struct ypmaplist *next;
 #define ypml_next next
 };
+typedef struct ypmaplist ypmaplist;
 
 struct ypresp_maplist {
   ypstat status;
