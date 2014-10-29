@@ -400,6 +400,7 @@ struct yppushresp_xfr {
   u_int transid;
   yppush_status status;
 };
+typedef struct yppushresp_xfr yppushresp_xfr;
 
 struct ypresp_all {
   bool_t more;
@@ -407,6 +408,7 @@ struct ypresp_all {
     struct ypresp_key_val val;
   } ypresp_all_u;
 };
+typedef struct ypresp_all ypresp_all;
 
 extern bool_t xdr_domainname (XDR *__xdrs, char ** __objp);
 extern bool_t xdr_ypall (XDR *__xdrs, struct ypall_callback * __objp);
