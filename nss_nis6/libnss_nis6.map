@@ -1,0 +1,26 @@
+NSS_NIS6_PRIVATE_2.0 {
+  global:
+    _nss_nis6_endaliasent; _nss_nis6_endetherent; _nss_nis6_endgrent;
+    _nss_nis6_endhostent; _nss_nis6_endnetent; _nss_nis6_endnetgrent;
+    _nss_nis6_endprotoent; _nss_nis6_endpwent; _nss_nis6_endrpcent;
+    _nss_nis6_endservent; _nss_nis6_endspent; _nss_nis6_getaliasbyname_r;
+    _nss_nis6_getaliasent_r; _nss_nis6_getetherent_r; _nss_nis6_getgrent_r;
+    _nss_nis6_getgrgid_r; _nss_nis6_getgrnam_r; _nss_nis6_gethostbyaddr_r;
+    _nss_nis6_gethostbyname2_r; _nss_nis6_gethostbyname_r; _nss_nis6_gethostent_r;
+    _nss_nis6_gethostton_r; _nss_nis6_getnetbyaddr_r; _nss_nis6_getnetbyname_r;
+    _nss_nis6_getnetent_r; _nss_nis6_getnetgrent_r; _nss_nis6_getntohost_r;
+    _nss_nis6_getprotobyname_r; _nss_nis6_getprotobynumber_r;
+    _nss_nis6_getprotoent_r; _nss_nis6_getpublickey; _nss_nis6_getpwent_r;
+    _nss_nis6_getpwnam_r; _nss_nis6_getpwuid_r; _nss_nis6_getrpcbyname_r;
+    _nss_nis6_getrpcbynumber_r; _nss_nis6_getrpcent_r; _nss_nis6_getsecretkey;
+    _nss_nis6_getservbyname_r; _nss_nis6_getservbyport_r; _nss_nis6_getservent_r;
+    _nss_nis6_getspent_r; _nss_nis6_getspnam_r;
+    _nss_nis6_netname2user; _nss_nis6_setaliasent; _nss_nis6_setetherent;
+    _nss_nis6_setgrent; _nss_nis6_sethostent; _nss_nis6_setnetent;
+    _nss_nis6_setnetgrent; _nss_nis6_setprotoent; _nss_nis6_setpwent;
+    _nss_nis6_setrpcent; _nss_nis6_setservent; _nss_nis6_setspent;
+    _nss_nis6_initgroups_dyn; _nss_nis6_gethostbyname4_r;
+
+  local:
+    *;
+};
