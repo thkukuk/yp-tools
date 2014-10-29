@@ -21,18 +21,19 @@
 #include <grp.h>
 #include <nss.h>
 #include <string.h>
-#include <bits/libc-lock.h>
-#include <rpcsvc/yp.h>
+#include <stdbool.h>
+#include <rpc/types.h>
 #include <rpcsvc/ypclnt.h>
 
-#include "nss-nis.h"
-#include <libnsl.h>
+#include "libc-symbols.h"
+#include "libc-lock.h"
+#include "nss-nis6.h"
 
 /* Get the declaration of the parser function.  */
 #define ENTNAME grent
 #define STRUCTURE group
 #define EXTERN_PARSER
-#include <nss/nss_files/files-parse.c>
+#include "files-parse.c"
 
 /* Protect global state against multiple changers */
 __libc_lock_define_initialized (static, lock)
@@ -44,7 +45,7 @@ static intern_t intern;
 
 
 static void
-internal_nis_endgrent (void)
+internal_nis6_endgrent (void)
 {
   new_start = 1;
   if (oldkey != NULL)
@@ -68,11 +69,11 @@ internal_nis_endgrent (void)
 
 
 enum nss_status
-_nss_nis_endgrent (void)
+_nss_nis6_endgrent (void)
 {
   __libc_lock_lock (lock);
 
-  internal_nis_endgrent ();
+  internal_nis6_endgrent ();
 
   __libc_lock_unlock (lock);
 
@@ -81,7 +82,7 @@ _nss_nis_endgrent (void)
 
 
 enum nss_status
-internal_nis_setgrent (void)
+internal_nis6_setgrent (void)
 {
   /* We have to read all the data now.  */
   char *domain;
@@ -90,7 +91,7 @@ internal_nis_setgrent (void)
 
   struct ypall_callback ypcb;
 
-  ypcb.foreach = _nis_saveit;
+  ypcb.foreach = _nis6_saveit;
   ypcb.data = (char *) &intern;
   enum nss_status status = yperr2nss (yp_all (domain, "group.byname", &ypcb));
 
@@ -107,25 +108,24 @@ internal_nis_setgrent (void)
 
 
 enum nss_status
-_nss_nis_setgrent (int stayopen)
+_nss_nis6_setgrent (int stayopen)
 {
   enum nss_status result = NSS_STATUS_SUCCESS;
 
   __libc_lock_lock (lock);
 
-  internal_nis_endgrent ();
+  internal_nis6_endgrent ();
 
   if (_nsl_default_nss () & NSS_FLAG_SETENT_BATCH_READ)
-    result = internal_nis_setgrent ();
+    result = internal_nis6_setgrent ();
 
   __libc_lock_unlock (lock);
 
   return result;
 }
 
-
 static enum nss_status
-internal_nis_getgrent_r (struct group *grp, char *buffer, size_t buflen,
+internal_nis6_getgrent_r (struct group *grp, char *buffer, size_t buflen,
 			 int *errnop)
 {
   /* If we read the entire database at setpwent time we just iterate
@@ -177,7 +177,7 @@ internal_nis_getgrent_r (struct group *grp, char *buffer, size_t buflen,
 	    {
 	      /* Maybe we should read the database in one piece.  */
 	      if ((_nsl_default_nss () & NSS_FLAG_SETENT_BATCH_READ)
-		  && internal_nis_setgrent () == NSS_STATUS_SUCCESS
+		  && internal_nis6_setgrent () == NSS_STATUS_SUCCESS
 		  && intern.start != NULL)
 		{
 		  batch_read = true;
@@ -242,14 +242,14 @@ internal_nis_getgrent_r (struct group *grp, char *buffer, size_t buflen,
 }
 
 enum nss_status
-_nss_nis_getgrent_r (struct group *result, char *buffer, size_t buflen,
+_nss_nis6_getgrent_r (struct group *result, char *buffer, size_t buflen,
 		     int *errnop)
 {
   int status;
 
   __libc_lock_lock (lock);
 
-  status = internal_nis_getgrent_r (result, buffer, buflen, errnop);
+  status = internal_nis6_getgrent_r (result, buffer, buflen, errnop);
 
   __libc_lock_unlock (lock);
 
@@ -257,7 +257,7 @@ _nss_nis_getgrent_r (struct group *result, char *buffer, size_t buflen,
 }
 
 enum nss_status
-_nss_nis_getgrnam_r (const char *name, struct group *grp,
+_nss_nis6_getgrnam_r (const char *name, struct group *grp,
 		     char *buffer, size_t buflen, int *errnop)
 {
   if (name == NULL)
@@ -310,7 +310,7 @@ _nss_nis_getgrnam_r (const char *name, struct group *grp,
 }
 
 enum nss_status
-_nss_nis_getgrgid_r (gid_t gid, struct group *grp,
+_nss_nis6_getgrgid_r (gid_t gid, struct group *grp,
 		     char *buffer, size_t buflen, int *errnop)
 {
   char *domain;

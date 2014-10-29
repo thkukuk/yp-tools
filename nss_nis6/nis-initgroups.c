@@ -16,7 +16,6 @@
    License along with the GNU C Library; if not, see
    <http://www.gnu.org/licenses/>.  */
 
-#include <alloca.h>
 #include <ctype.h>
 #include <errno.h>
 #include <grp.h>
@@ -24,18 +23,17 @@
 #include <pwd.h>
 #include <string.h>
 #include <unistd.h>
-#include <rpcsvc/yp.h>
+#include <rpc/rpc.h>
 #include <rpcsvc/ypclnt.h>
 #include <sys/param.h>
 
-#include "nss-nis.h"
-#include <libnsl.h>
+#include "nss-nis6.h"
 
 /* Get the declaration of the parser function.  */
 #define ENTNAME grent
 #define STRUCTURE group
 #define EXTERN_PARSER
-#include <nss/nss_files/files-parse.c>
+#include "files-parse.c"
 
 
 static enum nss_status
@@ -44,7 +42,7 @@ internal_setgrent (char *domainname, intern_t *intern)
   struct ypall_callback ypcb;
   enum nss_status status;
 
-  ypcb.foreach = _nis_saveit;
+  ypcb.foreach = _nis6_saveit;
   ypcb.data = (char *) intern;
   status = yperr2nss (yp_all (domainname, "group.byname", &ypcb));
 
@@ -121,7 +119,9 @@ static int
 get_uid (const char *user, uid_t *uidp)
 {
   size_t buflen = sysconf (_SC_GETPW_R_SIZE_MAX);
-  char *buf = (char *) alloca (buflen);
+  char *buf = (char *) malloc (buflen);
+  if (buf == NULL)
+    return 1;
 
   while (1)
     {
@@ -138,7 +138,8 @@ get_uid (const char *user, uid_t *uidp)
       if (r != ERANGE)
 	break;
 
-      buf = extend_alloca (buf, buflen, 2 * buflen);
+      buf = realloc (buf, 2 * buflen);
+      buflen = 2 * buflen;
     }
 
   return 1;
@@ -232,7 +233,7 @@ initgroups_netid (uid_t uid, gid_t group, long int *start, long int *size,
 
 
 enum nss_status
-_nss_nis_initgroups_dyn (const char *user, gid_t group, long int *start,
+_nss_nis6_initgroups_dyn (const char *user, gid_t group, long int *start,
 			 long int *size, gid_t **groupsp, long int limit,
 			 int *errnop)
 {
@@ -264,7 +265,9 @@ _nss_nis_initgroups_dyn (const char *user, gid_t group, long int *start,
   if (status != NSS_STATUS_SUCCESS)
     return status;
 
-  tmpbuf = __alloca (buflen);
+  tmpbuf = malloc (buflen);
+  if (tmpbuf == NULL)
+    return NSS_STATUS_TRYAGAIN;
 
   do
     {
@@ -272,7 +275,10 @@ _nss_nis_initgroups_dyn (const char *user, gid_t group, long int *start,
 	      internal_getgrent_r (&grpbuf, tmpbuf, buflen, errnop,
 				   &intern)) == NSS_STATUS_TRYAGAIN
              && *errnop == ERANGE)
-	tmpbuf = extend_alloca (tmpbuf, buflen, 2 * buflen);
+	{
+	  tmpbuf = realloc (tmpbuf, 2 * buflen);
+	  buflen = 2 * buflen;
+	}
 
       if (status != NSS_STATUS_SUCCESS)
 	goto done;

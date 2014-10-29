@@ -30,10 +30,13 @@ LIBNIS_1.0 {
     xdr_ypstat;
     yp_all;
     yp_bind;
+    yp_first;
     yp_get_default_domain;
     yp_maplist;
     yp_master;
     yp_match;
+    yp_next;
+    yp_order;
     yp_unbind;
     ypbinderr_string;
     yperr_string;

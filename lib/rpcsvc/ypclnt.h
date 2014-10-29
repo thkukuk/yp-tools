@@ -76,6 +76,7 @@ extern const char *ypbinderr_string (const int) __THROW;
 extern int ypprot_err (const int) __THROW;
 extern int yp_update (char *, char *, unsigned int,  char *,
 		      int, char *, int) __THROW;
+
 #if 0
 extern int yp_maplist (const char *, struct ypmaplist **) __THROW;
 #endif

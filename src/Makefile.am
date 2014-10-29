@@ -14,9 +14,10 @@ LDADD = ../lib/libnis.la
 
 CLEANFILES = *~ domainname
 
-EXTRA_PROGRAMS = domainname yptest
+EXTRA_PROGRAMS = domainname
 bin_PROGRAMS = ypwhich ypmatch ypcat yppasswd @DOMAINNAME@
 sbin_PROGRAMS = yppoll ypset
+noinst_PROGRAMS = yptest
 
 yppasswd_SOURCES = yppasswd.c yppasswd_xdr.c
 yppasswd_LDADD = ${LDADD} @LIBCRYPT@ @LIBCRACK@
@@ -26,6 +27,8 @@ domainname_LDADD = ../lib/yp_get_default_domain.lo ../lib/yperr_string.lo
 ypcat_LDADD = ${LDADD} ../lib/libyptools.a
 ypmatch_LDADD = ${LDADD} ../lib/libyptools.a
 ypwhich_LDADD = ${LDADD} ../lib/libyptools.a
+
+yptest_LDADD = ${LDADD} ../lib/yp_all_host.o
 
 install-exec-hook:
 	ln -f ${DESTDIR}${bindir}/yppasswd ${DESTDIR}${bindir}/ypchsh

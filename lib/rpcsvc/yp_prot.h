@@ -273,6 +273,7 @@ struct ypbind2_resp {
 };
 typedef struct ypbind2_resp ypbind2_resp;
 #define ypbind2_error ypbind_respbody.ypbind_error
+#define ypbind2_bindinfo ypbind_respbody.ypbind_bindinfo
 #define ypbind2_addr ypbind_respbody.ypbind_bindinfo.ypbind_binding_addr
 #define ypbind2_port ypbind_respbody.ypbind_bindinfo.ypbind_binding_port
 
@@ -315,6 +316,7 @@ struct ypbind3_resp {
 };
 typedef struct ypbind3_resp ypbind3_resp;
 #define ypbind3_error ypbind_respbody.ypbind_error
+#define ypbind3_bindinfo ypbind_respbody.ypbind_bindinfo
 #define ypbind3_nconf ypbind_respbody.ypbind_bindinfo->ypbind_nconf
 #define ypbind3_svcaddr ypbind_respbody.ypbind_bindinfo->ypbind_svcaddr
 #define ypbind3_servername ypbind_respbody.ypbind_bindinfo->ypbind_servername

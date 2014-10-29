@@ -1,4 +1,4 @@
-/* Copyright (C) 2001, 2002, 2013 Thorsten Kukuk
+/* Copyright (C) 2001, 2002, 2013, 2014 Thorsten Kukuk
    This file is part of the yp-tools.
    Author: Thorsten Kukuk <kukuk@suse.de>
 
@@ -20,11 +20,9 @@
 #include "config.h"
 #endif
 
-#ifdef HAVE_GETOPT_H
+#define NEED_YP_MAPLIST
+
 #include <getopt.h>
-#else
-#include "lib/getopt.h"
-#endif
 #include <locale.h>
 #include <libintl.h>
 #include <netdb.h>
@@ -34,16 +32,15 @@
 #include <arpa/inet.h>
 #include <string.h>
 #include <rpc/rpc.h>
-#ifdef HAVE_RPC_CLNT_SOC_H
-#include <rpc/clnt_soc.h>
-#endif
-#include "lib/yp-tools.h"
+#include <rpcsvc/yp_prot.h>
 #include "lib/nicknames.h"
 #include "lib/yp_all_host.h"
 
 #ifndef _
 #define _(String) gettext (String)
 #endif
+
+extern int yp_maplist (const char *, struct ypmaplist **);
 
 static int be_quiet = 0;
 
@@ -57,7 +54,7 @@ print_version (void)
 Copyright (C) %s Thorsten Kukuk.\n\
 This is free software; see the source for copying conditions.  There is NO\n\
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\
-"), "2001");
+"), "2014");
   fprintf (stdout, _("Written by %s.\n"), "Thorsten Kukuk");
 }
 
@@ -98,22 +95,57 @@ print_error (void)
 	   program, program);
 }
 
+static void
+dump_nconf (struct netconfig *nconf, char *prefix)
+{
+  printf ("%snc_netid: %s\n", prefix, nconf->nc_netid);
+  printf ("%snc_semantics: %lu\n", prefix, nconf->nc_semantics);
+  printf ("%snc_flag: %lu\n", prefix, nconf->nc_flag);
+  printf ("%snc_protofmly: '%s'\n", prefix, nconf->nc_protofmly);
+  printf ("%snc_proto: '%s'\n", prefix, nconf->nc_proto);
+  printf ("%snc_device: '%s'\n", prefix, nconf->nc_device);
+  printf ("%snc_nlookups: %lu\n", prefix, nconf->nc_nlookups);
+}
+
+static void
+ypbind3_binding_dump (struct ypbind3_binding *ypb3)
+{
+  char buf[INET6_ADDRSTRLEN];
+
+  printf ("ypbind_nconf:\n");
+  if (ypb3->ypbind_nconf)
+    dump_nconf (ypb3->ypbind_nconf, "\t");
+  else
+    printf ("\tNULL\n");
+
+  printf ("ypbind_svcaddr: %s:%i\n",
+          taddr2ipstr (ypb3->ypbind_nconf, ypb3->ypbind_svcaddr,
+                       buf, sizeof (buf)),
+          taddr2port (ypb3->ypbind_nconf, ypb3->ypbind_svcaddr));
+
+  printf ("ypbind_servername: ");
+  if (ypb3->ypbind_servername)
+    printf ("%s\n", ypb3->ypbind_servername);
+  else
+    printf ("NULL\n");
+  printf ("ypbind_hi_vers: %lu\n", (u_long) ypb3->ypbind_hi_vers);
+  printf ("ypbind_lo_vers: %lu\n", (u_long) ypb3->ypbind_lo_vers);
+}
+
 /* bind to a special host and print the name ypbind running on this host
    is bound to */
 static int
-print_bindhost (char *domain, struct sockaddr_in *socka_in, int vers)
+print_bindhost (const char *domain, const char *hostname, int vers)
 {
-  struct hostent *host = NULL;
-  struct ypbind_resp yp_r;
+  struct ypbind2_resp yp_r2;
+  struct ypbind3_resp yp_r3;
   struct timeval tv;
   CLIENT *client;
-  int sock, ret;
-  struct in_addr saddr;
+  int ret;
 
-  sock = RPC_ANYSOCK;
   tv.tv_sec = 5;
   tv.tv_usec = 0;
-  client = clntudp_create (socka_in, YPBINDPROG, vers, tv, &sock);
+  client = clnt_create (hostname, YPBINDPROG, vers, "udp");
   if (client == NULL)
     {
       if (!be_quiet)
@@ -121,17 +153,18 @@ print_bindhost (char *domain, struct sockaddr_in *socka_in, int vers)
       return 1;
     }
 
+  memset (&yp_r2, 0, sizeof (yp_r2));
+  memset (&yp_r3, 0, sizeof (yp_r3));
   tv.tv_sec = 15;
   tv.tv_usec = 0;
-  if (vers == 1)
-    ret = clnt_call (client, YPBINDPROC_OLDDOMAIN,
-                     (xdrproc_t) ytxdr_domainname,
-                     (caddr_t) &domain, (xdrproc_t) ytxdr_ypbind_resp,
-                     (caddr_t) &yp_r, tv);
+  if (vers == 1 || vers == 2)
+    ret = clnt_call (client, YPBINDPROC_DOMAIN, (xdrproc_t) xdr_domainname,
+                     (caddr_t) &domain, (xdrproc_t) xdr_ypbind2_resp,
+                     (caddr_t) &yp_r2, tv);
   else
-    ret = clnt_call (client, YPBINDPROC_DOMAIN, (xdrproc_t) ytxdr_domainname,
-                     (caddr_t) &domain, (xdrproc_t) ytxdr_ypbind_resp,
-                     (caddr_t) &yp_r, tv);
+    ret = clnt_call (client, YPBINDPROC_DOMAIN, (xdrproc_t) xdr_domainname,
+                     (caddr_t) &domain, (xdrproc_t) xdr_ypbind3_resp,
+                     (caddr_t) &yp_r3, tv);
 
   if (ret != RPC_SUCCESS)
     {
@@ -142,26 +175,33 @@ print_bindhost (char *domain, struct sockaddr_in *socka_in, int vers)
     }
   else
     {
-      if (yp_r.ypbind_status != YPBIND_SUCC_VAL)
+      if (vers == 1 || vers == 2)
+	{
+	  if (yp_r2.ypbind_status != YPBIND_SUCC_VAL)
+	    {
+	      if (!be_quiet)
+		fprintf (stderr, _("can't yp_bind: Reason: %s\n"),
+			 ypbinderr_string (yp_r2.ypbind2_error));
+	      clnt_destroy (client);
+	      return 1;
+	    }
+
+	  if (!be_quiet)
+	    printf (_("Used NIS server: %s\n"), inet_ntoa (yp_r2.ypbind2_addr));
+	}
+      else if (yp_r3.ypbind_status != YPBIND_SUCC_VAL)
         {
 	  if (!be_quiet)
 	    fprintf (stderr, _("can't yp_bind: Reason: %s\n"),
-		     ypbinderr_string (yp_r.ypbind_respbody.ypbind_error));
+		     ypbinderr_string (yp_r3.ypbind3_error));
           clnt_destroy (client);
           return 1;
         }
+      if (!be_quiet)
+	ypbind3_binding_dump (yp_r3.ypbind3_bindinfo);
     }
   clnt_destroy (client);
 
-  saddr = yp_r.ypbind_respbody.ypbind_bindinfo.ypbind_binding_addr;
-  host = gethostbyaddr ((char *) &saddr, sizeof (saddr), AF_INET);
-  if (!be_quiet)
-    {
-      if (host)
-	printf (_("Used NIS server: %s\n"), host->h_name);
-      else
-	printf (_("Used NIS server: %s\n"), inet_ntoa (saddr));
-    }
   return 0;
 }
 
@@ -298,40 +338,15 @@ main (int argc, char **argv)
 
   if (!be_quiet)
     printf ("\nTest 2: ypbind\n");
+  /* XXX test version 1, 3, too */
   if (hostname)
     {
-      struct sockaddr_in sock_in;
-      struct hostent *host;
-
-      memset (&sock_in, 0, sizeof sock_in);
-      sock_in.sin_family = AF_INET;
-
-      if (inet_aton (hostname, &sock_in.sin_addr) == 0)
-	{
-	  host = gethostbyname (hostname);
-	  if (!host)
-	    {
-	      if (!be_quiet)
-		fprintf (stderr, _("yptest: host %s unknown\n"),
-			 hostname);
-	      return 1;
-	    }
-	  memcpy (&sock_in.sin_addr, host->h_addr_list[0],
-		  sizeof (sock_in.sin_addr));
-
-	  if (print_bindhost (domainname, &sock_in, 2))
-	    return 1;
-	}
+      if (print_bindhost (domainname, hostname, 2))
+	return 1;
     }
   else
     {
-      struct sockaddr_in sock_in;
-
-      memset (&sock_in, 0, sizeof sock_in);
-      sock_in.sin_family = AF_INET;
-      sock_in.sin_addr.s_addr = htonl (INADDR_LOOPBACK);
-
-      if (print_bindhost (domainname, &sock_in, 2))
+      if (print_bindhost (domainname, "localhost", 2))
 	return 1;
     }
 
@@ -476,7 +491,7 @@ main (int argc, char **argv)
     printf("\nTest 9: yp_all\n");
   Callback.foreach = print_data;
   if (hostname)
-    status = yp_all_host (hostname, domainname, map, &Callback);
+    status = yp_all_host (domainname, map, &Callback, hostname);
   else
     status = yp_all(domainname, map, &Callback);
   switch (status)

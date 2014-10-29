@@ -22,18 +22,17 @@
 #include <string.h>
 #include <syslog.h>
 #include <rpc/rpc.h>
-#include <rpcsvc/yp.h>
 #include <rpcsvc/ypclnt.h>
 #include <rpc/key_prot.h>
 #include <rpc/des_crypt.h>
 
-#include "nss-nis.h"
+#include "nss-nis6.h"
 
 /* If we haven't found the entry, we give a SUCCESS and an empty key back.
    Solaris docu says: sizeof (pkey) == HEXKEYBYTES + 1.
 */
 enum nss_status
-_nss_nis_getpublickey (const char *netname, char *pkey, int *errnop)
+_nss_nis6_getpublickey (const char *netname, char *pkey, int *errnop)
 {
   pkey[0] = 0;
 
@@ -78,7 +77,7 @@ _nss_nis_getpublickey (const char *netname, char *pkey, int *errnop)
 }
 
 enum nss_status
-_nss_nis_getsecretkey (const char *netname, char *skey, char *passwd,
+_nss_nis6_getsecretkey (const char *netname, char *skey, char *passwd,
 		       int *errnop)
 {
   skey[0] = 0;
@@ -192,7 +191,7 @@ parse_netid_str (const char *s, uid_t *uidp, gid_t *gidp, int *gidlenp,
 
 
 enum nss_status
-_nss_nis_netname2user (char netname[MAXNETNAMELEN + 1], uid_t *uidp,
+_nss_nis6_netname2user (char netname[MAXNETNAMELEN + 1], uid_t *uidp,
 		       gid_t *gidp, int *gidlenp, gid_t *gidlist, int *errnop)
 {
   char *domain = strchr (netname, '@');

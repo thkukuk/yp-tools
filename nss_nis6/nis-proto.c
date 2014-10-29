@@ -21,16 +21,17 @@
 #include <ctype.h>
 #include <errno.h>
 #include <string.h>
-#include <bits/libc-lock.h>
-#include <rpcsvc/yp.h>
+#include <rpc/types.h>
+#include <rpcsvc/yp_prot.h>
 #include <rpcsvc/ypclnt.h>
 
-#include "nss-nis.h"
+#include "libc-lock.h"
+#include "nss-nis6.h"
 
 /* Get the declaration of the parser function.  */
 #define ENTNAME protoent
 #define EXTERN_PARSER
-#include <nss/nss_files/files-parse.c>
+#include "files-parse.c"
 
 __libc_lock_define_initialized (static, lock)
 
@@ -70,7 +71,7 @@ saveit (int instatus, char *inkey, int inkeylen, char *inval,
 }
 
 static void
-internal_nis_endprotoent (void)
+internal_nis6_endprotoent (void)
 {
   while (start != NULL)
     {
@@ -81,7 +82,7 @@ internal_nis_endprotoent (void)
 }
 
 static enum nss_status
-internal_nis_setprotoent (void)
+internal_nis6_setprotoent (void)
 {
   char *domainname;
   struct ypall_callback ypcb;
@@ -89,7 +90,7 @@ internal_nis_setprotoent (void)
 
   yp_get_default_domain (&domainname);
 
-  internal_nis_endprotoent ();
+  internal_nis6_endprotoent ();
 
   ypcb.foreach = saveit;
   ypcb.data = NULL;
@@ -100,13 +101,13 @@ internal_nis_setprotoent (void)
 }
 
 enum nss_status
-_nss_nis_setprotoent (int stayopen)
+_nss_nis6_setprotoent (int stayopen)
 {
   enum nss_status status;
 
   __libc_lock_lock (lock);
 
-  status = internal_nis_setprotoent ();
+  status = internal_nis6_setprotoent ();
 
   __libc_lock_unlock (lock);
 
@@ -114,11 +115,11 @@ _nss_nis_setprotoent (int stayopen)
 }
 
 enum nss_status
-_nss_nis_endprotoent (void)
+_nss_nis6_endprotoent (void)
 {
   __libc_lock_lock (lock);
 
-  internal_nis_endprotoent ();
+  internal_nis6_endprotoent ();
   next = NULL;
 
   __libc_lock_unlock (lock);
@@ -127,14 +128,14 @@ _nss_nis_endprotoent (void)
 }
 
 static enum nss_status
-internal_nis_getprotoent_r (struct protoent *proto,
+internal_nis6_getprotoent_r (struct protoent *proto,
 			    char *buffer, size_t buflen, int *errnop)
 {
   struct parser_data *data = (void *) buffer;
   int parse_res;
 
   if (start == NULL)
-    internal_nis_setprotoent ();
+    internal_nis6_setprotoent ();
 
   /* Get the next entry until we found a correct one. */
   do
@@ -160,14 +161,14 @@ internal_nis_getprotoent_r (struct protoent *proto,
 }
 
 enum nss_status
-_nss_nis_getprotoent_r (struct protoent *proto, char *buffer, size_t buflen,
+_nss_nis6_getprotoent_r (struct protoent *proto, char *buffer, size_t buflen,
 			int *errnop)
 {
   enum nss_status status;
 
   __libc_lock_lock (lock);
 
-  status = internal_nis_getprotoent_r (proto, buffer, buflen, errnop);
+  status = internal_nis6_getprotoent_r (proto, buffer, buflen, errnop);
 
   __libc_lock_unlock (lock);
 
@@ -175,7 +176,7 @@ _nss_nis_getprotoent_r (struct protoent *proto, char *buffer, size_t buflen,
 }
 
 enum nss_status
-_nss_nis_getprotobyname_r (const char *name, struct protoent *proto,
+_nss_nis6_getprotobyname_r (const char *name, struct protoent *proto,
 			   char *buffer, size_t buflen, int *errnop)
 {
   if (name == NULL)
@@ -228,7 +229,7 @@ _nss_nis_getprotobyname_r (const char *name, struct protoent *proto,
 }
 
 enum nss_status
-_nss_nis_getprotobynumber_r (int number, struct protoent *proto,
+_nss_nis6_getprotobynumber_r (int number, struct protoent *proto,
 			     char *buffer, size_t buflen, int *errnop)
 {
   char *domain;

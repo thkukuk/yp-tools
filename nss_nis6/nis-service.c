@@ -21,18 +21,18 @@
 #include <ctype.h>
 #include <errno.h>
 #include <string.h>
-#include <bits/libc-lock.h>
-#include <rpcsvc/yp.h>
+#include <rpc/rpc.h>
 #include <rpcsvc/ypclnt.h>
+#include <rpcsvc/yp_prot.h>
 
-#include "nss-nis.h"
-#include <libnsl.h>
+#include "libc-lock.h"
+#include "nss-nis6.h"
 
 
 /* Get the declaration of the parser function.  */
 #define ENTNAME servent
 #define EXTERN_PARSER
-#include <nss/nss_files/files-parse.c>
+#include "files-parse.c"
 
 __libc_lock_define_initialized (static, lock)
 
@@ -110,7 +110,7 @@ dosearch (int instatus, char *inkey, int inkeylen, char *inval,
 }
 
 static void
-internal_nis_endservent (void)
+internal_nis6_endservent (void)
 {
   struct response_t *curr = intern.next;
 
@@ -125,11 +125,11 @@ internal_nis_endservent (void)
 }
 
 enum nss_status
-_nss_nis_endservent (void)
+_nss_nis6_endservent (void)
 {
   __libc_lock_lock (lock);
 
-  internal_nis_endservent ();
+  internal_nis6_endservent ();
 
   __libc_lock_unlock (lock);
 
@@ -137,7 +137,7 @@ _nss_nis_endservent (void)
 }
 
 static enum nss_status
-internal_nis_setservent (void)
+internal_nis6_setservent (void)
 {
   char *domainname;
   struct ypall_callback ypcb;
@@ -146,9 +146,9 @@ internal_nis_setservent (void)
   if (yp_get_default_domain (&domainname))
     return NSS_STATUS_UNAVAIL;
 
-  internal_nis_endservent ();
+  internal_nis6_endservent ();
 
-  ypcb.foreach = _nis_saveit;
+  ypcb.foreach = _nis6_saveit;
   ypcb.data = (char *) &intern;
   status = yperr2nss (yp_all (domainname, "services.byname", &ypcb));
 
@@ -163,13 +163,13 @@ internal_nis_setservent (void)
 }
 
 enum nss_status
-_nss_nis_setservent (int stayopen)
+_nss_nis6_setservent (int stayopen)
 {
   enum nss_status status;
 
   __libc_lock_lock (lock);
 
-  status = internal_nis_setservent ();
+  status = internal_nis6_setservent ();
 
   __libc_lock_unlock (lock);
 
@@ -177,7 +177,7 @@ _nss_nis_setservent (int stayopen)
 }
 
 static enum nss_status
-internal_nis_getservent_r (struct servent *serv, char *buffer,
+internal_nis6_getservent_r (struct servent *serv, char *buffer,
 			   size_t buflen, int *errnop)
 {
   struct parser_data *pdata = (void *) buffer;
@@ -185,7 +185,7 @@ internal_nis_getservent_r (struct servent *serv, char *buffer,
   char *p;
 
   if (intern.start == NULL)
-    internal_nis_setservent ();
+    internal_nis6_setservent ();
 
   if (intern.next == NULL)
     /* Not one entry in the map.  */
@@ -239,14 +239,14 @@ internal_nis_getservent_r (struct servent *serv, char *buffer,
 }
 
 enum nss_status
-_nss_nis_getservent_r (struct servent *serv, char *buffer, size_t buflen,
+_nss_nis6_getservent_r (struct servent *serv, char *buffer, size_t buflen,
 		       int *errnop)
 {
   enum nss_status status;
 
   __libc_lock_lock (lock);
 
-  status = internal_nis_getservent_r (serv, buffer, buflen, errnop);
+  status = internal_nis6_getservent_r (serv, buffer, buflen, errnop);
 
   __libc_lock_unlock (lock);
 
@@ -254,7 +254,7 @@ _nss_nis_getservent_r (struct servent *serv, char *buffer, size_t buflen,
 }
 
 enum nss_status
-_nss_nis_getservbyname_r (const char *name, const char *protocol,
+_nss_nis6_getservbyname_r (const char *name, const char *protocol,
 			  struct servent *serv, char *buffer, size_t buflen,
 			  int *errnop)
 {
@@ -350,7 +350,7 @@ _nss_nis_getservbyname_r (const char *name, const char *protocol,
 }
 
 enum nss_status
-_nss_nis_getservbyport_r (int port, const char *protocol,
+_nss_nis6_getservbyport_r (int port, const char *protocol,
 			  struct servent *serv, char *buffer,
 			  size_t buflen, int *errnop)
 {

@@ -21,22 +21,21 @@
 #include <errno.h>
 #include <string.h>
 /* The following is an ugly trick to avoid a prototype declaration for
-   _nss_nis_endspent.  */
-#define _nss_nis_endspent _nss_nis_endspent_XXX
+   _nss_nis6_endspent.  */
+#define _nss_nis6_endspent _nss_nis6_endspent_XXX
 #include <shadow.h>
-#undef _nss_nis_endspent
-#include <bits/libc-lock.h>
-#include <rpcsvc/yp.h>
+#undef _nss_nis6_endspent
 #include <rpcsvc/ypclnt.h>
 
-#include "nss-nis.h"
-#include <libnsl.h>
+#include "libc-symbols.h"
+#include "libc-lock.h"
+#include "nss-nis6.h"
 
 /* Get the declaration of the parser function.  */
 #define ENTNAME spent
 #define STRUCTURE spwd
 #define EXTERN_PARSER
-#include <nss/nss_files/files-parse.c>
+#include "files-parse.c"
 
 /* Protect global state against multiple changers */
 __libc_lock_define_initialized (static, lock)
@@ -47,7 +46,7 @@ static char *oldkey;
 static int oldkeylen;
 
 enum nss_status
-_nss_nis_setspent (int stayopen)
+_nss_nis6_setspent (int stayopen)
 {
   __libc_lock_lock (lock);
 
@@ -61,13 +60,13 @@ _nss_nis_setspent (int stayopen)
 
   return NSS_STATUS_SUCCESS;
 }
-/* Make _nss_nis_endspent an alias of _nss_nis_setspent.  We do this
+/* Make _nss_nis6_endspent an alias of _nss_nis6_setspent.  We do this
    even though the prototypes don't match.  The argument of setspent
    is not used so this makes no difference.  */
-strong_alias (_nss_nis_setspent, _nss_nis_endspent)
+strong_alias (_nss_nis6_setspent, _nss_nis6_endspent)
 
 static enum nss_status
-internal_nis_getspent_r (struct spwd *sp, char *buffer, size_t buflen,
+internal_nis6_getspent_r (struct spwd *sp, char *buffer, size_t buflen,
 			 int *errnop)
 {
   char *domain;
@@ -151,14 +150,14 @@ internal_nis_getspent_r (struct spwd *sp, char *buffer, size_t buflen,
 }
 
 enum nss_status
-_nss_nis_getspent_r (struct spwd *result, char *buffer, size_t buflen,
+_nss_nis6_getspent_r (struct spwd *result, char *buffer, size_t buflen,
 		     int *errnop)
 {
   int status;
 
   __libc_lock_lock (lock);
 
-  status = internal_nis_getspent_r (result, buffer, buflen, errnop);
+  status = internal_nis6_getspent_r (result, buffer, buflen, errnop);
 
   __libc_lock_unlock (lock);
 
@@ -166,7 +165,7 @@ _nss_nis_getspent_r (struct spwd *result, char *buffer, size_t buflen,
 }
 
 enum nss_status
-_nss_nis_getspnam_r (const char *name, struct spwd *sp,
+_nss_nis6_getspnam_r (const char *name, struct spwd *sp,
 		     char *buffer, size_t buflen, int *errnop)
 {
   if (name == NULL)

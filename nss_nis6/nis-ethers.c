@@ -20,22 +20,31 @@
 #include <ctype.h>
 #include <errno.h>
 #include <string.h>
-#include <bits/libc-lock.h>
-#include <rpcsvc/yp.h>
-#include <rpcsvc/ypclnt.h>
 #include <netinet/ether.h>
-#include <netinet/if_ether.h>
+#include <rpcsvc/ypclnt.h>
+#include <rpcsvc/yp_prot.h>
 
-#include "nss-nis.h"
+#include "libc-symbols.h"
+#include "libc-lock.h"
+#include "nss-nis6.h"
 
 /* Protect global state against multiple changers */
 __libc_lock_define_initialized (static, lock)
+
+/* Because the `ethers' lookup does not fit so well in the scheme we
+   define a dummy struct here which helps us to use the available
+   functions.  */
+struct etherent
+{
+  const char *e_name;
+  struct ether_addr e_addr;
+};
 
 /* Get the declaration of the parser function.  */
 #define ENTNAME etherent
 #define STRUCTURE etherent
 #define EXTERN_PARSER
-#include <nss/nss_files/files-parse.c>
+#include "files-parse.c"
 
 struct response
 {
@@ -73,7 +82,7 @@ saveit (int instatus, char *inkey, int inkeylen, char *inval,
 }
 
 static void
-internal_nis_endetherent (void)
+internal_nis6_endetherent (void)
 {
   while (start != NULL)
     {
@@ -84,11 +93,11 @@ internal_nis_endetherent (void)
 }
 
 enum nss_status
-_nss_nis_endetherent (void)
+_nss_nis6_endetherent (void)
 {
   __libc_lock_lock (lock);
 
-  internal_nis_endetherent ();
+  internal_nis6_endetherent ();
   next = NULL;
 
   __libc_lock_unlock (lock);
@@ -97,7 +106,7 @@ _nss_nis_endetherent (void)
 }
 
 static enum nss_status
-internal_nis_setetherent (void)
+internal_nis6_setetherent (void)
 {
   char *domainname;
   struct ypall_callback ypcb;
@@ -105,7 +114,7 @@ internal_nis_setetherent (void)
 
   yp_get_default_domain (&domainname);
 
-  internal_nis_endetherent ();
+  internal_nis6_endetherent ();
 
   ypcb.foreach = saveit;
   ypcb.data = NULL;
@@ -116,13 +125,13 @@ internal_nis_setetherent (void)
 }
 
 enum nss_status
-_nss_nis_setetherent (int stayopen)
+_nss_nis6_setetherent (int stayopen)
 {
   enum nss_status result;
 
   __libc_lock_lock (lock);
 
-  result = internal_nis_setetherent ();
+  result = internal_nis6_setetherent ();
 
   __libc_lock_unlock (lock);
 
@@ -130,14 +139,14 @@ _nss_nis_setetherent (int stayopen)
 }
 
 static enum nss_status
-internal_nis_getetherent_r (struct etherent *eth, char *buffer, size_t buflen,
-			    int *errnop)
+internal_nis6_getetherent_r (struct etherent *eth, char *buffer, size_t buflen,
+			     int *errnop)
 {
   struct parser_data *data = (void *) buffer;
   int parse_res;
 
   if (start == NULL)
-    internal_nis_setetherent ();
+    internal_nis6_setetherent ();
 
   /* Get the next entry until we found a correct one. */
   do
@@ -163,14 +172,14 @@ internal_nis_getetherent_r (struct etherent *eth, char *buffer, size_t buflen,
 }
 
 enum nss_status
-_nss_nis_getetherent_r (struct etherent *result, char *buffer, size_t buflen,
-			int *errnop)
+_nss_nis6_getetherent_r (struct etherent *result, char *buffer, size_t buflen,
+			 int *errnop)
 {
   int status;
 
   __libc_lock_lock (lock);
 
-  status = internal_nis_getetherent_r (result, buffer, buflen, errnop);
+  status = internal_nis6_getetherent_r (result, buffer, buflen, errnop);
 
   __libc_lock_unlock (lock);
 
@@ -178,8 +187,8 @@ _nss_nis_getetherent_r (struct etherent *result, char *buffer, size_t buflen,
 }
 
 enum nss_status
-_nss_nis_gethostton_r (const char *name, struct etherent *eth,
-		       char *buffer, size_t buflen, int *errnop)
+_nss_nis6_gethostton_r (const char *name, struct etherent *eth,
+			char *buffer, size_t buflen, int *errnop)
 {
   if (name == NULL)
     {
@@ -231,8 +240,8 @@ _nss_nis_gethostton_r (const char *name, struct etherent *eth,
 }
 
 enum nss_status
-_nss_nis_getntohost_r (const struct ether_addr *addr, struct etherent *eth,
-		       char *buffer, size_t buflen, int *errnop)
+_nss_nis6_getntohost_r (const struct ether_addr *addr, struct etherent *eth,
+			char *buffer, size_t buflen, int *errnop)
 {
   if (addr == NULL)
     {

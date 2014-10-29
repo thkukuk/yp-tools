@@ -20,7 +20,5 @@ extern int do_ypcall (const char *domain, u_long prog, xdrproc_t xargs,
 		      caddr_t req, xdrproc_t xres, caddr_t resp);
 extern int do_ypcall_tr (const char *domain, u_long prog, xdrproc_t xargs,
 			 caddr_t req, xdrproc_t xres, caddr_t resp);
-
 extern int yp_maplist (const char *, struct ypmaplist **);
-
 #endif

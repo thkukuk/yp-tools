@@ -153,6 +153,7 @@ yp_bind_ypbindprog (const char *domain, dom_binding *ysd)
 	}
 #endif
 
+      memset (&ypbr, 0, sizeof (ypbr));
       if ((ret = clnt_call (client, YPBINDPROC_DOMAIN,
 			    (xdrproc_t) xdr_domainname, (caddr_t) &domain,
 			    (xdrproc_t) xdr_ypbind3_resp,
@@ -169,7 +170,8 @@ yp_bind_ypbindprog (const char *domain, dom_binding *ysd)
       if (ypbr.ypbind_status != YPBIND_SUCC_VAL)
 	return YPERR_DOMAIN;
 
-      free (ysd->server);
+      if (ysd->server)
+	free (ysd->server);
       ysd->server = NULL;
 
       yp_bind_client_create_v3 (domain, ysd, ypbr.ypbind_respbody.ypbind_bindinfo);
@@ -196,6 +198,7 @@ yp_bind_ypbindprog (const char *domain, dom_binding *ysd)
 	}
 #endif
 
+      memset (&ypbr, 0, sizeof (ypbr));
       if (clnt_call (client, YPBINDPROC_DOMAIN,
 		     (xdrproc_t) xdr_domainname, (caddr_t) &domain,
 		     (xdrproc_t) xdr_ypbind2_resp,
@@ -210,7 +213,8 @@ yp_bind_ypbindprog (const char *domain, dom_binding *ysd)
       if (ypbr.ypbind_status != YPBIND_SUCC_VAL)
 	return YPERR_DOMAIN;
 
-      free (ysd->server);
+      if (ysd->server)
+	free (ysd->server);
       ysd->server = NULL;
 
       yp_bind_client_create_v2 (domain, ysd, &ypbr);
@@ -518,12 +522,11 @@ yp_all (const char *indomain, const char *inmap,
 {
   struct ypreq_nokey req;
   dom_binding *ydb = NULL;
+  char *server = NULL;
   int try, res;
   enum clnt_stat result;
-  struct sockaddr_in clnt_sin;
   CLIENT *clnt;
   struct ypresp_all_data data;
-  int clnt_sock;
   int saved_errno = errno;
 
   if (indomain == NULL || indomain[0] == '\0'
@@ -533,27 +536,27 @@ yp_all (const char *indomain, const char *inmap,
   try = 0;
   res = YPERR_YPERR;
 
+  // XXX __libc_lock_lock (ypbindlist_lock);
+
   while (try < MAXTRIES && res != YPERR_SUCCESS)
-    {
+    {  
       if (__yp_bind (indomain, &ydb) != 0)
         {
-	  errno = saved_errno;
-          return YPERR_DOMAIN;
+          res = YPERR_DOMAIN;
+	  goto out;
         }
 
-      clnt_sock = RPC_ANYSOCK;
-      clnt_sin = ydb->dom_server_addr;
-      clnt_sin.sin_port = 0;
+      server = strdup (ydb->server);
 
       /* We don't need the UDP connection anymore.  */
       __yp_unbind (ydb);
       ydb = NULL;
 
-      clnt = clnttcp_create (&clnt_sin, YPPROG, YPVERS, &clnt_sock, 0, 0);
+      clnt = clnt_create (server, YPPROG, YPVERS, "tcp");
       if (clnt == NULL)
         {
-          errno = saved_errno;
-          return YPERR_PMAP;
+          res = YPERR_PMAP;
+	  goto out;
         }
       req.domain = (char *) indomain;
       req.map = (char *) inmap;
@@ -579,11 +582,17 @@ yp_all (const char *indomain, const char *inmap,
 
       if (res == YPERR_SUCCESS && data.status != YP_NOMORE)
         {
-	  errno = saved_errno;
-          return ypprot_err (data.status);
+          res = ypprot_err (data.status);
+	  goto out;
         }
       ++try;
     }
+
+ out:
+  // XXX __libc_lock_unlock (ypbindlist_lock);
+
+  if (server)
+    free (server);
 
   errno = saved_errno;
 

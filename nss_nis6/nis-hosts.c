@@ -20,19 +20,20 @@
 #include <nss.h>
 #include <ctype.h>
 /* The following is an ugly trick to avoid a prototype declaration for
-   _nss_nis_endgrent.  */
-#define _nss_nis_endhostent _nss_nis_endhostent_XXX
+   _nss_nis6_endgrent.  */
+#define _nss_nis6_endhostent _nss_nis6_endhostent_XXX
 #include <netdb.h>
-#undef _nss_nis_endhostent
+#undef _nss_nis6_endhostent
 #include <string.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <resolv.h>
-#include <bits/libc-lock.h>
-#include <rpcsvc/yp.h>
+#include <rpc/rpc.h>
 #include <rpcsvc/ypclnt.h>
 
-#include "nss-nis.h"
+#include "libc-symbols.h"
+#include "libc-lock.h"
+#include "nss-nis6.h"
 
 /* Get implementation for some internal functions. */
 #include <resolv/mapv4v6addr.h>
@@ -53,7 +54,7 @@ struct hostent_data
 
 #define TRAILING_LIST_MEMBER            h_aliases
 #define TRAILING_LIST_SEPARATOR_P       isspace
-#include <nss/nss_files/files-parse.c>
+#include "files-parse.c"
 LINE_PARSER
 ("#",
  {
@@ -107,7 +108,7 @@ static int oldkeylen = 0;
 
 
 enum nss_status
-_nss_nis_sethostent (int stayopen)
+_nss_nis6_sethostent (int stayopen)
 {
   __libc_lock_lock (lock);
 
@@ -123,15 +124,15 @@ _nss_nis_sethostent (int stayopen)
 
   return NSS_STATUS_SUCCESS;
 }
-/* Make _nss_nis_endhostent an alias of _nss_nis_sethostent.  We do this
+/* Make _nss_nis6_endhostent an alias of _nss_nis6_sethostent.  We do this
    even though the prototypes don't match.  The argument of sethostent
    is used so this makes no difference.  */
-strong_alias (_nss_nis_sethostent, _nss_nis_endhostent)
+strong_alias (_nss_nis6_sethostent, _nss_nis6_endhostent)
 
 
 /* The calling function always need to get a lock first. */
 static enum nss_status
-internal_nis_gethostent_r (struct hostent *host, char *buffer,
+internal_nis6_gethostent_r (struct hostent *host, char *buffer,
 			   size_t buflen, int *errnop, int *h_errnop,
 			   int af, int flags)
 {
@@ -223,14 +224,14 @@ internal_nis_gethostent_r (struct hostent *host, char *buffer,
 
 
 enum nss_status
-_nss_nis_gethostent_r (struct hostent *host, char *buffer, size_t buflen,
+_nss_nis6_gethostent_r (struct hostent *host, char *buffer, size_t buflen,
 		       int *errnop, int *h_errnop)
 {
   enum nss_status status;
 
   __libc_lock_lock (lock);
 
-  status = internal_nis_gethostent_r (host, buffer, buflen, errnop, h_errnop,
+  status = internal_nis6_gethostent_r (host, buffer, buflen, errnop, h_errnop,
 			((_res.options & RES_USE_INET6) ? AF_INET6 : AF_INET),
 			((_res.options & RES_USE_INET6) ? AI_V4MAPPED : 0 ));
 
@@ -339,7 +340,7 @@ internal_gethostbyname2_r (const char *name, int af, struct hostent *host,
 
 
 enum nss_status
-_nss_nis_gethostbyname2_r (const char *name, int af, struct hostent *host,
+_nss_nis6_gethostbyname2_r (const char *name, int af, struct hostent *host,
 			   char *buffer, size_t buflen, int *errnop,
 			   int *h_errnop)
 {
@@ -356,7 +357,7 @@ _nss_nis_gethostbyname2_r (const char *name, int af, struct hostent *host,
 
 
 enum nss_status
-_nss_nis_gethostbyname_r (const char *name, struct hostent *host, char *buffer,
+_nss_nis6_gethostbyname_r (const char *name, struct hostent *host, char *buffer,
 			  size_t buflen, int *errnop, int *h_errnop)
 {
   if (_res.options & RES_USE_INET6)
@@ -375,7 +376,7 @@ _nss_nis_gethostbyname_r (const char *name, struct hostent *host, char *buffer,
 
 
 enum nss_status
-_nss_nis_gethostbyaddr_r (const void *addr, socklen_t addrlen, int af,
+_nss_nis6_gethostbyaddr_r (const void *addr, socklen_t addrlen, int af,
 			  struct hostent *host, char *buffer, size_t buflen,
 			  int *errnop, int *h_errnop)
 {
@@ -455,7 +456,7 @@ _nss_nis_gethostbyaddr_r (const void *addr, socklen_t addrlen, int af,
 
 
 enum nss_status
-_nss_nis_gethostbyname4_r (const char *name, struct gaih_addrtuple **pat,
+_nss_nis6_gethostbyname4_r (const char *name, struct gaih_addrtuple **pat,
 			   char *buffer, size_t buflen, int *errnop,
 			   int *herrnop, int32_t *ttlp)
 {

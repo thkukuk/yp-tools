@@ -15,17 +15,25 @@
    License along with the GNU C Library; if not, see
    <http://www.gnu.org/licenses/>.  */
 
-#ifndef _NIS_NSS_NIS_H
-#define _NIS_NSS_NIS_H	1
+#ifndef _NSS_NIS6_H
+#define _NSS_NIS6_H	1
 
 #include <rpcsvc/ypclnt.h>
 
 #include "nsswitch.h"
 
+#define NSS_FLAG_NETID_AUTHORITATIVE    1
+#define NSS_FLAG_SERVICES_AUTHORITATIVE 2
+#define NSS_FLAG_SETENT_BATCH_READ      4
+#define NSS_FLAG_ADJUNCT_AS_SHADOW      8
+
+
+/* Get current set of default flags.  */
+extern int _nsl_default_nss (void);
 
 /* Convert YP error number to NSS error number.  */
-extern const enum nss_status __yperr2nss_tab[] attribute_hidden;
-extern const unsigned int __yperr2nss_count attribute_hidden;
+extern const enum nss_status __yperr2nss_tab[];
+extern const unsigned int __yperr2nss_count;
 
 static inline enum nss_status
 yperr2nss (int errval)
@@ -51,8 +59,8 @@ typedef struct intern_t
 } intern_t;
 
 
-extern int _nis_saveit (int instatus, char *inkey, int inkeylen, char *inval,
-			int invallen, char *indata) attribute_hidden;
+extern int _nis6_saveit (int instatus, char *inkey, int inkeylen, char *inval,
+			 int invallen, char *indata);
 
 
-#endif /* nis/nss-nis.h */
+#endif /* nss-nis6.h */

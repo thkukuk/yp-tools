@@ -21,16 +21,15 @@
 #include <ctype.h>
 #include <errno.h>
 #include <string.h>
-#include <bits/libc-lock.h>
-#include <rpcsvc/yp.h>
 #include <rpcsvc/ypclnt.h>
 
-#include "nss-nis.h"
+#include "libc-lock.h"
+#include "nss-nis6.h"
 
 /* Get the declaration of the parser function.  */
 #define ENTNAME rpcent
 #define EXTERN_PARSER
-#include <nss/nss_files/files-parse.c>
+#include "files-parse.c"
 
 __libc_lock_define_initialized (static, lock)
 
@@ -38,7 +37,7 @@ static intern_t intern;
 
 
 static void
-internal_nis_endrpcent (intern_t *intern)
+internal_nis6_endrpcent (intern_t *intern)
 {
   struct response_t *curr = intern->next;
 
@@ -53,7 +52,7 @@ internal_nis_endrpcent (intern_t *intern)
 }
 
 static enum nss_status
-internal_nis_setrpcent (intern_t *intern)
+internal_nis6_setrpcent (intern_t *intern)
 {
   char *domainname;
   struct ypall_callback ypcb;
@@ -62,9 +61,9 @@ internal_nis_setrpcent (intern_t *intern)
   if (yp_get_default_domain (&domainname))
     return NSS_STATUS_UNAVAIL;
 
-  internal_nis_endrpcent (intern);
+  internal_nis6_endrpcent (intern);
 
-  ypcb.foreach = _nis_saveit;
+  ypcb.foreach = _nis6_saveit;
   ypcb.data = (char *) intern;
   status = yperr2nss (yp_all (domainname, "rpc.bynumber", &ypcb));
 
@@ -79,13 +78,13 @@ internal_nis_setrpcent (intern_t *intern)
 }
 
 enum nss_status
-_nss_nis_setrpcent (int stayopen)
+_nss_nis6_setrpcent (int stayopen)
 {
   enum nss_status status;
 
   __libc_lock_lock (lock);
 
-  status = internal_nis_setrpcent (&intern);
+  status = internal_nis6_setrpcent (&intern);
 
   __libc_lock_unlock (lock);
 
@@ -93,11 +92,11 @@ _nss_nis_setrpcent (int stayopen)
 }
 
 enum nss_status
-_nss_nis_endrpcent (void)
+_nss_nis6_endrpcent (void)
 {
   __libc_lock_lock (lock);
 
-  internal_nis_endrpcent (&intern);
+  internal_nis6_endrpcent (&intern);
 
   __libc_lock_unlock (lock);
 
@@ -105,7 +104,7 @@ _nss_nis_endrpcent (void)
 }
 
 static enum nss_status
-internal_nis_getrpcent_r (struct rpcent *rpc, char *buffer, size_t buflen,
+internal_nis6_getrpcent_r (struct rpcent *rpc, char *buffer, size_t buflen,
 			  int *errnop, intern_t *intern)
 {
   struct parser_data *pdata = (void *) buffer;
@@ -113,7 +112,7 @@ internal_nis_getrpcent_r (struct rpcent *rpc, char *buffer, size_t buflen,
   char *p;
 
   if (intern->start == NULL)
-    internal_nis_setrpcent (intern);
+    internal_nis6_setrpcent (intern);
 
   if (intern->next == NULL)
     /* Not one entry in the map.  */
@@ -167,14 +166,14 @@ internal_nis_getrpcent_r (struct rpcent *rpc, char *buffer, size_t buflen,
 }
 
 enum nss_status
-_nss_nis_getrpcent_r (struct rpcent *rpc, char *buffer, size_t buflen,
+_nss_nis6_getrpcent_r (struct rpcent *rpc, char *buffer, size_t buflen,
 		      int *errnop)
 {
   enum nss_status status;
 
   __libc_lock_lock (lock);
 
-  status = internal_nis_getrpcent_r (rpc, buffer, buflen, errnop, &intern);
+  status = internal_nis6_getrpcent_r (rpc, buffer, buflen, errnop, &intern);
 
   __libc_lock_unlock (lock);
 
@@ -182,7 +181,7 @@ _nss_nis_getrpcent_r (struct rpcent *rpc, char *buffer, size_t buflen,
 }
 
 enum nss_status
-_nss_nis_getrpcbyname_r (const char *name, struct rpcent *rpc,
+_nss_nis6_getrpcbyname_r (const char *name, struct rpcent *rpc,
 			 char *buffer, size_t buflen, int *errnop)
 {
   if (name == NULL)
@@ -192,13 +191,13 @@ _nss_nis_getrpcbyname_r (const char *name, struct rpcent *rpc,
     }
 
   intern_t data = { NULL, NULL, 0 };
-  enum nss_status status = internal_nis_setrpcent (&data);
+  enum nss_status status = internal_nis6_setrpcent (&data);
   if (__glibc_unlikely (status != NSS_STATUS_SUCCESS))
     return status;
 
   int found = 0;
   while (!found &&
-         ((status = internal_nis_getrpcent_r (rpc, buffer, buflen, errnop,
+         ((status = internal_nis6_getrpcent_r (rpc, buffer, buflen, errnop,
 					      &data)) == NSS_STATUS_SUCCESS))
     {
       if (strcmp (rpc->r_name, name) == 0)
@@ -220,7 +219,7 @@ _nss_nis_getrpcbyname_r (const char *name, struct rpcent *rpc,
 	}
     }
 
-  internal_nis_endrpcent (&data);
+  internal_nis6_endrpcent (&data);
 
   if (__glibc_unlikely (!found && status == NSS_STATUS_SUCCESS))
     return NSS_STATUS_NOTFOUND;
@@ -229,7 +228,7 @@ _nss_nis_getrpcbyname_r (const char *name, struct rpcent *rpc,
 }
 
 enum nss_status
-_nss_nis_getrpcbynumber_r (int number, struct rpcent *rpc,
+_nss_nis6_getrpcbynumber_r (int number, struct rpcent *rpc,
 			   char *buffer, size_t buflen, int *errnop)
 {
   char *domain;

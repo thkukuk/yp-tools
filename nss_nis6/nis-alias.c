@@ -21,11 +21,12 @@
 #include <errno.h>
 #include <string.h>
 #include <aliases.h>
-#include <bits/libc-lock.h>
-#include <rpcsvc/yp.h>
+#include <rpc/types.h>
 #include <rpcsvc/ypclnt.h>
 
-#include "nss-nis.h"
+#include "libc-symbols.h"
+#include "libc-lock.h"
+#include "nss-nis6.h"
 
 __libc_lock_define_initialized (static, lock)
 
@@ -34,8 +35,9 @@ static char *oldkey;
 static int oldkeylen;
 
 static int
-_nss_nis_parse_aliasent (const char *key, char *alias, struct aliasent *result,
-			 char *buffer, size_t buflen, int *errnop)
+_nss_nis6_parse_aliasent (const char *key, char *alias,
+			  struct aliasent *result,
+			  char *buffer, size_t buflen, int *errnop)
 {
   char *first_unused = buffer + strlen (alias) + 1;
   size_t room_left =
@@ -100,7 +102,7 @@ _nss_nis_parse_aliasent (const char *key, char *alias, struct aliasent *result,
 }
 
 enum nss_status
-_nss_nis_setaliasent (void)
+_nss_nis6_setaliasent (void)
 {
   __libc_lock_lock (lock);
 
@@ -117,15 +119,15 @@ _nss_nis_setaliasent (void)
   return NSS_STATUS_SUCCESS;
 }
 /* The 'endaliasent' function is identical.  */
-strong_alias (_nss_nis_setaliasent, _nss_nis_endaliasent)
+strong_alias (_nss_nis6_setaliasent, _nss_nis6_endaliasent)
 
 static enum nss_status
-internal_nis_getaliasent_r (struct aliasent *alias, char *buffer,
-			    size_t buflen, int *errnop)
+internal_nis6_getaliasent_r (struct aliasent *alias, char *buffer,
+			     size_t buflen, int *errnop)
 {
   char *domain;
 
-  if (__glibc_unlikely (yp_get_default_domain (&domain)))
+  if (yp_get_default_domain (&domain))
     return NSS_STATUS_UNAVAIL;
 
   alias->alias_local = 0;
@@ -147,7 +149,7 @@ internal_nis_getaliasent_r (struct aliasent *alias, char *buffer,
 	yperr = yp_next (domain, "mail.aliases", oldkey, oldkeylen, &outkey,
 			 &keylen, &result, &len);
 
-      if (__glibc_unlikely (yperr != YPERR_SUCCESS))
+      if (yperr != YPERR_SUCCESS)
 	{
 	  enum nss_status retval = yperr2nss (yperr);
 
@@ -156,7 +158,7 @@ internal_nis_getaliasent_r (struct aliasent *alias, char *buffer,
 	  return retval;
 	}
 
-      if (__glibc_unlikely ((size_t) (len + 1) > buflen))
+      if ((size_t) (len + 1) > buflen)
 	{
 	  free (result);
 	  *errnop = ERANGE;
@@ -168,9 +170,9 @@ internal_nis_getaliasent_r (struct aliasent *alias, char *buffer,
 	++p;
       free (result);
 
-      parse_res = _nss_nis_parse_aliasent (outkey, p, alias, buffer,
-					   buflen, errnop);
-      if (__glibc_unlikely (parse_res == -1))
+      parse_res = _nss_nis6_parse_aliasent (outkey, p, alias, buffer,
+					    buflen, errnop);
+      if (parse_res == -1)
 	{
 	  free (outkey);
 	  *errnop = ERANGE;
@@ -188,14 +190,14 @@ internal_nis_getaliasent_r (struct aliasent *alias, char *buffer,
 }
 
 enum nss_status
-_nss_nis_getaliasent_r (struct aliasent *alias, char *buffer, size_t buflen,
-			int *errnop)
+_nss_nis6_getaliasent_r (struct aliasent *alias, char *buffer, size_t buflen,
+			 int *errnop)
 {
   enum nss_status status;
 
   __libc_lock_lock (lock);
 
-  status = internal_nis_getaliasent_r (alias, buffer, buflen, errnop);
+  status = internal_nis6_getaliasent_r (alias, buffer, buflen, errnop);
 
   __libc_lock_unlock (lock);
 
@@ -203,8 +205,8 @@ _nss_nis_getaliasent_r (struct aliasent *alias, char *buffer, size_t buflen,
 }
 
 enum nss_status
-_nss_nis_getaliasbyname_r (const char *name, struct aliasent *alias,
-			   char *buffer, size_t buflen, int *errnop)
+_nss_nis6_getaliasbyname_r (const char *name, struct aliasent *alias,
+			    char *buffer, size_t buflen, int *errnop)
 {
   if (name == NULL)
     {
@@ -217,18 +219,11 @@ _nss_nis_getaliasbyname_r (const char *name, struct aliasent *alias,
     return NSS_STATUS_UNAVAIL;
 
   size_t namlen = strlen (name);
-  char *name2;
-  int use_alloca = __libc_use_alloca (namlen + 1);
-  if (use_alloca)
-    name2 = __alloca (namlen + 1);
-  else
+  char *name2 = malloc (namlen + 1);
+  if (name2 == NULL)
     {
-      name2 = malloc (namlen + 1);
-      if (name2 == NULL)
-	{
-	  *errnop = ENOMEM;
-	  return NSS_STATUS_TRYAGAIN;
-	}
+      *errnop = ENOMEM;
+      return NSS_STATUS_TRYAGAIN;
     }
 
   /* Convert name to lowercase.  */
@@ -241,10 +236,9 @@ _nss_nis_getaliasbyname_r (const char *name, struct aliasent *alias,
   int len;
   int yperr = yp_match (domain, "mail.aliases", name2, namlen, &result, &len);
 
-  if (!use_alloca)
-    free (name2);
+  free (name2);
 
-  if (__glibc_unlikely (yperr != YPERR_SUCCESS))
+  if (yperr != YPERR_SUCCESS)
     {
       enum nss_status retval = yperr2nss (yperr);
 
@@ -253,7 +247,7 @@ _nss_nis_getaliasbyname_r (const char *name, struct aliasent *alias,
       return retval;
     }
 
-  if (__glibc_unlikely ((size_t) (len + 1) > buflen))
+  if ((size_t) (len + 1) > buflen)
     {
       free (result);
       *errnop = ERANGE;
@@ -267,9 +261,9 @@ _nss_nis_getaliasbyname_r (const char *name, struct aliasent *alias,
   free (result);
 
   alias->alias_local = 0;
-  int parse_res = _nss_nis_parse_aliasent (name, p, alias, buffer, buflen,
-					   errnop);
-  if (__glibc_unlikely (parse_res < 1))
+  int parse_res = _nss_nis6_parse_aliasent (name, p, alias, buffer, buflen,
+					    errnop);
+  if (parse_res < 1)
     {
       if (parse_res == -1)
 	return NSS_STATUS_TRYAGAIN;

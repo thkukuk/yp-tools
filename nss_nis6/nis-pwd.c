@@ -22,18 +22,17 @@
 #include <nss.h>
 #include <pwd.h>
 #include <string.h>
-#include <bits/libc-lock.h>
-#include <rpcsvc/yp.h>
+#include <rpcsvc/yp_prot.h>
 #include <rpcsvc/ypclnt.h>
 
-#include "nss-nis.h"
-#include <libnsl.h>
+#include "libc-lock.h"
+#include "nss-nis6.h"
 
 /* Get the declaration of the parser function.  */
 #define ENTNAME pwent
 #define STRUCTURE passwd
 #define EXTERN_PARSER
-#include <nss/nss_files/files-parse.c>
+#include "files-parse.c"
 
 /* Protect global state against multiple changers */
 __libc_lock_define_initialized (static, lock)
@@ -45,7 +44,7 @@ static intern_t intern;
 
 
 int
-_nis_saveit (int instatus, char *inkey, int inkeylen, char *inval,
+_nis6_saveit (int instatus, char *inkey, int inkeylen, char *inval,
 	     int invallen, char *indata)
 {
   intern_t *intern = (intern_t *) indata;
@@ -105,7 +104,7 @@ _nis_saveit (int instatus, char *inkey, int inkeylen, char *inval,
 
 
 static void
-internal_nis_endpwent (void)
+internal_nis6_endpwent (void)
 {
   new_start = true;
   free (oldkey);
@@ -126,11 +125,11 @@ internal_nis_endpwent (void)
 
 
 enum nss_status
-_nss_nis_endpwent (void)
+_nss_nis6_endpwent (void)
 {
   __libc_lock_lock (lock);
 
-  internal_nis_endpwent ();
+  internal_nis6_endpwent ();
 
   __libc_lock_unlock (lock);
 
@@ -139,7 +138,7 @@ _nss_nis_endpwent (void)
 
 
 enum nss_status
-internal_nis_setpwent (void)
+internal_nis6_setpwent (void)
 {
   /* We have to read all the data now.  */
   char *domain;
@@ -148,7 +147,7 @@ internal_nis_setpwent (void)
 
   struct ypall_callback ypcb;
 
-  ypcb.foreach = _nis_saveit;
+  ypcb.foreach = _nis6_saveit;
   ypcb.data = (char *) &intern;
   enum nss_status status = yperr2nss (yp_all (domain, "passwd.byname", &ypcb));
 
@@ -165,16 +164,16 @@ internal_nis_setpwent (void)
 
 
 enum nss_status
-_nss_nis_setpwent (int stayopen)
+_nss_nis6_setpwent (int stayopen)
 {
   enum nss_status result = NSS_STATUS_SUCCESS;
 
   __libc_lock_lock (lock);
 
-  internal_nis_endpwent ();
+  internal_nis6_endpwent ();
 
   if (_nsl_default_nss () & NSS_FLAG_SETENT_BATCH_READ)
-    result = internal_nis_setpwent ();
+    result = internal_nis6_setpwent ();
 
   __libc_lock_unlock (lock);
 
@@ -183,7 +182,7 @@ _nss_nis_setpwent (int stayopen)
 
 
 static enum nss_status
-internal_nis_getpwent_r (struct passwd *pwd, char *buffer, size_t buflen,
+internal_nis6_getpwent_r (struct passwd *pwd, char *buffer, size_t buflen,
 			 int *errnop)
 {
   /* If we read the entire database at setpwent time we just iterate
@@ -235,7 +234,7 @@ internal_nis_getpwent_r (struct passwd *pwd, char *buffer, size_t buflen,
 	    {
 	      /* Maybe we should read the database in one piece.  */
 	      if ((_nsl_default_nss () & NSS_FLAG_SETENT_BATCH_READ)
-		  && internal_nis_setpwent () == NSS_STATUS_SUCCESS
+		  && internal_nis6_setpwent () == NSS_STATUS_SUCCESS
 		  && intern.start != NULL)
 		{
 		  batch_read = true;
@@ -354,14 +353,14 @@ internal_nis_getpwent_r (struct passwd *pwd, char *buffer, size_t buflen,
 }
 
 enum nss_status
-_nss_nis_getpwent_r (struct passwd *result, char *buffer, size_t buflen,
+_nss_nis6_getpwent_r (struct passwd *result, char *buffer, size_t buflen,
 		     int *errnop)
 {
   int status;
 
   __libc_lock_lock (lock);
 
-  status = internal_nis_getpwent_r (result, buffer, buflen, errnop);
+  status = internal_nis6_getpwent_r (result, buffer, buflen, errnop);
 
   __libc_lock_unlock (lock);
 
@@ -369,7 +368,7 @@ _nss_nis_getpwent_r (struct passwd *result, char *buffer, size_t buflen,
 }
 
 enum nss_status
-_nss_nis_getpwnam_r (const char *name, struct passwd *pwd,
+_nss_nis6_getpwnam_r (const char *name, struct passwd *pwd,
 		     char *buffer, size_t buflen, int *errnop)
 {
   if (name == NULL)
@@ -476,7 +475,7 @@ _nss_nis_getpwnam_r (const char *name, struct passwd *pwd,
 }
 
 enum nss_status
-_nss_nis_getpwuid_r (uid_t uid, struct passwd *pwd,
+_nss_nis6_getpwuid_r (uid_t uid, struct passwd *pwd,
 		     char *buffer, size_t buflen, int *errnop)
 {
   char *domain;

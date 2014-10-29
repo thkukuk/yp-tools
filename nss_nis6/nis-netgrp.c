@@ -25,11 +25,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <netgroup.h>
-#include <rpcsvc/yp.h>
 #include <rpcsvc/ypclnt.h>
 
-#include "nss-nis.h"
+#include "nss-nis6.h"
+#include "netgroup.h"
 
 extern enum nss_status
 _nss_netgroup_parseline (char **cursor, struct __netgrent *netgrp,
@@ -37,7 +36,7 @@ _nss_netgroup_parseline (char **cursor, struct __netgrent *netgrp,
 
 
 static void
-internal_nis_endnetgrent (struct __netgrent *netgrp)
+internal_nis6_endnetgrent (struct __netgrent *netgrp)
 {
   free (netgrp->data);
   netgrp->data = NULL;
@@ -47,7 +46,7 @@ internal_nis_endnetgrent (struct __netgrent *netgrp)
 
 
 enum nss_status
-_nss_nis_setnetgrent (const char *group, struct __netgrent *netgrp)
+_nss_nis6_setnetgrent (const char *group, struct __netgrent *netgrp)
 {
   int len;
   enum nss_status status;
@@ -82,16 +81,16 @@ _nss_nis_setnetgrent (const char *group, struct __netgrent *netgrp)
 
 
 enum nss_status
-_nss_nis_endnetgrent (struct __netgrent *netgrp)
+_nss_nis6_endnetgrent (struct __netgrent *netgrp)
 {
-  internal_nis_endnetgrent (netgrp);
+  internal_nis6_endnetgrent (netgrp);
 
   return NSS_STATUS_SUCCESS;
 }
 
 
 enum nss_status
-_nss_nis_getnetgrent_r (struct __netgrent *result, char *buffer, size_t buflen,
+_nss_nis6_getnetgrent_r (struct __netgrent *result, char *buffer, size_t buflen,
 			int *errnop)
 {
   return _nss_netgroup_parseline (&result->cursor, result, buffer, buflen,

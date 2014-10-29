@@ -18,26 +18,27 @@
 
 #include <nss.h>
 /* The following is an ugly trick to avoid a prototype declaration for
-   _nss_nis_endgrent.  */
-#define _nss_nis_endnetent _nss_nis_endnetent_XXX
+   _nss_nis6_endgrent.  */
+#define _nss_nis6_endnetent _nss_nis6_endnetent_XXX
 #include <netdb.h>
-#undef _nss_nis_endnetent
+#undef _nss_nis6_endnetent
 #include <ctype.h>
 #include <errno.h>
 #include <stdint.h>
 #include <string.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <bits/libc-lock.h>
-#include <rpcsvc/yp.h>
+#include <rpc/rpc.h>
 #include <rpcsvc/ypclnt.h>
 
-#include "nss-nis.h"
+#include "libc-symbols.h"
+#include "libc-lock.h"
+#include "nss-nis6.h"
 
 /* Get the declaration of the parser function.  */
 #define ENTNAME netent
 #define EXTERN_PARSER
-#include <nss/nss_files/files-parse.c>
+#include "files-parse.c"
 
 __libc_lock_define_initialized (static, lock)
 
@@ -46,7 +47,7 @@ static char *oldkey;
 static int oldkeylen;
 
 enum nss_status
-_nss_nis_setnetent (int stayopen)
+_nss_nis6_setnetent (int stayopen)
 {
   __libc_lock_lock (lock);
 
@@ -62,13 +63,13 @@ _nss_nis_setnetent (int stayopen)
 
   return NSS_STATUS_SUCCESS;
 }
-/* Make _nss_nis_endnetent an alias of _nss_nis_setnetent.  We do this
+/* Make _nss_nis6_endnetent an alias of _nss_nis6_setnetent.  We do this
    even though the prototypes don't match.  The argument of setnetent
    is not used so this makes no difference.  */
-strong_alias (_nss_nis_setnetent, _nss_nis_endnetent)
+strong_alias (_nss_nis6_setnetent, _nss_nis6_endnetent)
 
 static enum nss_status
-internal_nis_getnetent_r (struct netent *net, char *buffer, size_t buflen,
+internal_nis6_getnetent_r (struct netent *net, char *buffer, size_t buflen,
 			  int *errnop, int *herrnop)
 {
   struct parser_data *data = (void *) buffer;
@@ -140,14 +141,14 @@ internal_nis_getnetent_r (struct netent *net, char *buffer, size_t buflen,
 }
 
 enum nss_status
-_nss_nis_getnetent_r (struct netent *net, char *buffer, size_t buflen,
+_nss_nis6_getnetent_r (struct netent *net, char *buffer, size_t buflen,
 		      int *errnop, int *herrnop)
 {
   enum nss_status status;
 
   __libc_lock_lock (lock);
 
-  status = internal_nis_getnetent_r (net, buffer, buflen, errnop, herrnop);
+  status = internal_nis6_getnetent_r (net, buffer, buflen, errnop, herrnop);
 
   __libc_lock_unlock (lock);
 
@@ -155,7 +156,7 @@ _nss_nis_getnetent_r (struct netent *net, char *buffer, size_t buflen,
 }
 
 enum nss_status
-_nss_nis_getnetbyname_r (const char *name, struct netent *net, char *buffer,
+_nss_nis6_getnetbyname_r (const char *name, struct netent *net, char *buffer,
 			 size_t buflen, int *errnop, int *herrnop)
 {
   if (name == NULL)
@@ -239,7 +240,7 @@ _nss_nis_getnetbyname_r (const char *name, struct netent *net, char *buffer,
 }
 
 enum nss_status
-_nss_nis_getnetbyaddr_r (uint32_t addr, int type, struct netent *net,
+_nss_nis6_getnetbyaddr_r (uint32_t addr, int type, struct netent *net,
 			 char *buffer, size_t buflen, int *errnop,
 			 int *herrnop)
 {

@@ -5,7 +5,7 @@
 #
 AUTOMAKE_OPTIONS = 1.5 gnits dist-bzip2
 #
-SUBDIRS = lib nss_nis6 src po man etc
+SUBDIRS = lib src nss_nis6 po man etc
 
 CLEANFILES = *~
 

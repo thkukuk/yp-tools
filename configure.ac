@@ -56,7 +56,7 @@ AC_GNU_SOURCE
 AM_PROG_CC_C_O
 dnl If we're using gcc, we want warning flags
 dnl test -n "$GCC" && WARNFLAGS="-Wall"
-test -n "$GCC" && WARNFLAGS="-W -Wall -Wbad-function-cast -Wcast-align -Winline -Wmissing-declarations -Wmissing-prototypes -Wnested-externs -Wshadow -Wstrict-prototypes -Wundef"
+test -n "$GCC" && WARNFLAGS="-W -Wall -Wbad-function-cast -Wcast-align -Winline -Wnested-externs -Wshadow -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wundef -Werror"
 AC_SUBST(WARNFLAGS)
 AC_PROG_CPP
 AC_ISC_POSIX
