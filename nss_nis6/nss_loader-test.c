@@ -37,7 +37,6 @@ main (void)
   size_t pwdbuflen = 2048;
   char pwdbuffer[2048];
   struct passwd pw;
-  int i;
 
   nss_handle = dlopen (".libs/libnss_nis6.so.2", RTLD_NOW);
   if (!nss_handle)
