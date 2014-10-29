@@ -154,7 +154,7 @@ enum ypstat {
 #define YP_YPERR YP_YPERR
   YP_BADARGS = -7,	/* Request arguments bad */
 #define YP_BADARGS YP_BADARGS
-  YP_VERS = -8,		/* NIS server version mismatch - server can't supply
+  YP_VERS = -8		/* NIS server version mismatch - server can't supply
 			   requested service. */
 #define YP_VERS YP_VERS
 };
