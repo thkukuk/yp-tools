@@ -4,11 +4,12 @@ Copyright (C) 1998-2014 Thorsten Kukuk
 
 Please send bug reports, questions and suggestions to <kukuk@linux-nis.org>.
 
-Version 2.99.5
+Version 2.99.6
 * Port to TI-RPC, so that all tools can work with IPv6
 * ypwhich supports IPv6 and ypbind v3 protocol, which is default
 * ypset supports IPv6 and ypbind v3 protocol, which is default
 * Add libnis library
+* Add nss_nis6 module
 
 Version 2.15
 * Update autoconf/automake

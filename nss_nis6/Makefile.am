@@ -8,14 +8,14 @@
 
 CLEANFILES = *~
 
-EXTRA_DIST = libnss_nis6.map files-parce.c
+EXTRA_DIST = libnss_nis6.map files-parse.c databases.def
 
 AM_CFLAGS = -D_REENTRANT=1
 AM_CPPFLAGS = -I$(srcdir) -I$(top_srcdir)/lib @TIRPC_CFLAGS@
 
 lib_LTLIBRARIES = libnss_nis6.la
 
-noinst_HEADERS = libc-lock.h nss-nis6.h
+noinst_HEADERS = libc-lock.h libc-symbols.h netgroup.h nss-nis6.h nsswitch.h
 noinst_PROGRAMS = nss_loader-test
 nss_loader_test_LDADD = -ldl
 
