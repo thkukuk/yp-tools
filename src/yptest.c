@@ -20,8 +20,6 @@
 #include "config.h"
 #endif
 
-#define NEED_YP_MAPLIST
-
 #include <getopt.h>
 #include <locale.h>
 #include <libintl.h>
@@ -143,6 +141,9 @@ print_bindhost (const char *domain, const char *hostname, int vers)
   CLIENT *client;
   int ret;
 
+  if (!hostname)
+    hostname = "localhost";
+
   tv.tv_sec = 5;
   tv.tv_usec = 0;
   client = clnt_create (hostname, YPBINDPROG, vers, "udp");
@@ -189,17 +190,20 @@ print_bindhost (const char *domain, const char *hostname, int vers)
 	  if (!be_quiet)
 	    printf (_("Used NIS server: %s\n"), inet_ntoa (yp_r2.ypbind2_addr));
 	}
-      else if (yp_r3.ypbind_status != YPBIND_SUCC_VAL)
+      else 
         {
-	  if (!be_quiet)
-	    fprintf (stderr, _("can't yp_bind: Reason: %s\n"),
-		     ypbinderr_string (yp_r3.ypbind3_error));
-          clnt_destroy (client);
-          return 1;
+          if (yp_r3.ypbind_status != YPBIND_SUCC_VAL)
+            {
+	      if (!be_quiet)
+	        fprintf (stderr, _("can't yp_bind: Reason: %s\n"),
+		         ypbinderr_string (yp_r3.ypbind3_error));
+              clnt_destroy (client);
+              return 1;
+            }
+            if (!be_quiet)
+	      ypbind3_binding_dump (yp_r3.ypbind3_bindinfo);
         }
-      if (!be_quiet)
-	ypbind3_binding_dump (yp_r3.ypbind3_bindinfo);
-    }
+  }
   clnt_destroy (client);
 
   return 0;
@@ -338,17 +342,19 @@ main (int argc, char **argv)
 
   if (!be_quiet)
     printf ("\nTest 2: ypbind\n");
-  /* XXX test version 1, 3, too */
-  if (hostname)
-    {
-      if (print_bindhost (domainname, hostname, 2))
-	return 1;
-    }
-  else
-    {
-      if (print_bindhost (domainname, "localhost", 2))
-	return 1;
-    }
+      
+  if (!be_quiet)
+    printf (_("Use Protocol V1: "));
+  if (print_bindhost (domainname, hostname, 1))
+    fprintf (stderr, _("ypbind procotcol v1 test failed\n"));
+  if (!be_quiet)
+    printf (_("Use Protocol V2: "));
+  if (print_bindhost (domainname, hostname, 2))
+    fprintf (stderr, _("ypbind procotcol v2 test failed\n"));
+  if (!be_quiet)
+    printf (_("Use Protocol V3:\n"));
+  if (print_bindhost (domainname, hostname, 3))
+    fprintf (stderr, _("ypbind procotcol v3 test failed\n"));
 
   if (!be_quiet)
     printf ("\nTest 3: yp_match\n");
