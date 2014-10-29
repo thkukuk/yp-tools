@@ -4,3 +4,4 @@ Makefile.in
 .libs
 *.la
 *.lo
+nss_loader-test
