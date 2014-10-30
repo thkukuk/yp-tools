@@ -30,10 +30,19 @@
 #include "libc-lock.h"
 #include "nss-nis6.h"
 
-/* Get the declaration of the parser function.  */
-#define ENTNAME protoent
-#define EXTERN_PARSER
+#define ENTNAME         protoent
+#define DATABASE        "protocols"
+
+struct protoent_data {};
+
+#define TRAILING_LIST_MEMBER            p_aliases
+#define TRAILING_LIST_SEPARATOR_P       isspace
 #include "files-parse.c"
+LINE_PARSER
+("#",
+ STRING_FIELD (result->p_name, isspace, 1);
+ INT_FIELD (result->p_proto, isspace, 1, 10,);
+ )
 
 __libc_lock_define_initialized (static, lock)
 
@@ -46,7 +55,7 @@ struct response
 static struct response *start;
 static struct response *next;
 
-static int
+
 saveit (int instatus, char *inkey, int inkeylen, char *inval,
         int invallen, char *indata)
 {

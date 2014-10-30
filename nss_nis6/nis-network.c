@@ -35,10 +35,57 @@
 #include "libc-lock.h"
 #include "nss-nis6.h"
 
-/* Get the declaration of the parser function.  */
-#define ENTNAME netent
-#define EXTERN_PARSER
+#define ENTNAME         netent
+#define DATABASE        "networks"
+#define NEED_H_ERRNO
+
+struct netent_data {};
+
+#define TRAILING_LIST_MEMBER            n_aliases
+#define TRAILING_LIST_SEPARATOR_P       isspace
 #include "files-parse.c"
+LINE_PARSER
+("#",
+ {
+   char *addr;
+   char *cp;
+   int n = 1;
+
+   STRING_FIELD (result->n_name, isspace, 1);
+
+   STRING_FIELD (addr, isspace, 1);
+   /* 'inet_network' does not add zeroes at the end if the network number
+      does not four byte values.  We add them outselves if necessary.  */
+   cp = strchr (addr, '.');
+   if (cp != NULL)
+     {
+       ++n;
+       cp = strchr (cp + 1, '.');
+       if (cp != NULL)
+         {
+           ++n;
+           cp = strchr (cp + 1, '.');
+           if (cp != NULL)
+             ++n;
+         }
+     }
+   if (n < 4)
+     {
+       char *newp = (char *) alloca (strlen (addr) + (4 - n) * 2 + 1);
+       cp = stpcpy (newp, addr);
+       do
+         {
+           *cp++ = '.';
+           *cp++ = '0';
+         }
+       while (++n < 4);
+       *cp = '\0';
+       addr = newp;
+     }
+   result->n_net = inet_network (addr);
+   result->n_addrtype = AF_INET;
+
+ })
 
 __libc_lock_define_initialized (static, lock)
 

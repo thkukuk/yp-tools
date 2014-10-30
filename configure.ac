@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(yp-tools, 2.99.6, kukuk@linux-nis.org)
+AC_INIT(yp-tools, 2.99.7, kukuk@linux-nis.org)
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([src/ypcat.c])
 AM_CONFIG_HEADER(config.h)

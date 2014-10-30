@@ -28,11 +28,21 @@
 #include "libc-lock.h"
 #include "nss-nis6.h"
 
+#define ENTNAME         servent
+#define DATABASE        "services"
 
-/* Get the declaration of the parser function.  */
-#define ENTNAME servent
-#define EXTERN_PARSER
+struct servent_data {};
+
+#define TRAILING_LIST_MEMBER            s_aliases
+#define TRAILING_LIST_SEPARATOR_P       isspace
 #include "files-parse.c"
+#define ISSLASH(c) ((c) == '/')
+LINE_PARSER
+("#",
+ STRING_FIELD (result->s_name, isspace, 1);
+ INT_FIELD (result->s_port, ISSLASH, 10, 0, htons);
+ STRING_FIELD (result->s_proto, isspace, 1);
+ )
 
 __libc_lock_define_initialized (static, lock)
 

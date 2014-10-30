@@ -21,7 +21,7 @@ nss_loader_test_LDADD = -ldl
 
 libnss_nis6_la_LDFLAGS = -version-info 2:0:0 \
 	-Wl,--version-script=$(srcdir)/libnss_nis6.map
-libnss_nis6_la_LIBADD = ../lib/libnis.la -lnss_files
+libnss_nis6_la_LIBADD = ../lib/libnis.la
 libnss_nis6_la_SOURCES = nis-alias.c nis-ethers.c nis-grp.c nis-hosts.c \
 			nis-initgroups.c nis-netgrp.c nis-network.c  \
 			nis-proto.c nis-publickey.c nis-pwd.c nis-rpc.c \

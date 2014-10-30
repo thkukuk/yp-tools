@@ -111,8 +111,6 @@ parse_line (char *line, struct STRUCTURE *result,			      \
   TRAILING_LIST_PARSER;							      \
   return 1;								      \
 }									      \
-nss_files_parse_hidden_def (parse_line)
-
 
 # define STRING_FIELD(variable, terminator_p, swallow)			      \
   {									      \

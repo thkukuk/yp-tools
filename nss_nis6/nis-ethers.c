@@ -42,11 +42,31 @@ struct etherent
   struct ether_addr e_addr;
 };
 
-/* Get the declaration of the parser function.  */
-#define ENTNAME etherent
-#define STRUCTURE etherent
-#define EXTERN_PARSER
+#define ENTNAME         etherent
+#define DATABASE        "ethers"
 #include "files-parse.c"
+LINE_PARSER
+("#",
+ /* Read the ethernet address: 6 x 8bit hexadecimal number.  */
+ {
+   size_t cnt;
+
+   for (cnt = 0; cnt < 6; ++cnt)
+     {
+       unsigned int number;
+
+       if (cnt < 5)
+         INT_FIELD (number, ISCOLON , 0, 16, (unsigned int))
+       else
+         INT_FIELD (number, isspace, 1, 16, (unsigned int))
+
+       if (number > 0xff)
+         return 0;
+       result->e_addr.ether_addr_octet[cnt] = number;
+     }
+ };
+ STRING_FIELD (result->e_name, isspace, 1);
+ )
 
 struct response
 {

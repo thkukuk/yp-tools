@@ -26,10 +26,19 @@
 #include "libc-lock.h"
 #include "nss-nis6.h"
 
-/* Get the declaration of the parser function.  */
-#define ENTNAME rpcent
-#define EXTERN_PARSER
+#define ENTNAME         rpcent
+#define DATABASE        "rpc"
+
+struct rpcent_data {};
+
+#define TRAILING_LIST_MEMBER            r_aliases
+#define TRAILING_LIST_SEPARATOR_P       isspace
 #include "files-parse.c"
+LINE_PARSER
+("#",
+ STRING_FIELD (result->r_name, isspace, 1);
+ INT_FIELD (result->r_number, isspace, 1, 10,);
+ )
 
 __libc_lock_define_initialized (static, lock)
 
