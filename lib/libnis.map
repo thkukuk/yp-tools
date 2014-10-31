@@ -16,6 +16,7 @@ LIBNIS_1.0 {
     xdr_ypbind_oldsetdom;
     xdr_ypbind_resptype;
     xdr_ypmap_parms;
+    xdr_ypmaplist;
     xdr_yppushresp_xfr;
     xdr_ypreq_key;
     xdr_ypreq_newxfr;
@@ -27,7 +28,9 @@ LIBNIS_1.0 {
     xdr_ypresp_master;
     xdr_ypresp_order;
     xdr_ypresp_val;
+    xdr_ypresp_xfr;
     xdr_ypstat;
+    xdr_ypxfrstat;
     yp_all;
     yp_bind;
     yp_first;

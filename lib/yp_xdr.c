@@ -51,6 +51,12 @@ xdr_ypstat (XDR *xdrs, ypstat *objp)
 }
 
 bool_t
+xdr_ypxfrstat(XDR *xdrs, ypxfrstat *objp)
+{
+  return xdr_enum(xdrs, (enum_t *)objp);
+}
+
+bool_t
 xdr_domainname (XDR *xdrs, char **objp)
 {
   return xdr_string (xdrs, objp, XDRMAXNAME);
@@ -159,6 +165,18 @@ xdr_ypresp_order (XDR *xdrs, struct ypresp_order *objp)
 }
 
 bool_t
+xdr_ypresp_xfr (XDR *xdrs, ypresp_xfr *objp)
+{
+  if (!xdr_u_int(xdrs, &objp->transid))
+    return FALSE;
+
+  if (!xdr_ypxfrstat(xdrs, &objp->xfrstat))
+    return FALSE;
+
+  return TRUE;
+}
+
+bool_t
 xdr_ypresp_all (XDR *xdrs, struct ypresp_all *objp)
 {
   if (!xdr_bool (xdrs, &objp->more))
@@ -175,7 +193,7 @@ xdr_ypresp_all (XDR *xdrs, struct ypresp_all *objp)
   return TRUE;
 }
 
-static bool_t
+bool_t
 xdr_ypmaplist (XDR *xdrs, struct ypmaplist *objp)
 {
   char **tp;

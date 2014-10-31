@@ -160,6 +160,27 @@ enum ypstat {
 };
 typedef enum ypstat ypstat;
 
+
+enum ypxfrstat {
+  YPXFR_SUCC = 1,
+  YPXFR_AGE = 2,
+  YPXFR_NOMAP = -1,
+  YPXFR_NODOM = -2,
+  YPXFR_RSRC = -3,
+  YPXFR_RPC = -4,
+  YPXFR_MADDR = -5,
+  YPXFR_YPERR = -6,
+  YPXFR_BADARGS = -7,
+  YPXFR_DBM = -8,
+  YPXFR_FILE = -9,
+  YPXFR_SKEW = -10,
+  YPXFR_CLEAR = -11,
+  YPXFR_FORCE = -12,
+  YPXFR_XFRERR = -13,
+  YPXFR_REFUSED = -14
+};
+typedef enum ypxfrstat ypxfrstat;
+
 /*
  * Response parameter structures
  */
@@ -189,6 +210,12 @@ struct ypresp_order {
 };
 typedef struct ypresp_order ypresp_order;
 
+struct ypresp_xfr {
+        u_int transid;
+        ypxfrstat xfrstat;
+};
+typedef struct ypresp_xfr ypresp_xfr;
+
 struct ypmaplist {
   char *map;
 #define ypml_name map
@@ -202,6 +229,7 @@ struct ypresp_maplist {
   struct ypmaplist *list;
 };
 typedef struct ypresp_maplist ypresp_maplist;
+
 
 /*
  * Procedure symbols.  YPPROC_NULL, YPPROC_DOMAIN, and YPPROC_DOMAIN_NONACK
@@ -413,15 +441,16 @@ typedef struct ypresp_all ypresp_all;
 
 extern bool_t xdr_domainname (XDR *__xdrs, char ** __objp);
 extern bool_t xdr_ypall (XDR *__xdrs, struct ypall_callback * __objp);
-extern bool_t xdr_ypbind_oldsetdom (XDR *__xdrs, struct ypbind_oldsetdom * __objp);
 extern bool_t xdr_ypbind2_binding (XDR *__xdrs, struct ypbind2_binding * __objp);
 extern bool_t xdr_ypbind2_resp (XDR *__xdrs, struct ypbind2_resp * __objp);
 extern bool_t xdr_ypbind2_setdom (XDR *__xdrs, struct ypbind2_setdom * __objp);
 extern bool_t xdr_ypbind3_binding (XDR *__xdrs, struct ypbind3_binding * __objp);
 extern bool_t xdr_ypbind3_resp (XDR *__xdrs, struct ypbind3_resp * __objp);
 extern bool_t xdr_ypbind3_setdom (XDR *__xdrs, struct ypbind3_setdom * __objp);
+extern bool_t xdr_ypbind_oldsetdom (XDR *__xdrs, struct ypbind_oldsetdom * __objp);
 extern bool_t xdr_ypbind_resptype (XDR *__xdrs, enum ypbind_resptype * __objp);
 extern bool_t xdr_ypmap_parms (XDR *__xdrs, struct ypmap_parms * __objp);
+extern bool_t xdr_ypmaplist (XDR *__xdrs, struct ypmaplist *__objp);
 extern bool_t xdr_yppushresp_xfr (XDR *__xdrs, struct yppushresp_xfr * __objp);
 extern bool_t xdr_ypreq_key (XDR *__xdrs, struct ypreq_key * __objp);
 extern bool_t xdr_ypreq_newxfr (XDR *__xdrs, struct ypreq_newxfr * __objp);
@@ -433,7 +462,9 @@ extern bool_t xdr_ypresp_maplist (XDR *__xdrs, struct ypresp_maplist * __objp);
 extern bool_t xdr_ypresp_master (XDR *__xdrs, struct ypresp_master * __objp);
 extern bool_t xdr_ypresp_order (XDR *__xdrs, struct ypresp_order  * __objp);
 extern bool_t xdr_ypresp_val (XDR *__xdrs, struct ypresp_val * __objp);
+extern bool_t xdr_ypresp_xfr (XDR *__xdrs, struct ypresp_xfr *__objp);
 extern bool_t xdr_ypstat (XDR *__xdrs, enum ypstat * __objp);
+extern bool_t xdr_ypxfrstat (XDR *__xdrs, enum ypxfrstat *__objp);
 
 /* Not really for this, but missing better place: */
 extern const char *taddr2host (const struct netconfig *__nconf,

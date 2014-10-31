@@ -1,3 +1,9 @@
+2014-10-31  Thorsten Kukuk  <kukuk@thkukuk.de>
+
+	* lib/yp_xdr.c (xdr_ypresp_xfr): New function.
+	* lib/yp_xdr.c (xdr_ypxfrstat): Likewise.
+	* lib/rpcsvc/yp_prot.h: Add new prototypes.
+
 2014-10-21  Thorsten Kukuk  <kukuk@suse.de>
 
 	* lib/yp_master.c (yp_master): New file.

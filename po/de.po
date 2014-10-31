@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yp-tools 2.5\n"
 "Report-Msgid-Bugs-To: kukuk@linux-nis.org\n"
-"POT-Creation-Date: 2014-10-29 15:28+0100\n"
+"POT-Creation-Date: 2014-10-31 16:32+0100\n"
 "PO-Revision-Date: 2004-06-21 14:24+02:00\n"
 "Last-Translator: Thorsten Kukuk <kukuk@suse.de>\n"
 "Language-Team: No Language-Team in the moment\n"
@@ -59,7 +59,7 @@ msgstr "Unbekannter ypbind Fehler"
 
 # , c-format
 #: src/domainname.c:45 src/ypcat.c:42 src/ypmatch.c:43 src/yppasswd.c:68
-#: src/yppoll.c:46 src/ypset.c:46 src/yptest.c:53 src/ypwhich.c:54
+#: src/yppoll.c:46 src/ypset.c:46 src/yptest.c:51 src/ypwhich.c:54
 #, c-format
 msgid ""
 "Copyright (C) %s Thorsten Kukuk.\n"
@@ -85,19 +85,19 @@ msgstr "domainname - Setze oder zeige den Namen der aktuellen Domain\n"
 
 #: src/domainname.c:65 src/domainname.c:78 src/ypcat.c:72 src/ypmatch.c:70
 #: src/yppasswd.c:103 src/yppasswd.c:114 src/yppasswd.c:126 src/yppoll.c:71
-#: src/ypset.c:69 src/yptest.c:83 src/ypwhich.c:85
+#: src/ypset.c:69 src/yptest.c:81 src/ypwhich.c:85
 msgid "  -?, --help     Give this help list\n"
 msgstr "  -?, --help     Gib diese Hilfe aus\n"
 
 #: src/domainname.c:66 src/domainname.c:79 src/ypcat.c:73 src/ypmatch.c:71
 #: src/yppasswd.c:104 src/yppasswd.c:115 src/yppasswd.c:127 src/yppoll.c:72
-#: src/ypset.c:70 src/yptest.c:84 src/ypwhich.c:86
+#: src/ypset.c:70 src/yptest.c:82 src/ypwhich.c:86
 msgid "      --usage    Give a short usage message\n"
 msgstr "      --usage    Gib eine kurze Aufruf Hilfe aus\n"
 
 #: src/domainname.c:67 src/domainname.c:80 src/ypcat.c:74 src/ypmatch.c:72
 #: src/yppasswd.c:105 src/yppasswd.c:116 src/yppasswd.c:128 src/yppoll.c:73
-#: src/ypset.c:71 src/yptest.c:85 src/ypwhich.c:87
+#: src/ypset.c:71 src/yptest.c:83 src/ypwhich.c:87
 msgid "      --version  Print program version\n"
 msgstr "      --version  Gib Programm Version Information aus\n"
 
@@ -109,13 +109,13 @@ msgid ""
 msgstr "%s - Setze oder zeige den Namen der aktuellen NIS Domain an\n"
 
 #: src/domainname.c:88 src/ypcat.c:83 src/ypmatch.c:82 src/yppasswd.c:142
-#: src/yppoll.c:83 src/ypset.c:81 src/yptest.c:94 src/ypwhich.c:97
+#: src/yppoll.c:83 src/ypset.c:81 src/yptest.c:92 src/ypwhich.c:97
 #, c-format
 msgid "Try `%s --help' or `%s --usage' for more information.\n"
 msgstr "Versuche \"%s --help\" oder \"%s --usage\" für mehr Informationen.\n"
 
 # , c-format
-#: src/ypcat.c:47 src/yptest.c:58
+#: src/ypcat.c:47 src/yptest.c:56
 #, c-format
 msgid "Written by %s.\n"
 msgstr "Implementiert von %s.\n"
@@ -133,11 +133,11 @@ msgstr ""
 "\n"
 
 #: src/ypcat.c:63 src/ypmatch.c:64 src/yppoll.c:69 src/ypset.c:66
-#: src/yptest.c:74 src/ypwhich.c:75
+#: src/yptest.c:72 src/ypwhich.c:75
 msgid "  -d domain      Use 'domain' instead of the default domain\n"
 msgstr "  -d domain      Benutze \"domain\" anstelle der default Domain\n"
 
-#: src/ypcat.c:65 src/yptest.c:76
+#: src/ypcat.c:65 src/yptest.c:74
 msgid "  -h hostname    Query ypserv on 'hostname' instead the current one\n"
 msgstr "  -h Rechner     Frage den ypserv Prozess auf \"Rechner\"\n"
 
@@ -679,7 +679,7 @@ msgid "can't find IPv4 address for %s\n"
 msgstr "Kann Addresse für »%s« nicht finden\n"
 
 # , c-format
-#: src/ypset.c:128 src/ypset.c:165 src/yptest.c:183 src/yptest.c:195
+#: src/ypset.c:128 src/ypset.c:165 src/yptest.c:184 src/yptest.c:198
 #, c-format
 msgid "can't yp_bind: Reason: %s\n"
 msgstr ""
@@ -692,85 +692,115 @@ msgstr ""
 msgid "Cannot ypset for domain %s on host %s.\n"
 msgstr "Kann die Domain %s auf dem Rechner »%s« nicht setzen.\n"
 
-#: src/yptest.c:64
+#: src/yptest.c:62
 msgid "Usage: yptest [-q] [-d domain] [-h hostname] [-m map] [-u user]\n"
 msgstr "Aufruf: yptest [-q] [-d Domain] [-h Rechner] [-m Map] [-u Benutzer]\n"
 
-#: src/yptest.c:72
+#: src/yptest.c:70
 msgid ""
 "yptest - call different NIS routines to test configuration\n"
 "\n"
 msgstr "yptest - Test die NIS Konfiguration durch aufruf von NIS Funktionen\n"
 
-#: src/yptest.c:78
+#: src/yptest.c:76
 msgid "  -m map         Use this existing map for tests\n"
 msgstr "  -m map         Benutze diese existierende Map für die Tests\n"
 
-#: src/yptest.c:79
+#: src/yptest.c:77
 msgid "  -u user        Use the existing NIS user 'user' for tests\n"
 msgstr ""
 "  -u Benutzer    Benutze den existierenden NIS Benutzer für die Tests\n"
 
-#: src/yptest.c:81
+#: src/yptest.c:79
 msgid "  -q             Be quiet, don't print messages\n"
 msgstr "  -q             Gib keine Meldungen aus\n"
 
-#: src/yptest.c:190
+#: src/yptest.c:191
 #, c-format
 msgid "Used NIS server: %s\n"
 msgstr "Benutze NIS Server: %s\n"
 
-#: src/yptest.c:322
+#: src/yptest.c:326
 msgid "ERROR: domainname is not set!\n"
 msgstr "FEHLER: Der Domainname ist nicht gesetzt!\n"
 
-#: src/yptest.c:327
+#: src/yptest.c:331
 msgid "WARNING: domainname is not set!\n"
 msgstr "WARNUNG: Der Domainname ist nicht gesetzt!\n"
 
-#: src/yptest.c:331
+#: src/yptest.c:335
 #, c-format
 msgid "Configured domainname is \"%s\"\n"
 msgstr "Der konfiguriertet Domainname ist \"%s\"\n"
 
-#: src/yptest.c:336
+#: src/yptest.c:340
 #, c-format
 msgid "Domainname which will be used due the test: \"%s\"\n"
 msgstr "Der Domainname, welcher benutzt wird für die Tests, ist \"%s\"\n"
 
-#: src/yptest.c:365 src/yptest.c:385 src/yptest.c:412 src/yptest.c:435
-#: src/yptest.c:455 src/yptest.c:481 src/yptest.c:503
+#: src/yptest.c:347
+#, c-format
+msgid "Use Protocol V1: "
+msgstr ""
+
+#: src/yptest.c:349
+#, c-format
+msgid "ypbind procotcol v1 test failed\n"
+msgstr ""
+
+#: src/yptest.c:351
+#, c-format
+msgid "Use Protocol V2: "
+msgstr ""
+
+#: src/yptest.c:353
+#, c-format
+msgid "ypbind procotcol v2 test failed\n"
+msgstr ""
+
+#: src/yptest.c:355
+#, c-format
+msgid "Use Protocol V3:\n"
+msgstr ""
+
+#: src/yptest.c:357
+#, c-format
+msgid "ypbind procotcol v3 test failed\n"
+msgstr ""
+
+#: src/yptest.c:371 src/yptest.c:391 src/yptest.c:418 src/yptest.c:441
+#: src/yptest.c:461 src/yptest.c:487 src/yptest.c:509
 #, c-format
 msgid "ERROR: No running ypbind\n"
 msgstr "FEHLER: ypbind ist nicht am laufen\n"
 
-#: src/yptest.c:369
+#: src/yptest.c:375
 #, c-format
 msgid "WARNING: %s (Map %s, key %s)\n"
 msgstr "WARNUNG: %s (Map %s, Schlüssel %s)\n"
 
-#: src/yptest.c:389 src/yptest.c:418 src/yptest.c:439 src/yptest.c:459
-#: src/yptest.c:507
+#: src/yptest.c:395 src/yptest.c:424 src/yptest.c:445 src/yptest.c:465
+#: src/yptest.c:513
 #, c-format
 msgid "WARNING: %s (Map %s)\n"
 msgstr "WARNUNG: %s (Map %s)\n"
 
-#: src/yptest.c:398
+#: src/yptest.c:404
 #, c-format
 msgid "-- skipped --\n"
 msgstr "-- Übersprungen --\n"
 
-#: src/yptest.c:485
+#: src/yptest.c:491
 #, c-format
 msgid "WARNING: %s\n"
 msgstr "WARNUNG: %s\n"
 
-#: src/yptest.c:515
+#: src/yptest.c:521
 #, c-format
 msgid "All tests passed\n"
 msgstr "Alle Tests bestanden\n"
 
-#: src/yptest.c:517
+#: src/yptest.c:523
 #, c-format
 msgid "%d tests failed\n"
 msgstr "%d Tests schlugen fehl\n"
