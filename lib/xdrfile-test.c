@@ -1,3 +1,18 @@
+/* Copyright (C) 2014 Thorsten Kukuk
+   This file is part of the yp-tools.
+   Author: Thorsten Kukuk <kukuk@suse.de>
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License version 2 as
+   published by the Free Software Foundation.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
 #include <errno.h>
 #include <unistd.h>
@@ -42,64 +57,6 @@ ypbind3_binding_dump (struct ypbind3_binding *ypb3)
     printf ("NULL\n");
   printf ("ypbind_hi_vers: %lu\n", (u_long) ypb3->ypbind_hi_vers);
   printf ("ypbind_lo_vers: %lu\n", (u_long) ypb3->ypbind_lo_vers);
-}
-
-#undef xdr_rpcvers
-#define xdr_rpcvers(xdrs, versp) xdr_u_int32_t(xdrs, versp)
-
-static bool_t
-xdr_netconfig(XDR *xdrs, struct netconfig *objp)
-{
-        if (!xdr_string(xdrs, &objp->nc_netid, ~0))
-                return (FALSE);
-        if (!xdr_u_int64_t(xdrs, &objp->nc_semantics))
-                return (FALSE);
-        if (!xdr_u_int64_t(xdrs, &objp->nc_flag))
-                return (FALSE);
-        if (!xdr_string(xdrs, &objp->nc_protofmly, ~0))
-                return (FALSE);
-        if (!xdr_string(xdrs, &objp->nc_proto, ~0))
-                return (FALSE);
-        if (!xdr_string(xdrs, &objp->nc_device, ~0))
-                return (FALSE);
-        if (!xdr_array(xdrs, (char **)&objp->nc_lookups,
-                (u_int32_t *)&objp->nc_nlookups, 100, sizeof (char *),
-                (xdrproc_t)xdr_wrapstring))
-                return (FALSE);
-        return (xdr_vector(xdrs, (char *)objp->nc_unused,
-                8, sizeof (u_int32_t), (xdrproc_t)xdr_u_int));
-}
-
-static bool_t
-__xdr_pointer(XDR *xdrs, char **objpp, u_int32_t obj_size,
-              const xdrproc_t xdr_obj)
-{
-        bool_t more_data;
-
-        more_data = (*objpp != NULL);
-        if (!xdr_bool(xdrs, &more_data))
-                return (FALSE);
-        if (!more_data) {
-                *objpp = NULL;
-                return (TRUE);
-        }
-        return (xdr_reference(xdrs, objpp, obj_size, xdr_obj));
-}
-
-bool_t
-xdr_ypbind3_binding (XDR *xdrs, struct ypbind3_binding *objp)
-{
-  if (!__xdr_pointer (xdrs, (char **)&objp->ypbind_nconf,
-                    sizeof (struct netconfig), (xdrproc_t) xdr_netconfig))
-    return FALSE;
-  if (!xdr_pointer(xdrs, (char **)&objp->ypbind_svcaddr,
-                   sizeof (struct netbuf), (xdrproc_t) xdr_netbuf))
-    return FALSE;
-  if (!xdr_string(xdrs, &objp->ypbind_servername, ~0))
-    return FALSE;
-  if (!xdr_rpcvers(xdrs, &objp->ypbind_hi_vers))
-    return FALSE;
-  return xdr_rpcvers(xdrs, &objp->ypbind_lo_vers);
 }
 
 static void
@@ -161,7 +118,7 @@ main (void)
 
    ypb3 = __host2ypbind3_binding ("phex");
    ypbind3_binding_dump (ypb3);
-   write_ypbind3_binding (ypb3); 
+   write_ypbind3_binding (ypb3);
 
    printf ("\nRead data\n\n");
 

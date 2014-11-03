@@ -17,20 +17,20 @@
 #include "config.h"
 #endif
 
-// #include <netdb.h>
-// #include <rpc/rpc.h>
 #include <rpcsvc/yp_prot.h>
 
 struct ypbind3_binding *
 __host2ypbind3_binding (const char *host)
 {
+  const struct timeval TIMEOUT10 = {1, 0};
   CLIENT *server;
   ypbind3_binding ypb3, *res;
   struct netconfig *nconf;
   struct netbuf nbuf;
 
   /* connect to server to find out if it exist and runs */
-  if ((server = clnt_create (host, YPPROG, YPVERS, "datagram_n")) == NULL)
+  if ((server = clnt_create_timed (host, YPPROG, YPVERS,
+				   "datagram_n", &TIMEOUT10)) == NULL)
     return NULL;
 
   /* get nconf, netbuf structures */

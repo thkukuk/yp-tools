@@ -24,7 +24,7 @@ noinst_HEADERS = nicknames.h yp_all_host.h internal.h
 noinst_LIBRARIES = libyptools.a
 lib_LTLIBRARIES = libnis.la
 
-libnis_la_LDFLAGS = -version-info 1:0:0 \
+libnis_la_LDFLAGS = -version-info 1:1:0 \
 	-Wl,--version-script=$(srcdir)/libnis.map
 libnis_la_LIBADD = @TIRPC_LIBS@
 

@@ -4,12 +4,16 @@ Copyright (C) 1998-2014 Thorsten Kukuk
 
 Please send bug reports, questions and suggestions to <kukuk@linux-nis.org>.
 
-Version 2.99.8
+Version 3.0.1
+* libnis: use a much short timeout for initial RPC calls
+
+Version 3.0
 * Port to TI-RPC, so that all tools can work with IPv6
 * ypwhich supports IPv6 and ypbind v3 protocol, which is default
 * ypset supports IPv6 and ypbind v3 protocol, which is default
 * Add libnis library
 * Add nss_nis6 module
+* Port all utilities to TI-RPC and enable IPv6
 
 Version 2.15
 * Update autoconf/automake

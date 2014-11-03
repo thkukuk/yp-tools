@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: yp-tools 2.99.8\n"
+"Project-Id-Version: yp-tools 3.0.1\n"
 "Report-Msgid-Bugs-To: kukuk@linux-nis.org\n"
-"POT-Creation-Date: 2014-10-31 16:32+0100\n"
+"POT-Creation-Date: 2014-11-03 16:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"

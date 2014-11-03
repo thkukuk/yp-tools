@@ -1,12 +1,16 @@
-2014-10-31  Thorsten Kukuk  <kukuk@thkukuk.de>
+2014-11-03  Thorsten Kukuk  <kukuk@thkukuk.de>
 
-	* lib/yp_xdr.c (xdr_ypresp_xfr): New function.
-	* lib/yp_xdr.c (xdr_ypxfrstat): Likewise.
-	* lib/rpcsvc/yp_prot.h: Add new prototypes.
+	* release version 3.0.1
 
-2014-10-21  Thorsten Kukuk  <kukuk@suse.de>
+	* lib/host2ypbind3_binding.c (__host2ypbind3_binding): Use
+	clnt_create_timed with a timeout of 1 sec.
 
-	* lib/yp_master.c (yp_master): New file.
+	* release version 3.0
+
+	* lib: Add libnis library
+	* nss_nis6: New, adjusted nss_nis module of glibc enabled
+	to use IPv6, too.
+	* src: Port all utilities to use TI-RPC and IPv6.
 
 2012-04-09  Thorsten Kukuk  <kukuk@suse.de>
 
