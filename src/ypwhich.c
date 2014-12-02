@@ -62,7 +62,7 @@ warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\
 static void
 print_usage (FILE *stream)
 {
-  fputs (_("Usage: ypwhich [-d domain] [[-t] -m [mname]|[-n]|[-Vn] hostname] | -x\n"),
+  fputs (_("Usage: ypwhich [-d domain] [[-t] -m [mname]|[-Vn] hostname] | -x\n"),
 	 stream);
 }
 
@@ -76,7 +76,6 @@ print_help (void)
 	 stdout);
   fputs (_("  -m mname       Find the master NIS server for the map 'mname'\n"),
 	 stdout);
-  fputs (_("  -n             Don't convert addresses to names\n"), stdout);
   fputs (_("  -t             Inhibits map nickname translation\n"), stdout);
   fputs (_("  -V n           Version of ypbind, V3 is default\n"), stdout);
   fputs (_("  -x             Display the map nickname translation table\n"),

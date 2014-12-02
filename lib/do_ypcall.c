@@ -22,6 +22,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <libintl.h>
+#include <pthread.h>
 #include <arpa/inet.h>
 #include <rpcsvc/yp_prot.h>
 
@@ -44,7 +45,7 @@ typedef struct dom_binding dom_binding;
 static const struct timeval RPCTIMEOUT = {25, 0};
 static const struct timeval UDPTIMEOUT = {5, 0};
 static int const MAXTRIES = 2;
-// XXX __libc_lock_define_initialized (static, ypbindlist_lock)
+static pthread_mutex_t ypbindlist_lock = PTHREAD_MUTEX_INITIALIZER;
 static dom_binding *ypbindlist = NULL;
 
 static const char *
@@ -294,11 +295,9 @@ yp_bind (const char *indomain)
 {
   int status;
 
-  // XXX __libc_lock_lock (ypbindlist_lock);
-
+  pthread_mutex_lock (&ypbindlist_lock);
   status = __yp_bind (indomain, &ypbindlist);
-
-  // XXX __libc_lock_unlock (ypbindlist_lock);
+  pthread_mutex_unlock (&ypbindlist_lock);
 
   return status;
 }
@@ -333,11 +332,9 @@ yp_unbind_locked (const char *indomain)
 void
 yp_unbind (const char *indomain)
 {
-  // XXX __libc_lock_lock (ypbindlist_lock);
-
+  pthread_mutex_lock (&ypbindlist_lock);
   yp_unbind_locked (indomain);
-
-  // XXX __libc_lock_unlock (ypbindlist_lock);
+  pthread_mutex_unlock (&ypbindlist_lock);
 
   return;
 }
@@ -375,7 +372,7 @@ do_ypcall (const char *domain, u_long prog, xdrproc_t xargs,
 
   status = YPERR_YPERR;
 
-  // XXX __libc_lock_lock (ypbindlist_lock);
+  pthread_mutex_lock (&ypbindlist_lock);
   ydb = ypbindlist;
   while (ydb != NULL)
     {
@@ -388,7 +385,7 @@ do_ypcall (const char *domain, u_long prog, xdrproc_t xargs,
 				      resp, &ydb, 0);
 	      if (status == YPERR_SUCCESS)
 	        {
-		  // XXX __libc_lock_unlock (ypbindlist_lock);
+		  pthread_mutex_unlock (&ypbindlist_lock);
 		  errno = saved_errno;
 	          return status;
 	        }
@@ -401,7 +398,7 @@ do_ypcall (const char *domain, u_long prog, xdrproc_t xargs,
 	}
       ydb = ydb->dom_pnext;
     }
-  // XXX __libc_lock_unlock (ypbindlist_lock);
+  pthread_mutex_unlock (&ypbindlist_lock);
 
   /* First try with cached data failed. Now try to get
      current data from the system.  */
@@ -536,10 +533,10 @@ yp_all (const char *indomain, const char *inmap,
   try = 0;
   res = YPERR_YPERR;
 
-  // XXX __libc_lock_lock (ypbindlist_lock);
+ pthread_mutex_lock (&ypbindlist_lock);
 
   while (try < MAXTRIES && res != YPERR_SUCCESS)
-    {  
+    {
       if (__yp_bind (indomain, &ydb) != 0)
         {
           res = YPERR_DOMAIN;
@@ -589,7 +586,7 @@ yp_all (const char *indomain, const char *inmap,
     }
 
  out:
-  // XXX __libc_lock_unlock (ypbindlist_lock);
+  pthread_mutex_unlock (&ypbindlist_lock);
 
   if (server)
     free (server);

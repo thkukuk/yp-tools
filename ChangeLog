@@ -1,3 +1,15 @@
+2014-12-02  Thorsten Kukuk  <kukuk@thkukuk.de>
+
+	* release version 3.1
+
+	* lib/Makefile.am: Bump minor version number.
+	* lib/do_ypcall.c: Use pthread functions for locks.
+	* lib/yp_get_default_domain.c: Likewise.
+
+	* nss_nis6/libc-lock.h: Add defines to use standard pthread functions.
+
+	* src/Makefile.am: Change order of libraries for linking.
+
 2014-11-03  Thorsten Kukuk  <kukuk@thkukuk.de>
 
 	* release version 3.0.1

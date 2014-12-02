@@ -24,11 +24,10 @@ yppasswd_LDADD = ${LDADD} @LIBCRYPT@ @LIBCRACK@
 yppasswd_CFLAGS = -DPASSWD_PROG=\"${PASSWD_PROG}\" \
 	-DCHFN_PROG=\"${CHFN_PROG}\" -DCHSH_PROG=\"${CHSH_PROG}\"
 domainname_LDADD = ../lib/yp_get_default_domain.lo ../lib/yperr_string.lo
-ypcat_LDADD = ${LDADD} ../lib/libyptools.a
-ypmatch_LDADD = ${LDADD} ../lib/libyptools.a
-ypwhich_LDADD = ${LDADD} ../lib/libyptools.a
-
-yptest_LDADD = ${LDADD} ../lib/yp_all_host.o
+ypcat_LDADD = ../lib/libyptools.a ${LDADD} -lpthread
+ypmatch_LDADD = ../lib/libyptools.a ${LDADD}
+ypwhich_LDADD = ../lib/libyptools.a ${LDADD}
+yptest_LDADD = ../lib/yp_all_host.o ${LDADD}
 
 install-exec-hook:
 	ln -f ${DESTDIR}${bindir}/yppasswd ${DESTDIR}${bindir}/ypchsh
