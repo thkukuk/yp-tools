@@ -1,5 +1,5 @@
 .\" -*- nroff -*-
-.\" Copyright (C) 1998, 1999, 2001, 2007, 2010, 2014 Thorsten Kukuk
+.\" Copyright (C) 2014 Thorsten Kukuk
 .\" This file is part of the yp-tools.
 .\" Author: Thorsten Kukuk <kukuk@linux-nis.org>
 .\"
@@ -16,37 +16,24 @@
 .\" along with this program; if not, write to the Free Software Foundation,
 .\" Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .\"
-.TH yppoll 8 "April 2010" "YP Tools @VERSION@"
+.TH yp_dump_binding 8 "April 2014" "YP Tools @VERSION@"
 .SH NAME
-yppoll - return version and master server of a NIS map
+yp_dump_binding - dump binding files
 .SH SYNOPSIS
-.B yppoll
-[
-.BI \-h " host"
-]
+.B yp_dump+binding
 [
 .BI \-d " domain"
 ]
-.I mapname
 .LP
 .SH DESCRIPTION
-.B yppoll
-queries
-.BR ypserv (8)
-which host the NIS master server for a named map is and what the order
-number of this map is.
+.B yp_dump_binding
+prints the content of the binding files in
+.B /var/yp/binding
+for the corresponding
+.BR domainname (8).
+This tool is for debugging purpose.
 
 .SH OPTIONS
-.TP
-.BI \-h " host"
-Ask the NIS server process running on
-.I host
-for information about
-.IR mapname.
-If
-.I host
-is not specified, the server polled is the default server returned by
-.BR ypwhich (1).
 .TP
 .BI \-d " domain"
 Specify a domain other than the default domain as returned by
@@ -61,7 +48,7 @@ Specify a domain other than the default domain as returned by
 .BR ypwhich (1)
 .LP
 .SH AUTHOR
-.B yppoll
+.B yp_dump_binding
 is part of the
 .B yp-tools
 package, which was written by Thorsten Kukuk <kukuk@linux-nis.org>.

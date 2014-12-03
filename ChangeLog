@@ -1,3 +1,16 @@
+2014-12-03  Thorsten Kukuk  <kukuk@thkukuk.de>
+
+	* man/yppoll.8.in: Add missing description.
+
+	* man/yp_dump_binding.8.in: New.
+
+	* src/yp_dump_binding.c: New program to show binding information.
+
+	* lib/do_ypcall.c (yp_bind_file): Fix file descriptor leak,
+	fix path for ypbind v2 binding file.
+
+	* src/Makefile.am (sbin_PROGRAMS): Add yp_dump_binding.
+
 2014-12-02  Thorsten Kukuk  <kukuk@thkukuk.de>
 
 	* release version 3.1

@@ -106,16 +106,19 @@ yp_bind_file (const char *domain, dom_binding *ysd)
       if (!status)
         {
           xdr_free ((xdrproc_t)xdr_ypbind3_binding, &ypb3);
+	  fclose (in);
 	  goto version2;
         }
       yp_bind_client_create_v3 (domain, ysd, &ypb3);
       xdr_free ((xdrproc_t)xdr_ypbind3_binding, &ypb3);
+      fclose (in);
     }
   else
     {
       int fd;
     version2:
 
+      snprintf (path, sizeof (path), "%s/%s.%u", BINDINGDIR, domain, 2);
       fd = open (path, O_RDONLY);
       if (fd >= 0)
 	{

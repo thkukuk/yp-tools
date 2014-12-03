@@ -11,3 +11,4 @@ ypserv_test
 ypset
 yptest
 ypwhich
+yp_dump_binding

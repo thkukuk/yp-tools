@@ -190,7 +190,7 @@ print_bindhost (const char *domain, const char *hostname, int vers)
 	  if (!be_quiet)
 	    printf (_("Used NIS server: %s\n"), inet_ntoa (yp_r2.ypbind2_addr));
 	}
-      else 
+      else
         {
           if (yp_r3.ypbind_status != YPBIND_SUCC_VAL)
             {
@@ -342,7 +342,7 @@ main (int argc, char **argv)
 
   if (!be_quiet)
     printf ("\nTest 2: ypbind\n");
-      
+
   if (!be_quiet)
     printf (_("Use Protocol V1: "));
   if (print_bindhost (domainname, hostname, 1))

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yp-tools 2.5\n"
 "Report-Msgid-Bugs-To: kukuk@linux-nis.org\n"
-"POT-Creation-Date: 2014-12-02 13:23+0100\n"
+"POT-Creation-Date: 2014-12-03 14:23+0100\n"
 "PO-Revision-Date: 2004-06-21 14:24+02:00\n"
 "Last-Translator: Thorsten Kukuk <kukuk@suse.de>\n"
 "Language-Team: No Language-Team in the moment\n"
@@ -85,19 +85,19 @@ msgstr "domainname - Setze oder zeige den Namen der aktuellen Domain\n"
 
 #: src/domainname.c:65 src/domainname.c:78 src/ypcat.c:72 src/ypmatch.c:70
 #: src/yppasswd.c:103 src/yppasswd.c:114 src/yppasswd.c:126 src/yppoll.c:71
-#: src/ypset.c:69 src/yptest.c:81 src/ypwhich.c:85
+#: src/ypset.c:69 src/yptest.c:81 src/ypwhich.c:84
 msgid "  -?, --help     Give this help list\n"
 msgstr "  -?, --help     Gib diese Hilfe aus\n"
 
 #: src/domainname.c:66 src/domainname.c:79 src/ypcat.c:73 src/ypmatch.c:71
 #: src/yppasswd.c:104 src/yppasswd.c:115 src/yppasswd.c:127 src/yppoll.c:72
-#: src/ypset.c:70 src/yptest.c:82 src/ypwhich.c:86
+#: src/ypset.c:70 src/yptest.c:82 src/ypwhich.c:85
 msgid "      --usage    Give a short usage message\n"
 msgstr "      --usage    Gib eine kurze Aufruf Hilfe aus\n"
 
 #: src/domainname.c:67 src/domainname.c:80 src/ypcat.c:74 src/ypmatch.c:72
 #: src/yppasswd.c:105 src/yppasswd.c:116 src/yppasswd.c:128 src/yppoll.c:73
-#: src/ypset.c:71 src/yptest.c:83 src/ypwhich.c:87
+#: src/ypset.c:71 src/yptest.c:83 src/ypwhich.c:86
 msgid "      --version  Print program version\n"
 msgstr "      --version  Gib Programm Version Information aus\n"
 
@@ -109,7 +109,7 @@ msgid ""
 msgstr "%s - Setze oder zeige den Namen der aktuellen NIS Domain an\n"
 
 #: src/domainname.c:88 src/ypcat.c:83 src/ypmatch.c:82 src/yppasswd.c:142
-#: src/yppoll.c:83 src/ypset.c:81 src/yptest.c:92 src/ypwhich.c:97
+#: src/yppoll.c:83 src/ypset.c:81 src/yptest.c:92 src/ypwhich.c:96
 #, c-format
 msgid "Try `%s --help' or `%s --usage' for more information.\n"
 msgstr "Versuche \"%s --help\" oder \"%s --usage\" für mehr Informationen.\n"
@@ -145,22 +145,22 @@ msgstr "  -h Rechner     Frage den ypserv Prozess auf \"Rechner\"\n"
 msgid "  -k             Display map keys\n"
 msgstr "  -k             Gib Schlüssel mit aus\n"
 
-#: src/ypcat.c:69 src/ypmatch.c:67 src/ypwhich.c:80
+#: src/ypcat.c:69 src/ypmatch.c:67 src/ypwhich.c:79
 msgid "  -t             Inhibits map nickname translation\n"
 msgstr "  -t             Verbietet die Übersetzung von Nicknames\n"
 
-#: src/ypcat.c:70 src/ypmatch.c:68 src/ypwhich.c:82
+#: src/ypcat.c:70 src/ypmatch.c:68 src/ypwhich.c:81
 msgid "  -x             Display the map nickname translation table\n"
 msgstr "  -x             Zeige die Nickname Übersetzungstabelle an\n"
 
 # , c-format
 #: src/ypcat.c:207 src/ypmatch.c:171 src/yppasswd.c:617 src/yppoll.c:159
-#: src/ypset.c:265 src/ypwhich.c:384
+#: src/ypset.c:265 src/ypwhich.c:383
 #, c-format
 msgid "%s: can't get local yp domain: %s\n"
 msgstr "%s: Kann die lokale NIS Domain nicht bestimmen: %s\n"
 
-#: src/ypcat.c:230 src/ypmatch.c:203 src/ypwhich.c:418
+#: src/ypcat.c:230 src/ypmatch.c:203 src/ypwhich.c:417
 #, c-format
 msgid "No running ypbind\n"
 msgstr "ypbind ist nicht am laufen\n"
@@ -807,7 +807,7 @@ msgstr "%d Tests schlugen fehl\n"
 
 #: src/ypwhich.c:65
 #, fuzzy
-msgid "Usage: ypwhich [-d domain] [[-t] -m [mname]|[-n]|[-Vn] hostname] | -x\n"
+msgid "Usage: ypwhich [-d domain] [[-t] -m [mname]|[-Vn] hostname] | -x\n"
 msgstr "Aufruf: ypwhich [-d domain] [[-t] -m [Mapname]|[-Vn] Rechner] | -x\n"
 
 #: src/ypwhich.c:73
@@ -822,22 +822,17 @@ msgstr ""
 msgid "  -m mname       Find the master NIS server for the map 'mname'\n"
 msgstr "  -m mname       Finden den NIS Master Server für die Map \"mname\"\n"
 
-#: src/ypwhich.c:79
-#, fuzzy
-msgid "  -n             Don't convert addresses to names\n"
-msgstr "  -q             Gib keine Meldungen aus\n"
-
-#: src/ypwhich.c:81
+#: src/ypwhich.c:80
 #, fuzzy
 msgid "  -V n           Version of ypbind, V3 is default\n"
 msgstr "  -V n           Version des ypbinds Protokoll, V2 ist default\n"
 
-#: src/ypwhich.c:84
+#: src/ypwhich.c:83
 msgid " --verbose       Verbose output of result\n"
 msgstr ""
 
 # , c-format
-#: src/ypwhich.c:150 src/ypwhich.c:207
+#: src/ypwhich.c:149 src/ypwhich.c:206
 #, fuzzy, c-format
 msgid ""
 "ypwhich: can't call ypbind on '%s'\n"
@@ -846,55 +841,59 @@ msgstr ""
 "Kann keine Verbindung aufbauen.\n"
 "Grund: %s\n"
 
-#: src/ypwhich.c:167 src/ypwhich.c:221
+#: src/ypwhich.c:166 src/ypwhich.c:220
 #, c-format
 msgid ""
 "Error for domain '%s' from ypbind on '%s':\n"
 "\t%s\n"
 msgstr ""
 
-#: src/ypwhich.c:262
+#: src/ypwhich.c:261
 #, c-format
 msgid "ERROR: taddr2host failed!\n"
 msgstr ""
 
-#: src/ypwhich.c:268
+#: src/ypwhich.c:267
 #, c-format
 msgid "Error: no server information gotten from ypbind on '%s'\n"
 msgstr ""
 
 # , c-format
-#: src/ypwhich.c:390
+#: src/ypwhich.c:389
 #, fuzzy, c-format
 msgid "%s: no local yp domain set\n"
 msgstr "%s: Kann die lokale NIS Domain nicht bestimmen: %s\n"
 
 # , c-format
-#: src/ypwhich.c:422
+#: src/ypwhich.c:421
 #, c-format
 msgid "Can't find master for map \"%s\". Reason: %s\n"
 msgstr "Kann Master Server der Map \"%s\" nicht finden. Grund: %s\n"
 
 # , c-format
-#: src/ypwhich.c:446
+#: src/ypwhich.c:445
 #, c-format
 msgid "Can't find master for map %s. Reason: %s\n"
 msgstr ""
 "Kann Master Server der Map %s nicht finden.\n"
 "Grund: %s\n"
 
-#: src/ypwhich.c:456
+#: src/ypwhich.c:455
 #, c-format
 msgid "No running ypbind.\n"
 msgstr "ypbind ist nicht am laufen.\n"
 
 # , c-format
-#: src/ypwhich.c:460
+#: src/ypwhich.c:459
 #, c-format
 msgid "Can't get map list for domain %s. Reason: %s\n"
 msgstr ""
 "Kann die Liste der Maps aus der Domain %s nicht bekommen.\n"
 "Grund: %s\n"
+
+#, fuzzy
+#~ msgid "  -n             Don't convert addresses to names\n"
+#~ msgstr "  -q             Gib keine Meldungen aus\n"
 
 # , c-format
 #~ msgid "yptest: host %s unknown\n"

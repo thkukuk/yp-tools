@@ -16,7 +16,7 @@ CLEANFILES = *~ domainname
 
 EXTRA_PROGRAMS = domainname
 bin_PROGRAMS = ypwhich ypmatch ypcat yppasswd @DOMAINNAME@
-sbin_PROGRAMS = yppoll ypset
+sbin_PROGRAMS = yppoll ypset yp_dump_binding
 noinst_PROGRAMS = yptest
 
 yppasswd_SOURCES = yppasswd.c yppasswd_xdr.c
