@@ -111,7 +111,7 @@ yp_all_host (const char *indomain, const char *inmap,
 
   res = YPERR_YPERR;
 
-  clnt = clnt_create (hostname, YPPROG, YPVERS, "tcp");
+  clnt = clnt_create_timed (hostname, YPPROG, YPVERS, "tcp", NULL);
   if (clnt == NULL)
     return YPERR_PMAP;
 

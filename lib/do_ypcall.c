@@ -17,11 +17,12 @@
 #include "config.h"
 #endif
 
-#include <errno.h>
 #include <fcntl.h>
+#include <errno.h>
+#include <libintl.h>
 #include <string.h>
 #include <unistd.h>
-#include <libintl.h>
+#include <assert.h>
 #include <pthread.h>
 #include <arpa/inet.h>
 #include <rpcsvc/yp_prot.h>
@@ -70,7 +71,10 @@ yp_bind_client_create_v3 (const char *domain, dom_binding *ysd,
   strncpy (ysd->dom_domain, domain, YPMAXDOMAIN);
   ysd->dom_domain[YPMAXDOMAIN] = '\0';
 
-  ysd->dom_client = clnt_create (ysd->server, YPPROG, YPVERS, "udp");
+  ysd->dom_client = clnt_create_timed (ysd->server, YPPROG, YPVERS,
+				       "udp", NULL);
+  if (ysd->dom_client == NULL)
+    clnt_pcreateerror ("yp_bind_client_create_v3");
 }
 
 static void
@@ -81,7 +85,10 @@ yp_bind_client_create_v2 (const char *domain, dom_binding *ysd,
   strncpy (ysd->dom_domain, domain, YPMAXDOMAIN);
   ysd->dom_domain[YPMAXDOMAIN] = '\0';
 
-  ysd->dom_client = clnt_create (ysd->server, YPPROG, YPVERS, "udp");
+  ysd->dom_client = clnt_create_timed (ysd->server, YPPROG, YPVERS,
+				       "udp", NULL);
+  if (ysd->dom_client == NULL)
+    clnt_pcreateerror ("yp_bind_client_create_v2");
 }
 
 static void
@@ -140,7 +147,7 @@ yp_bind_ypbindprog (const char *domain, dom_binding *ysd)
 {
   CLIENT *client;
 
-  client = clnt_create ("localhost", YPBINDPROG, YPBINDVERS, "tcp");
+  client = clnt_create_timed ("localhost", YPBINDPROG, YPBINDVERS, "tcp", NULL);
   if (client != NULL)
     {
       enum clnt_stat ret;
@@ -179,6 +186,8 @@ yp_bind_ypbindprog (const char *domain, dom_binding *ysd)
       ysd->server = NULL;
 
       yp_bind_client_create_v3 (domain, ysd, ypbr.ypbind_respbody.ypbind_bindinfo);
+      if (ysd->dom_client == NULL)
+	return YPERR_YPSERV;
     }
   else
     {
@@ -186,7 +195,8 @@ yp_bind_ypbindprog (const char *domain, dom_binding *ysd)
 
     try_v2:
       /* Fallback to protocol v2 in error case */
-      client = clnt_create ("localhost", YPBINDPROG, YPBINDVERS_2, "tcp");
+      client = clnt_create_timed ("localhost", YPBINDPROG, YPBINDVERS_2,
+				  "tcp", NULL);
 
       if (client == NULL)
 	return YPERR_YPBIND;
@@ -222,6 +232,8 @@ yp_bind_ypbindprog (const char *domain, dom_binding *ysd)
       ysd->server = NULL;
 
       yp_bind_client_create_v2 (domain, ysd, &ypbr);
+      if (ysd->dom_client == NULL)
+	return YPERR_YPSERV;
     }
 
   return YPERR_SUCCESS;
@@ -348,6 +360,8 @@ __ypclnt_call (u_long prog, xdrproc_t xargs, caddr_t req,
 	       int print_error)
 {
   enum clnt_stat result;
+
+  assert ((*ydb)->dom_client != NULL);
 
   result = clnt_call ((*ydb)->dom_client, prog,
 		      xargs, req, xres, resp, RPCTIMEOUT);
@@ -552,7 +566,7 @@ yp_all (const char *indomain, const char *inmap,
       __yp_unbind (ydb);
       ydb = NULL;
 
-      clnt = clnt_create (server, YPPROG, YPVERS, "tcp");
+      clnt = clnt_create_timed (server, YPPROG, YPVERS, "tcp", NULL);
       if (clnt == NULL)
         {
           res = YPERR_PMAP;

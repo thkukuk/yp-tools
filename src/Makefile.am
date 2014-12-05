@@ -9,7 +9,7 @@ localedir = $(datadir)/locale
 AM_CPPFLAGS = -I$(top_srcdir)/lib -I$(srcdir) -I$(top_srcdir) \
 	-DLOCALEDIR=\"$(localedir)\"
 AM_CFLAGS = @WARNFLAGS@ @TIRPC_CFLAGS@
-LDADD = ../lib/libnis.la
+LDADD = ../lib/libnis.la @TIRPC_LIBS@
 
 
 CLEANFILES = *~ domainname
@@ -24,7 +24,7 @@ yppasswd_LDADD = ${LDADD} @LIBCRYPT@ @LIBCRACK@
 yppasswd_CFLAGS = -DPASSWD_PROG=\"${PASSWD_PROG}\" \
 	-DCHFN_PROG=\"${CHFN_PROG}\" -DCHSH_PROG=\"${CHSH_PROG}\"
 domainname_LDADD = ../lib/yp_get_default_domain.lo ../lib/yperr_string.lo
-ypcat_LDADD = ../lib/libyptools.a ${LDADD} -lpthread
+ypcat_LDADD = ../lib/libyptools.a ${LDADD}
 ypmatch_LDADD = ../lib/libyptools.a ${LDADD}
 ypwhich_LDADD = ../lib/libyptools.a ${LDADD}
 yptest_LDADD = ../lib/yp_all_host.o ${LDADD}

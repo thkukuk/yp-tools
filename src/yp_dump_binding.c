@@ -67,6 +67,10 @@ print_help (void)
 	 stdout);
   fputs (_("  -d domain      Use 'domain' instead of the default domain\n"),
          stdout);
+  fputs (_("  -p path        Use 'path' instead of the default binding directory\n"),
+	 stdout);
+  fputs (_(" -v version     Only dump binding information of this ypbind protocol version\n"),
+	 stdout);
   fputs (_("  -?, --help     Give this help list\n"), stdout);
   fputs (_("      --usage    Give a short usage message\n"), stdout);
   fputs (_("      --version  Print program version\n"), stdout);
@@ -95,11 +99,11 @@ dump_nconf (struct netconfig *nconf, char *prefix)
 }
 
 static void
-dump_binding (const char *domain, int version)
+dump_binding (const char *dir, const char *domain, int version)
 {
-  char path[sizeof (BINDINGDIR) + strlen (domain) + 3 * sizeof (unsigned) + 3];
+  char path[sizeof (dir) + strlen (domain) + 3 * sizeof (unsigned) + 3];
 
-  snprintf (path, sizeof (path), "%s/%s.%u", BINDINGDIR, domain, version);
+  snprintf (path, sizeof (path), "%s/%s.%u", dir, domain, version);
 
   if (version == 3)
     {
@@ -181,7 +185,9 @@ dump_binding (const char *domain, int version)
 int
 main (int argc, char **argv)
 {
+  char *bindingdir = BINDINGDIR;
   char *domainname = NULL;
+  int vers = 0;
 
   setlocale (LC_MESSAGES, "");
   setlocale (LC_CTYPE, "");
@@ -199,7 +205,7 @@ main (int argc, char **argv)
         {NULL, 0, NULL, '\0'}
       };
 
-      c = getopt_long (argc, argv, "d:?", long_options, &option_index);
+      c = getopt_long (argc, argv, "d:p:v:?", long_options, &option_index);
       if (c == (-1))
         break;
       switch (c)
@@ -207,6 +213,12 @@ main (int argc, char **argv)
         case 'd':
           domainname = optarg;
           break;
+	case 'p':
+	  bindingdir = optarg;
+	  break;
+	case 'v':
+	  vers = atoi (optarg);
+	  break;
         case '?':
           print_help ();
           return 0;
@@ -243,9 +255,12 @@ main (int argc, char **argv)
 	}
     }
 
-  dump_binding (domainname, 1);
-  dump_binding (domainname, 2);
-  dump_binding (domainname, 3);
+  if (vers == 0 || vers == 1)
+    dump_binding (bindingdir, domainname, 1);
+  if (vers == 0 || vers == 2)
+    dump_binding (bindingdir, domainname, 2);
+  if (vers == 0 || vers == 3)
+    dump_binding (bindingdir, domainname, 3);
 
   return 0;
 }

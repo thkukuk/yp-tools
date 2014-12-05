@@ -4,6 +4,10 @@ Copyright (C) 1998-2014 Thorsten Kukuk
 
 Please send bug reports, questions and suggestions to <kukuk@linux-nis.org>.
 
+Version 3.3
+* Extend yp_dump_binding
+* Fix some link issues
+
 Version 3.2
 * Add yp_dump_binding application
 * Fix file descriptor leak in libnis

@@ -23,6 +23,10 @@ yp_dump_binding - dump binding files
 .B yp_dump+binding
 [
 .BI \-d " domain"
+][
+.BI \-p " path"
+][
+.BI \-v " version"
 ]
 .LP
 .SH DESCRIPTION
@@ -36,8 +40,15 @@ This tool is for debugging purpose.
 .SH OPTIONS
 .TP
 .BI \-d " domain"
-Specify a domain other than the default domain as returned by
+Specify a domain other than the default domainname as returned by
 .BR domainname (8).
+.TP
+.BI \-p " path"
+Specify an alternate path to the binding files.
+.TP
+.BI \-v " version"
+Display only the binding file of a specific protocol version. By
+default the files of all versions are shown.
 .SH "SEE ALSO"
 .BR domainname (8),
 .BR ypbind (8),
