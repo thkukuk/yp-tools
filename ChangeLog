@@ -1,9 +1,14 @@
+2015-02-27  Thorsten Kukuk  <kukuk@thkukuk.de>
+
+	* lib/yp_all_host.c (yp_all_host): Fix wrong pointer.
+	Reported by David Binderman.
+
 2014-12-05  Thorsten Kukuk  <kukuk@thkukuk.de>
 
 	* release version 3.3
 
 	* nss_nis6/Makefile.am: link nss_nis6 against tirpc
-	* src/Makefile.am: link everything against tirpc 
+	* src/Makefile.am: link everything against tirpc
 
 	* src/yp_dump_binding.c: Add -p and -v parameters
 	* man/yp_dump_binding.8.in: Document -p and -v parameters

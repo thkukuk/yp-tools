@@ -66,12 +66,12 @@ dosearch (int instatus, char *inkey, int inkeylen, char *inval,
 {
   struct search_t *req = (struct search_t *) indata;
 
-  if (__glibc_unlikely (instatus != YP_TRUE))
+  if (instatus != YP_TRUE)
     return 1;
 
   if (inkey && inkeylen > 0 && inval && invallen > 0)
     {
-      if (__glibc_unlikely ((size_t) (invallen + 1) > req->buflen))
+      if ((size_t) (invallen + 1) > req->buflen)
 	{
 	  *req->errnop = ERANGE;
 	  req->status = NSS_STATUS_TRYAGAIN;
@@ -206,7 +206,7 @@ internal_nis6_getservent_r (struct servent *serv, char *buffer,
     {
       struct response_t *bucket = intern.next;
 
-      if (__glibc_unlikely (intern.offset >= bucket->size))
+      if (intern.offset >= bucket->size)
 	{
 	  if (bucket->next == NULL)
 	    return NSS_STATUS_NOTFOUND;
@@ -221,7 +221,7 @@ internal_nis6_getservent_r (struct servent *serv, char *buffer,
         ++intern.offset;
 
       size_t len = strlen (p) + 1;
-      if (__glibc_unlikely (len > buflen))
+      if (len > buflen)
 	{
 	  *errnop = ERANGE;
 	  return NSS_STATUS_TRYAGAIN;
@@ -238,7 +238,7 @@ internal_nis6_getservent_r (struct servent *serv, char *buffer,
       p = memcpy (buffer, &bucket->mem[intern.offset], len);
 
       parse_res = _nss_files_parse_servent (p, serv, pdata, buflen, errnop);
-      if (__glibc_unlikely (parse_res == -1))
+      if (parse_res == -1)
         return NSS_STATUS_TRYAGAIN;
 
       intern.offset += len;
@@ -275,7 +275,7 @@ _nss_nis6_getservbyname_r (const char *name, const char *protocol,
     }
 
   char *domain;
-  if (__glibc_unlikely (yp_get_default_domain (&domain)))
+  if (yp_get_default_domain (&domain))
     return NSS_STATUS_UNAVAIL;
 
   /* If the protocol is given, we could try if our NIS server knows
@@ -306,9 +306,9 @@ _nss_nis6_getservbyname_r (const char *name, const char *protocol,
 
   /* If we found the key, it's ok and parse the result. If not,
      fall through and parse the complete table. */
-  if (__glibc_likely (status == YPERR_SUCCESS))
+  if (status == YPERR_SUCCESS)
     {
-      if (__glibc_unlikely ((size_t) (len + 1) > buflen))
+      if ((size_t) (len + 1) > buflen)
 	{
 	  free (result);
 	  *errnop = ERANGE;
@@ -323,7 +323,7 @@ _nss_nis6_getservbyname_r (const char *name, const char *protocol,
 
       int parse_res = _nss_files_parse_servent (p, serv, (void *) buffer,
 						buflen, errnop);
-      if (__glibc_unlikely (parse_res < 0))
+      if (parse_res < 0)
 	{
 	  if (parse_res == -1)
 	    return NSS_STATUS_TRYAGAIN;
@@ -353,7 +353,7 @@ _nss_nis6_getservbyname_r (const char *name, const char *protocol,
   req.status = NSS_STATUS_NOTFOUND;
   status = yp_all (domain, "services.byname", &ypcb);
 
-  if (__glibc_unlikely (status != YPERR_SUCCESS))
+  if (status != YPERR_SUCCESS)
     return yperr2nss (status);
 
   return req.status;
@@ -365,7 +365,7 @@ _nss_nis6_getservbyport_r (int port, const char *protocol,
 			  size_t buflen, int *errnop)
 {
   char *domain;
-  if (__glibc_unlikely (yp_get_default_domain (&domain)))
+  if (yp_get_default_domain (&domain))
     return NSS_STATUS_UNAVAIL;
 
   /* If the protocol is given, we only need one query.
@@ -394,9 +394,9 @@ _nss_nis6_getservbyport_r (int port, const char *protocol,
 
       /* If we found the key, it's ok and parse the result. If not,
 	 fall through and parse the complete table. */
-      if (__glibc_likely (status == YPERR_SUCCESS))
+      if (status == YPERR_SUCCESS)
 	{
-	  if (__glibc_unlikely ((size_t) (len + 1) > buflen))
+	  if ((size_t) (len + 1) > buflen)
 	    {
 	      free (result);
 	      *errnop = ERANGE;
@@ -410,7 +410,7 @@ _nss_nis6_getservbyport_r (int port, const char *protocol,
 	  free (result);
 	  int parse_res = _nss_files_parse_servent (p, serv, (void *) buffer,
 						    buflen, errnop);
-	  if (__glibc_unlikely (parse_res < 0))
+	  if (parse_res < 0)
 	    {
 	      if (parse_res == -1)
 		return NSS_STATUS_TRYAGAIN;
@@ -441,7 +441,7 @@ _nss_nis6_getservbyport_r (int port, const char *protocol,
   req.status = NSS_STATUS_NOTFOUND;
   int status = yp_all (domain, "services.byname", &ypcb);
 
-  if (__glibc_unlikely (status != YPERR_SUCCESS))
+  if (status != YPERR_SUCCESS)
     return yperr2nss (status);
 
   return req.status;

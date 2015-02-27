@@ -1,4 +1,4 @@
-/* Copyright (C) 2001, 2003, 2014 Thorsten Kukuk
+/* Copyright (C) 2001, 2003, 2014, 2015 Thorsten Kukuk
    This file is part of the yp-tools.
    Author: Thorsten Kukuk <kukuk@suse.de>
 
@@ -106,7 +106,7 @@ yp_all_host (const char *indomain, const char *inmap,
 
   if (hostname == NULL || hostname[0] == '\0' ||
       indomain == NULL || indomain[0] == '\0' ||
-      inmap == NULL || inmap == '\0')
+      inmap == NULL || inmap[0] == '\0')
     return YPERR_BADARGS;
 
   res = YPERR_YPERR;
