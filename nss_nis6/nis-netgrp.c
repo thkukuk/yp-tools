@@ -25,7 +25,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <rpcsvc/ypclnt.h>
 
 #include "nss-nis6.h"
 #include "netgroup.h"
