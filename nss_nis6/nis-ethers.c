@@ -219,7 +219,7 @@ _nss_nis6_gethostton_r (const char *name, struct etherent *eth,
     }
 
   char *domain;
-  if (__glibc_unlikely (yp_get_default_domain (&domain)))
+  if (yp_get_default_domain (&domain))
     return NSS_STATUS_UNAVAIL;
 
   char *result;
@@ -227,7 +227,7 @@ _nss_nis6_gethostton_r (const char *name, struct etherent *eth,
   int yperr = yp_match (domain, "ethers.byname", name, strlen (name), &result,
 			&len);
 
-  if (__glibc_unlikely (yperr != YPERR_SUCCESS))
+  if (yperr != YPERR_SUCCESS)
     {
       enum nss_status retval = yperr2nss (yperr);
 
@@ -236,7 +236,7 @@ _nss_nis6_gethostton_r (const char *name, struct etherent *eth,
       return retval;
     }
 
-  if (__glibc_unlikely ((size_t) (len + 1) > buflen))
+  if ((size_t) (len + 1) > buflen)
     {
       free (result);
       *errnop = ERANGE;
@@ -251,7 +251,7 @@ _nss_nis6_gethostton_r (const char *name, struct etherent *eth,
 
   int parse_res = _nss_files_parse_etherent (p, eth, (void *) buffer, buflen,
 					     errnop);
-  if (__glibc_unlikely (parse_res < 1))
+  if (parse_res < 1)
     {
       if (parse_res == -1)
 	return NSS_STATUS_TRYAGAIN;
@@ -272,7 +272,7 @@ _nss_nis6_getntohost_r (const struct ether_addr *addr, struct etherent *eth,
     }
 
   char *domain;
-  if (__glibc_unlikely (yp_get_default_domain (&domain)))
+  if (yp_get_default_domain (&domain))
     return NSS_STATUS_UNAVAIL;
 
   char buf[33];
@@ -288,7 +288,7 @@ _nss_nis6_getntohost_r (const struct ether_addr *addr, struct etherent *eth,
   int len;
   int yperr = yp_match (domain, "ethers.byaddr", buf, nlen, &result, &len);
 
-  if (__glibc_unlikely (yperr != YPERR_SUCCESS))
+  if (yperr != YPERR_SUCCESS)
     {
       enum nss_status retval = yperr2nss (yperr);
 
@@ -297,7 +297,7 @@ _nss_nis6_getntohost_r (const struct ether_addr *addr, struct etherent *eth,
       return retval;
     }
 
-  if (__glibc_unlikely ((size_t) (len + 1) > buflen))
+  if ((size_t) (len + 1) > buflen)
     {
       free (result);
       *errnop = ERANGE;
@@ -312,7 +312,7 @@ _nss_nis6_getntohost_r (const struct ether_addr *addr, struct etherent *eth,
 
   int parse_res = _nss_files_parse_etherent (p, eth, (void *) buffer, buflen,
 					     errnop);
-  if (__glibc_unlikely (parse_res < 1))
+  if (parse_res < 1)
     {
       if (parse_res == -1)
 	return NSS_STATUS_TRYAGAIN;

@@ -86,7 +86,7 @@ internal_nis6_setgrent (void)
 {
   /* We have to read all the data now.  */
   char *domain;
-  if (__glibc_unlikely (yp_get_default_domain (&domain)))
+  if (yp_get_default_domain (&domain))
     return NSS_STATUS_UNAVAIL;
 
   struct ypall_callback ypcb;
@@ -133,7 +133,7 @@ internal_nis6_getgrent_r (struct group *grp, char *buffer, size_t buflen,
   bool batch_read = intern.start != NULL;
 
   char *domain = NULL;
-  if (!batch_read && __builtin_expect (yp_get_default_domain (&domain), 0))
+  if (!batch_read && yp_get_default_domain (&domain), 0)
     return NSS_STATUS_UNAVAIL;
 
   /* Get the next entry until we found a correct one. */
@@ -152,7 +152,7 @@ internal_nis6_getgrent_r (struct group *grp, char *buffer, size_t buflen,
 	handle_batch_read:
 	  bucket = intern.next;
 
-	  if (__glibc_unlikely (intern.offset >= bucket->size))
+	  if (intern.offset >= bucket->size)
 	    {
 	      if (bucket->next == NULL)
 		return NSS_STATUS_NOTFOUND;
@@ -191,7 +191,7 @@ internal_nis6_getgrent_r (struct group *grp, char *buffer, size_t buflen,
 	    yperr = yp_next (domain, "group.byname", oldkey, oldkeylen,
 			     &outkey, &keylen, &result, &len);
 
-	  if (__glibc_unlikely (yperr != YPERR_SUCCESS))
+	  if (yperr != YPERR_SUCCESS)
 	    {
 	      enum nss_status retval = yperr2nss (yperr);
 
@@ -201,7 +201,7 @@ internal_nis6_getgrent_r (struct group *grp, char *buffer, size_t buflen,
 	    }
 	}
 
-      if (__glibc_unlikely ((size_t) (len + 1) > buflen))
+      if ((size_t) (len + 1) > buflen)
 	{
 	  if (!batch_read)
 	    free (result);
@@ -218,7 +218,7 @@ internal_nis6_getgrent_r (struct group *grp, char *buffer, size_t buflen,
 
       parse_res = _nss_files_parse_grent (p, grp, (void *) buffer, buflen,
 					  errnop);
-      if (__glibc_unlikely (parse_res == -1))
+      if (parse_res == -1)
 	{
 	  if (!batch_read)
 	    free (outkey);
@@ -267,7 +267,7 @@ _nss_nis6_getgrnam_r (const char *name, struct group *grp,
     }
 
   char *domain;
-  if (__glibc_unlikely (yp_get_default_domain (&domain)))
+  if (yp_get_default_domain (&domain))
     return NSS_STATUS_UNAVAIL;
 
   char *result;
@@ -275,7 +275,7 @@ _nss_nis6_getgrnam_r (const char *name, struct group *grp,
   int yperr = yp_match (domain, "group.byname", name, strlen (name), &result,
 			&len);
 
-  if (__glibc_unlikely (yperr != YPERR_SUCCESS))
+  if (yperr != YPERR_SUCCESS)
     {
       enum nss_status retval = yperr2nss (yperr);
 
@@ -284,7 +284,7 @@ _nss_nis6_getgrnam_r (const char *name, struct group *grp,
       return retval;
     }
 
-  if (__glibc_unlikely ((size_t) (len + 1) > buflen))
+  if ((size_t) (len + 1) > buflen)
     {
       free (result);
       *errnop = ERANGE;
@@ -299,7 +299,7 @@ _nss_nis6_getgrnam_r (const char *name, struct group *grp,
 
   int parse_res = _nss_files_parse_grent (p, grp, (void *) buffer, buflen,
 					  errnop);
-  if (__builtin_expect  (parse_res < 1, 0))
+  if (parse_res < 1, 0)
     {
       if (parse_res == -1)
 	return NSS_STATUS_TRYAGAIN;
@@ -314,7 +314,7 @@ _nss_nis6_getgrgid_r (gid_t gid, struct group *grp,
 		     char *buffer, size_t buflen, int *errnop)
 {
   char *domain;
-  if (__glibc_unlikely (yp_get_default_domain (&domain)))
+  if (yp_get_default_domain (&domain))
     return NSS_STATUS_UNAVAIL;
 
   char buf[32];
@@ -324,7 +324,7 @@ _nss_nis6_getgrgid_r (gid_t gid, struct group *grp,
   int len;
   int yperr = yp_match (domain, "group.bygid", buf, nlen, &result, &len);
 
-  if (__glibc_unlikely (yperr != YPERR_SUCCESS))
+  if (yperr != YPERR_SUCCESS)
     {
       enum nss_status retval = yperr2nss (yperr);
 
@@ -333,7 +333,7 @@ _nss_nis6_getgrgid_r (gid_t gid, struct group *grp,
       return retval;
     }
 
-  if (__glibc_unlikely ((size_t) (len + 1) > buflen))
+  if ((size_t) (len + 1) > buflen)
     {
       free (result);
       *errnop = ERANGE;
@@ -348,7 +348,7 @@ _nss_nis6_getgrgid_r (gid_t gid, struct group *grp,
 
   int parse_res = _nss_files_parse_grent (p, grp, (void *) buffer, buflen,
 					  errnop);
-  if (__glibc_unlikely (parse_res < 1))
+  if (parse_res < 1)
     {
       if (parse_res == -1)
 	return NSS_STATUS_TRYAGAIN;

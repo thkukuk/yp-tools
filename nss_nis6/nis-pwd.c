@@ -71,8 +71,7 @@ _nis6_saveit (int instatus, char *inkey, int inkeylen, char *inval,
 	  intern->start = intern->next = bucket;
 	  intern->offset = 0;
 	}
-      else if (__builtin_expect (invallen + 1 > bucket->size - intern->offset,
-				 0))
+      else if (invallen + 1 > bucket->size - intern->offset)
 	{
 	  /* We need a new (larger) buffer.  */
 	  const size_t newsize = 2 * MAX (bucket->size, invallen + 1);
@@ -191,7 +190,7 @@ internal_nis6_getpwent_r (struct passwd *pwd, char *buffer, size_t buflen,
   bool batch_read = intern.start != NULL;
 
   char *domain = NULL;
-  if (!batch_read && __builtin_expect (yp_get_default_domain (&domain), 0))
+  if (!batch_read && yp_get_default_domain (&domain), 0)
     return NSS_STATUS_UNAVAIL;
 
   /* Get the next entry until we found a correct one. */
@@ -292,8 +291,7 @@ internal_nis6_getpwent_r (struct passwd *pwd, char *buffer, size_t buflen,
 	    }
 
 	  restlen = len - (p - result);
-	  if (__builtin_expect ((size_t) (namelen + (endp - encrypted)
-					  + restlen + 2) > buflen, 0))
+	  if ((size_t) (namelen + (endp - encrypted) + restlen + 2) > buflen)
 	    {
 	      free (result2);
 	      free (result);
@@ -427,8 +425,7 @@ _nss_nis6_getpwnam_r (const char *name, struct passwd *pwd,
 	}
 
       size_t restlen = len - (p - result);
-      if (__builtin_expect ((size_t) (namelen + (endp - encrypted)
-				      + restlen + 2) > buflen, 0))
+      if ((size_t) (namelen + (endp - encrypted) + restlen + 2) > buflen)
 	{
 	  free (result2);
 	  free (result);
@@ -532,8 +529,7 @@ _nss_nis6_getpwuid_r (uid_t uid, struct passwd *pwd,
 	}
 
       restlen = len - (p - result);
-      if (__builtin_expect ((size_t) (namelen + (endp - encrypted)
-				      + restlen + 2) > buflen, 0))
+      if ((size_t) (namelen + (endp - encrypted) + restlen + 2) > buflen)
 	{
 	  free (result2);
 	  free (result);

@@ -87,7 +87,7 @@ internal_nis6_getspent_r (struct spwd *sp, char *buffer, size_t buflen,
 	{
 	  yperr = yp_first (domain, "shadow.byname", &outkey, &keylen, &result,
 			    &len);
-	  if (__builtin_expect (yperr == YPERR_MAP, 0)
+	  if (yperr == YPERR_MAP
 	      && (_nsl_default_nss () & NSS_FLAG_ADJUNCT_AS_SHADOW))
 	    {
 	      free (result);
@@ -110,8 +110,7 @@ internal_nis6_getspent_r (struct spwd *sp, char *buffer, size_t buflen,
 	  return retval;
 	}
 
-      if (__builtin_expect ((size_t) (len + (ent_adjunct_used ? 3 : 1))
-			    > buflen, 0))
+      if ((size_t) (len + (ent_adjunct_used ? 3 : 1) > buflen))
 	{
 	  free (result);
 	  *errnop = ERANGE;
@@ -132,7 +131,7 @@ internal_nis6_getspent_r (struct spwd *sp, char *buffer, size_t buflen,
 
       parse_res = _nss_files_parse_spent (p, sp, (void *) buffer, buflen,
 					  errnop);
-      if (__builtin_expect  (parse_res == -1, 0))
+      if (parse_res == -1)
 	{
 	  free (outkey);
 	  *errnop = ERANGE;
@@ -184,7 +183,7 @@ _nss_nis6_getspnam_r (const char *name, struct spwd *sp,
   int len;
   int yperr = yp_match (domain, "shadow.byname", name, name_len, &result,
 			&len);
-  if (__builtin_expect (yperr == YPERR_MAP, 0)
+  if (yperr == YPERR_MAP
       && (_nsl_default_nss () & NSS_FLAG_ADJUNCT_AS_SHADOW))
     {
       free (result);
@@ -210,7 +209,7 @@ _nss_nis6_getspnam_r (const char *name, struct spwd *sp,
     }
 
   char *p = strncpy (buffer, result, len);
-  if (__builtin_expect (adjunct_used, false))
+  if (adjunct_used)
     /* This is an ugly trick.  The format of passwd.adjunct.byname almost
        matches the shadow.byname format except that the last two fields
        are missing.  Synthesize them by marking them empty.  */

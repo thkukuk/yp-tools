@@ -55,7 +55,7 @@ _nss_nis6_getpublickey (const char *netname, char *pkey, int *errnop)
   int yperr = yp_match (domain, "publickey.byname", netname, strlen (netname),
 			&result, &len);
 
-  if (__glibc_unlikely (yperr != YPERR_SUCCESS))
+  if (yperr != YPERR_SUCCESS)
     {
       enum nss_status retval = yperr2nss (yperr);
 
@@ -101,7 +101,7 @@ _nss_nis6_getsecretkey (const char *netname, char *skey, char *passwd,
   int yperr = yp_match (domain, "publickey.byname", netname, strlen (netname),
 			&result, &len);
 
-  if (__glibc_unlikely (yperr != YPERR_SUCCESS))
+  if (yperr != YPERR_SUCCESS)
     {
       enum nss_status retval = yperr2nss (yperr);
 

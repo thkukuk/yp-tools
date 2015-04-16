@@ -1,3 +1,17 @@
+2015-04-16  Thorsten Kukuk  <kukuk@thkukuk.de>
+
+	* release version 3.4
+
+	* nss_nis6/nis-grp.c: Remove glibc special expect macros.
+	* nss_nis6/nis-pwd.c: Likewise.
+	* nss_nis6/nis-spwd.c: Likewise.
+	* nss_nis6/nis-initgroups.c: Likewise.
+	* nss_nis6/nis-alias.c: Likewise.
+	* nss_nis6/nis-proto.c: Likewise.
+	* nss_nis6/nis-publickey.c: Likewise.
+	* nss_nis6/nis-ethers.c: Likewise.
+	* nss_nis6/nis-network.c: Likewise.
+
 2015-02-27  Thorsten Kukuk  <kukuk@thkukuk.de>
 
 	* lib/yp_all_host.c (yp_all_host): Fix wrong pointer.

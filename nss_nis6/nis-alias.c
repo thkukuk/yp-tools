@@ -215,7 +215,7 @@ _nss_nis6_getaliasbyname_r (const char *name, struct aliasent *alias,
     }
 
   char *domain;
-  if (__glibc_unlikely (yp_get_default_domain (&domain)))
+  if (yp_get_default_domain (&domain))
     return NSS_STATUS_UNAVAIL;
 
   size_t namlen = strlen (name);
