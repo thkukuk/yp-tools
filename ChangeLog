@@ -1,3 +1,16 @@
+2016-01-20  Thorsten Kukuk  <kukuk@thkukuk.de>
+
+	* release version 3.5
+
+	* lib/do_ypcall.c: Change resp argument of do_ypcall_tr from
+	caddr_t to ypresp_val.
+	* lib/internal.h: Likewise.
+	* lib/yp_maplist.c: Adjust call of do_ypcall_tr.
+	* lib/yp_master.c: Likewise.
+	* lib/yp_match.c: Likewise.
+	* lib/yp_next.c: Likewise.
+	* lib/yp_order.c: Likewise.
+
 2015-04-16  Thorsten Kukuk  <kukuk@thkukuk.de>
 
 	* release version 3.4
