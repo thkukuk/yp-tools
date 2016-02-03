@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yp-tools 2.9\n"
 "Report-Msgid-Bugs-To: kukuk@linux-nis.org\n"
-"POT-Creation-Date: 2016-01-20 14:00+0100\n"
+"POT-Creation-Date: 2016-02-02 15:45+0100\n"
 "PO-Revision-Date: 2006-11-12 17:34+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -31,32 +31,8 @@ msgstr "Konstig post på raden %d: %s\n"
 msgid "Use \"%s\"\tfor map \"%s\"\n"
 msgstr "Använd \"%s\"\tför kartan \"%s\"\n"
 
-#: lib/ypbinderr_string.c:42
-msgid "Success"
-msgstr "Lyckades"
-
-#: lib/ypbinderr_string.c:45
-msgid "Internal ypbind error"
-msgstr "Internt ypbind-fel"
-
-#: lib/ypbinderr_string.c:48
-msgid "Domain not bound"
-msgstr "Domänen inte bunden"
-
-#: lib/ypbinderr_string.c:51
-msgid "System resource allocation failure"
-msgstr "Fel vid allokering av systemresurser"
-
-#: lib/ypbinderr_string.c:54
-msgid "Domain doesn't exist"
-msgstr ""
-
-#: lib/ypbinderr_string.c:57
-msgid "Unknown ypbind error"
-msgstr "Okänt ypbind-fel"
-
 #: src/domainname.c:45 src/ypcat.c:42 src/ypmatch.c:43 src/yppasswd.c:68
-#: src/yppoll.c:46 src/ypset.c:46 src/yptest.c:51 src/ypwhich.c:54
+#: src/yppoll.c:46 src/ypset.c:48 src/yptest.c:51 src/ypwhich.c:54
 #, c-format
 msgid ""
 "Copyright (C) %s Thorsten Kukuk.\n"
@@ -83,19 +59,19 @@ msgstr ""
 
 #: src/domainname.c:65 src/domainname.c:78 src/ypcat.c:72 src/ypmatch.c:70
 #: src/yppasswd.c:103 src/yppasswd.c:114 src/yppasswd.c:126 src/yppoll.c:71
-#: src/ypset.c:69 src/yptest.c:81 src/ypwhich.c:84
+#: src/ypset.c:71 src/yptest.c:81 src/ypwhich.c:84
 msgid "  -?, --help     Give this help list\n"
 msgstr "  -?, --help     Visa den här hjälplistan\n"
 
 #: src/domainname.c:66 src/domainname.c:79 src/ypcat.c:73 src/ypmatch.c:71
 #: src/yppasswd.c:104 src/yppasswd.c:115 src/yppasswd.c:127 src/yppoll.c:72
-#: src/ypset.c:70 src/yptest.c:82 src/ypwhich.c:85
+#: src/ypset.c:72 src/yptest.c:82 src/ypwhich.c:85
 msgid "      --usage    Give a short usage message\n"
 msgstr "      --usage    Visa ett kort användningsmeddelande\n"
 
 #: src/domainname.c:67 src/domainname.c:80 src/ypcat.c:74 src/ypmatch.c:72
 #: src/yppasswd.c:105 src/yppasswd.c:116 src/yppasswd.c:128 src/yppoll.c:73
-#: src/ypset.c:71 src/yptest.c:83 src/ypwhich.c:86
+#: src/ypset.c:73 src/yptest.c:83 src/ypwhich.c:86
 msgid "      --version  Print program version\n"
 msgstr "      --version  Skriv ut programversion\n"
 
@@ -109,7 +85,7 @@ msgstr ""
 "\n"
 
 #: src/domainname.c:88 src/ypcat.c:83 src/ypmatch.c:82 src/yppasswd.c:142
-#: src/yppoll.c:83 src/ypset.c:81 src/yptest.c:92 src/ypwhich.c:96
+#: src/yppoll.c:83 src/ypset.c:83 src/yptest.c:92 src/ypwhich.c:96
 #, c-format
 msgid "Try `%s --help' or `%s --usage' for more information.\n"
 msgstr "Prova \"%s --help\" eller \"%s --usage\" för mer information.\n"
@@ -131,7 +107,7 @@ msgstr ""
 "ypcat - skriv ut värden för alla nycklar i en NIS-databas\n"
 "\n"
 
-#: src/ypcat.c:63 src/ypmatch.c:64 src/yppoll.c:69 src/ypset.c:66
+#: src/ypcat.c:63 src/ypmatch.c:64 src/yppoll.c:69 src/ypset.c:68
 #: src/yptest.c:72 src/ypwhich.c:75
 msgid "  -d domain      Use 'domain' instead of the default domain\n"
 msgstr "  -d domän       Använd \"domän\" istället för standarddomänen\n"
@@ -155,7 +131,7 @@ msgid "  -x             Display the map nickname translation table\n"
 msgstr "  -x             Visa kartans översättningstabell för smeknamn\n"
 
 #: src/ypcat.c:207 src/ypmatch.c:171 src/yppasswd.c:617 src/yppoll.c:159
-#: src/ypset.c:265 src/ypwhich.c:383
+#: src/ypset.c:267 src/ypwhich.c:383
 #, c-format
 msgid "%s: can't get local yp domain: %s\n"
 msgstr "%s: kan inte få lokal yp-domän: %s\n"
@@ -578,7 +554,7 @@ msgstr ""
 msgid "Can't create connection to %s.\n"
 msgstr "Kan inte etablera anslutning till %s.\n"
 
-#: src/yppoll.c:237 src/ypset.c:142 src/ypset.c:190
+#: src/yppoll.c:237 src/ypset.c:144 src/ypset.c:192
 msgid "Reason"
 msgstr "Anledning"
 
@@ -622,11 +598,11 @@ msgstr "Kan inte få master för kartan %s.\n"
 msgid "The master server is %s.\n"
 msgstr "Masterservern är %s.\n"
 
-#: src/ypset.c:57
+#: src/ypset.c:59
 msgid "Usage: ypset [-d domain] [-h hostname] server\n"
 msgstr "Användning: ypset [-d domän] [-h värdnamn] server\n"
 
-#: src/ypset.c:64
+#: src/ypset.c:66
 msgid ""
 "ypset - bind ypbind to a particular NIS server\n"
 "\n"
@@ -634,26 +610,26 @@ msgstr ""
 "ypset - bind ypbind till en specifik NIS-server\n"
 "\n"
 
-#: src/ypset.c:68
+#: src/ypset.c:70
 msgid "  -h hostname    Set ypbind's binding on 'hostname'\n"
 msgstr "  -h värdnamn    Ställ in bindning av ypbind på \"värdnamn\"\n"
 
-#: src/ypset.c:101 src/ypset.c:176
+#: src/ypset.c:103 src/ypset.c:178
 #, c-format
 msgid "%s not running ypserv.\n"
 msgstr "%s kör inte ypserv.\n"
 
-#: src/ypset.c:112
+#: src/ypset.c:114
 #, fuzzy, c-format
 msgid "can't find IPv4 address for %s\n"
 msgstr "kan inte hitta adress för %s\n"
 
-#: src/ypset.c:128 src/ypset.c:165 src/yptest.c:184 src/yptest.c:198
+#: src/ypset.c:130 src/ypset.c:167 src/yptest.c:184 src/yptest.c:198
 #, c-format
 msgid "can't yp_bind: Reason: %s\n"
 msgstr "kan inte yp_bind: Anledning: %s\n"
 
-#: src/ypset.c:140 src/ypset.c:188
+#: src/ypset.c:142 src/ypset.c:190
 #, c-format
 msgid "Cannot ypset for domain %s on host %s.\n"
 msgstr "Kan inte ypset för domänen %s på värden %s.\n"
@@ -849,6 +825,21 @@ msgstr "Ingen körande ypbind.\n"
 #, c-format
 msgid "Can't get map list for domain %s. Reason: %s\n"
 msgstr "Kan inte få kartlista för domänen %s. Anledning: %s\n"
+
+#~ msgid "Success"
+#~ msgstr "Lyckades"
+
+#~ msgid "Internal ypbind error"
+#~ msgstr "Internt ypbind-fel"
+
+#~ msgid "Domain not bound"
+#~ msgstr "Domänen inte bunden"
+
+#~ msgid "System resource allocation failure"
+#~ msgstr "Fel vid allokering av systemresurser"
+
+#~ msgid "Unknown ypbind error"
+#~ msgstr "Okänt ypbind-fel"
 
 #, fuzzy
 #~ msgid "  -n             Don't convert addresses to names\n"

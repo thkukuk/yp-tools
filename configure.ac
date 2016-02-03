@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(yp-tools, 3.5, kukuk@linux-nis.org)
+AC_INIT(yp-tools, 4.0, kukuk@linux-nis.org)
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([src/ypcat.c])
 AM_CONFIG_HEADER(config.h)
@@ -73,6 +73,7 @@ if test "${YPPASSWD_IS_DEPRECATED}" = "1"; then
 fi
 
 dnl Checks for libraries.
+PKG_CHECK_MODULES([NSL], [libnsl])
 PKG_CHECK_MODULES([TIRPC], [libtirpc])
 AC_CHECK_LIB(crypt,crypt,LIBCRYPT="-lcrypt",LIBCRYPT="")
 AC_SUBST(LIBCRYPT)
@@ -97,7 +98,7 @@ AM_GNU_GETTEXT_VERSION([0.19.2])
 AM_GNU_GETTEXT([external])
 
 AC_OUTPUT([Makefile lib/Makefile src/Makefile man/Makefile
-	   etc/Makefile po/Makefile.in nss_nis6/Makefile libnis.pc
+	   etc/Makefile po/Makefile.in
 	   man/domainname.8 man/nicknames.5 man/yp_dump_binding.8
 	   man/ypcat.1 man/ypmatch.1 man/yppasswd.1 man/yppoll.8
 	   man/ypset.8 man/yptest.8 man/ypwhich.1])

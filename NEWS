@@ -4,8 +4,11 @@ Copyright (C) 1998-2016 Thorsten Kukuk
 
 Please send bug reports, questions and suggestions to <kukuk@linux-nis.org>.
 
+Version 4.0
+* Remove libnis and nss_nis6, use external packages instead
+
 Version 3.5
-* libnis: Change internal interface to avoid cast errors.
+* libnis: Change internal interface to avoid cast errors
 
 Version 3.4
 * nss_nis6: remove glibc specific, non partable macros

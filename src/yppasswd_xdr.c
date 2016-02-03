@@ -1,4 +1,4 @@
-/* Copyright (C) 1998, 1999, 2001 Thorsten Kukuk
+/* Copyright (C) 1998, 1999, 2001, 2016 Thorsten Kukuk
    This file is part of the yp-tools.
    Author: Thorsten Kukuk <kukuk@suse.de>
 
@@ -25,9 +25,9 @@ xdr_passwd (XDR *xdrs, struct passwd *objp)
     return FALSE;
   if (!xdr_string (xdrs, &objp->pw_passwd, ~0))
     return FALSE;
-  if (!xdr_int (xdrs, &objp->pw_uid))
+  if (!xdr_uint32_t (xdrs, &objp->pw_uid))
     return FALSE;
-  if (!xdr_int (xdrs, &objp->pw_gid))
+  if (!xdr_uint32_t (xdrs, &objp->pw_gid))
     return FALSE;
   if (!xdr_string (xdrs, &objp->pw_gecos, ~0))
     return FALSE;

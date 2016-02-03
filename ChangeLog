@@ -1,3 +1,15 @@
+2016-02-02  Thorsten Kukuk  <kukuk@thkukuk.de>
+
+	* nss_nis6: Remove directory.
+
+	* Makefile.am: Remove nss_nis6.
+
+	* src/ypset.c: Include internal.h header.
+
+	* src/yppasswd_xdr.c (xdr_passwd): Use xdr_uint32_t for uid/gid.
+
+	* lib: Remove libnis.
+
 2016-01-20  Thorsten Kukuk  <kukuk@thkukuk.de>
 
 	* release version 3.5

@@ -19,6 +19,7 @@
 #include <string.h>
 #include <rpc/rpc.h>
 #include <rpcsvc/yp_prot.h>
+#include "internal.h"
 
 #define FILE_MODE (S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)
 

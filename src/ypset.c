@@ -1,4 +1,4 @@
-/* Copyright (C) 1998, 1999, 2001, 2014 Thorsten Kukuk
+/* Copyright (C) 1998, 1999, 2001, 2014, 2016 Thorsten Kukuk
    This file is part of the yp-tools.
    Author: Thorsten Kukuk <kukuk@suse.de>
 
@@ -33,6 +33,8 @@
 #include <rpcsvc/ypclnt.h>
 #include <rpcsvc/yp_prot.h>
 
+#include "internal.h"
+
 #ifndef _
 #define _(String) gettext (String)
 #endif
@@ -47,7 +49,7 @@ print_version (void)
 Copyright (C) %s Thorsten Kukuk.\n\
 This is free software; see the source for copying conditions.  There is NO\n\
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\
-"), "2014");
+"), "2016");
   /* fprintf (stdout, _("Written by %s.\n"), "Thorsten Kukuk"); */
 }
 
