@@ -1,4 +1,4 @@
-/* Copyright (C) 1998, 1999, 2000, 2001, 2002, 2004, 2010 Thorsten Kukuk
+/* Copyright (C) 1998, 1999, 2000, 2001, 2002, 2004, 2010, 2016 Thorsten Kukuk
    This file is part of the yp-tools.
    Author: Thorsten Kukuk <kukuk@suse.de>
 
@@ -429,7 +429,8 @@ verifypassword (struct passwd *pwd, char *pwdstr, uid_t uid)
     }
 
   passwdlen = get_passwd_len (pwd->pw_passwd);
-  if (pwd->pw_passwd[0]
+  /* passwdlen needs to be greater than 1, else crypt could return NULL */
+  if (passwdlen > 1
       && !strncmp (pwd->pw_passwd, crypt (pwdstr, pwd->pw_passwd), passwdlen)
       && uid)
     {

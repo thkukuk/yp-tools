@@ -1,5 +1,5 @@
 .\" -*- nroff -*-
-.\" Copyright (C) 1998, 1999, 2001, 2004, 2007, 2010 Thorsten Kukuk
+.\" Copyright (C) 1998, 1999, 2001, 2004, 2007, 2010, 2016 Thorsten Kukuk
 .\" This file is part of the yp-tools.
 .\" Author: Thorsten Kukuk <kukuk@linux-nis.org>
 .\"
@@ -16,7 +16,7 @@
 .\" along with this program; if not, write to the Free Software Foundation,
 .\" Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 .\"
-.TH yppasswd 1 "April 2010" "YP Tools @VERSION@"
+.TH yppasswd 1 "Febrary 2016" "YP Tools @VERSION@"
 .SH NAME
 yppasswd, ypchfn, ypchsh \- change your password in the NIS database
 .SH SYNOPSIS
@@ -139,6 +139,13 @@ Home Phone []:
 .IP
 To accept a default, simply press return. To clear a field, enter the string
 .IR none .
+.SH NOTE
+.B yppasswd
+cannot do password checks on systems, where shadow passwords are enabled. On
+such systems, a PAM enabled
+.BR passwd (1)
+should be used.
+.LP
 .SH SEE ALSO
 .BR chfn (1),
 .BR chsh (1),
