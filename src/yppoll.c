@@ -1,4 +1,4 @@
-/* Copyright (C) 1998, 1999, 2001, 2014 Thorsten Kukuk
+/* Copyright (C) 1998, 1999, 2001, 2014, 2016 Thorsten Kukuk
    This file is part of the yp-tools.
    Author: Thorsten Kukuk <kukuk@suse.de>
 
@@ -174,7 +174,15 @@ main (int argc, char **argv)
 		      (xdrproc_t) xdr_ypbind3_resp, (caddr_t) &yp3_r,
 		      "udp");
       if (ret == RPC_SUCCESS)
-	hostname = yp3_r.ypbind3_servername;
+	{
+	  if (yp3_r.ypbind_status == YPBIND_SUCC_VAL)
+	    hostname = yp3_r.ypbind3_servername;
+	  else
+	    {
+	      fprintf (stderr, _("Domain not bound\n"));
+	      return 1;
+	    }
+	}
       else if (ret == RPC_PROGVERSMISMATCH)
 	{
 	  /* Looks like ypbind does not support V3 yet, fallback
