@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(yp-tools, 4.0, kukuk@linux-nis.org)
+AC_INIT(yp-tools, 4.1, kukuk@linux-nis.org)
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([src/ypcat.c])
 AM_CONFIG_HEADER(config.h)
@@ -73,8 +73,11 @@ if test "${YPPASSWD_IS_DEPRECATED}" = "1"; then
 fi
 
 dnl Checks for libraries.
-PKG_CHECK_MODULES([NSL], [libnsl])
-PKG_CHECK_MODULES([TIRPC], [libtirpc])
+PKG_CHECK_MODULES([NSL], [libnsl], [], [AC_CHECK_LIB([nsl],[yp_match],[LIBNSL_LIBS="-lnsl"],[LIBNSL_LIBS=""])])
+PKG_CHECK_MODULES([TIRPC], [libtirpc], [], [TIRPC_LIBS=""])
+if test -n "$TIRPC_LIBS"; then
+  AC_DEFINE(HAVE_TIRPC, 1, [Define to 1 if TIRPC is available])
+fi
 AC_CHECK_LIB(crypt,crypt,LIBCRYPT="-lcrypt",LIBCRYPT="")
 AC_SUBST(LIBCRYPT)
 

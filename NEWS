@@ -4,6 +4,11 @@ Copyright (C) 1998-2016 Thorsten Kukuk
 
 Please send bug reports, questions and suggestions to <kukuk@linux-nis.org>.
 
+Version 4.1
+* Allow building only with old glibc
+* yppoll: fix seg.fault if domain is not bound
+* yppasswd: port IPv4 only SunRPC code to TI-RPC for IPv6
+
 Version 4.0
 * Remove libnis and nss_nis6, use external packages instead
 

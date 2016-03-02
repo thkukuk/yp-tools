@@ -37,6 +37,7 @@ libtool
 po/POTFILES
 po/stamp-po
 po/remove-potcdate.sed
+po/*.gmo
 
 # tar archive
 yp-tools-*.tar.*
@@ -45,3 +46,15 @@ yp-tools-*.tar.*
 *.1
 *.8
 *.5
+
+# binaries
+lib/xdrfile-test
+src/domainname
+src/yp_dump_binding
+src/ypcat
+src/ypmatch
+src/yppasswd
+src/yppoll
+src/ypset
+src/yptest
+src/ypwhich

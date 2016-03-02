@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: yp-tools 2.9\n"
 "Report-Msgid-Bugs-To: kukuk@linux-nis.org\n"
-"POT-Creation-Date: 2016-02-15 14:27+0100\n"
+"POT-Creation-Date: 2016-03-02 14:46+0100\n"
 "PO-Revision-Date: 2006-11-12 17:34+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -130,7 +130,7 @@ msgstr "  -t             Hindrar smeknamnsöversättning för kartan\n"
 msgid "  -x             Display the map nickname translation table\n"
 msgstr "  -x             Visa kartans översättningstabell för smeknamn\n"
 
-#: src/ypcat.c:207 src/ypmatch.c:171 src/yppasswd.c:618 src/yppoll.c:159
+#: src/ypcat.c:207 src/ypmatch.c:171 src/yppasswd.c:664 src/yppoll.c:159
 #: src/ypset.c:267 src/ypwhich.c:383
 #, c-format
 msgid "%s: can't get local yp domain: %s\n"
@@ -211,85 +211,95 @@ msgstr ""
 "ypchfn - ändra GECOS-informationen i NIS-databasen\n"
 "\n"
 
-#: src/yppasswd.c:154
+#: src/yppasswd.c:161
 #, c-format
 msgid "%s: can't find the master ypserver: %s\n"
 msgstr "%s: kan inte hitta huvud-ypservern: %s\n"
 
-#: src/yppasswd.c:162
+#: src/yppasswd.c:190
+#, c-format
+msgid "%s: rpcb_getaddr (%s) failed!\n"
+msgstr ""
+
+#: src/yppasswd.c:198
+#, c-format
+msgid "Cannot find suitable transport for protocol 'udp'\n"
+msgstr ""
+
+#: src/yppasswd.c:208
 #, c-format
 msgid "%s: yppasswdd not running on NIS master host (\"%s\").\n"
 msgstr "%s: yppasswdd kör inte på NIS-mastern (\"%s\").\n"
 
-#: src/yppasswd.c:169
+#: src/yppasswd.c:215
 #, c-format
 msgid "%s: yppasswd daemon running on illegal port (\"%s\").\n"
 msgstr "%s: yppasswd-demonen kör på ogiltig port (\"%s\").\n"
 
-#: src/yppasswd.c:186
+#: src/yppasswd.c:232
 msgid "No more"
 msgstr "Inte längre"
 
-#: src/yppasswd.c:189
+#: src/yppasswd.c:235
 msgid "True"
 msgstr "Sant"
 
-#: src/yppasswd.c:192
+#: src/yppasswd.c:238
 msgid "False"
 msgstr "Falskt"
 
-#: src/yppasswd.c:195
+#: src/yppasswd.c:241
 msgid "No such map"
 msgstr "Ingen sådan karta"
 
-#: src/yppasswd.c:198
+#: src/yppasswd.c:244
 msgid "No such domain"
 msgstr "Ingen sådan domän"
 
-#: src/yppasswd.c:201
+#: src/yppasswd.c:247
 msgid "Bad operation"
 msgstr "Felaktig åtgärd"
 
-#: src/yppasswd.c:204
+#: src/yppasswd.c:250
 msgid "Database bad"
 msgstr "Databas trasig"
 
-#: src/yppasswd.c:207
+#: src/yppasswd.c:253
 msgid "Bad arguments"
 msgstr "Felaktig argument"
 
-#: src/yppasswd.c:210
+#: src/yppasswd.c:256
 msgid "Version Mismatch"
 msgstr "Versionen stämmer inte"
 
-#: src/yppasswd.c:213
+#: src/yppasswd.c:259
 msgid "Unknown error"
 msgstr "Okänt fel"
 
-#: src/yppasswd.c:333
+#: src/yppasswd.c:379
 #, c-format
 msgid "%s: no colons allowed in GECOS field... sorry.\n"
 msgstr "%s: inga kolontecken tillåts i GECOS-fältet... tyvärr.\n"
 
-#: src/yppasswd.c:412
+#: src/yppasswd.c:458
 msgid "The password must have at least 6 characters.\n"
 msgstr "Lösenordet måste innehålla åtminstone 6 tecken.\n"
 
-#: src/yppasswd.c:426
+#: src/yppasswd.c:472
 msgid ""
 "The password must have both upper and lowercase letters, or non-letters.\n"
 msgstr ""
 "Lösenordet måste innehålla både versaler och gemener, eller icke-bokstäver.\n"
 
-#: src/yppasswd.c:437
+#: src/yppasswd.c:483
 msgid "You cannot reuse the old password.\n"
 msgstr "Du kan inte återanvända det gamla lösenordet.\n"
 
-#: src/yppasswd.c:459
+#: src/yppasswd.c:505
 msgid "Please don't use something like your username as password.\n"
 msgstr "Använd inte någonting liknande ditt användarnamn som lösenord.\n"
 
-#: src/yppasswd.c:607
+#: src/yppasswd.c:653
 #, c-format
 msgid ""
 "yppasswd is deprecated, use %s instead\n"
@@ -298,51 +308,51 @@ msgstr ""
 "yppasswd är föråldrat, använd %s istället\n"
 "\n"
 
-#: src/yppasswd.c:610
+#: src/yppasswd.c:656
 #, c-format
 msgid "Calling %s failed: %s\n"
 msgstr "Anrop av %s misslyckades: %s\n"
 
-#: src/yppasswd.c:631
+#: src/yppasswd.c:677
 #, c-format
 msgid "%s: unknown user (uid=%ld).\n"
 msgstr "%s: okänd användare (uid=%ld).\n"
 
-#: src/yppasswd.c:641
+#: src/yppasswd.c:687
 #, c-format
 msgid "%s: Only root may change account information for others\n"
 msgstr "%s: Endast root får ändra kontoinformation för andra\n"
 
-#: src/yppasswd.c:658
+#: src/yppasswd.c:704
 #, c-format
 msgid "Changing NIS account information for %s on %s.\n"
 msgstr "Ändrar NIS-kontoinformation för %s på %s.\n"
 
-#: src/yppasswd.c:669
+#: src/yppasswd.c:715
 #, c-format
 msgid "Please enter root password:"
 msgstr "Ange root-lösenordet:"
 
-#: src/yppasswd.c:671
+#: src/yppasswd.c:717
 #, c-format
 msgid "Please enter %spassword:"
 msgstr "Ange %s-lösenordet:"
 
-#: src/yppasswd.c:672
+#: src/yppasswd.c:718
 msgid "old "
 msgstr "gammal"
 
-#: src/yppasswd.c:698
+#: src/yppasswd.c:744
 #, c-format
 msgid "Sorry.\n"
 msgstr "Tyvärr.\n"
 
-#: src/yppasswd.c:715
+#: src/yppasswd.c:761
 #, c-format
 msgid "Changing NIS password for %s on %s.\n"
 msgstr "Ändrar NIS-lösenord för %s på %s.\n"
 
-#: src/yppasswd.c:723
+#: src/yppasswd.c:769
 msgid ""
 "Too many tries. Aborted.\n"
 "Password unchanged.\n"
@@ -350,30 +360,30 @@ msgstr ""
 "För många försök. Avbröts.\n"
 "Lösenordet oförändrat.\n"
 
-#: src/yppasswd.c:728
+#: src/yppasswd.c:774
 msgid "Please enter new password:"
 msgstr "Ange det nya lösenordet:"
 
-#: src/yppasswd.c:731
+#: src/yppasswd.c:777
 #, c-format
 msgid "Password unchanged.\n"
 msgstr "Lösenordet oförändrat.\n"
 
-#: src/yppasswd.c:742
+#: src/yppasswd.c:788
 #, c-format
 msgid "Not a valid password: %s.\n"
 msgstr "Inte ett giltigt lösenord: %s.\n"
 
-#: src/yppasswd.c:752
+#: src/yppasswd.c:798
 msgid "Please retype new password:"
 msgstr "Ange det nya lösenordet igen:"
 
-#: src/yppasswd.c:757
+#: src/yppasswd.c:803
 #, c-format
 msgid "Mismatch - password unchanged.\n"
 msgstr "Stämmer inte - lösenordet oförändrat.\n"
 
-#: src/yppasswd.c:800
+#: src/yppasswd.c:846
 #, c-format
 msgid ""
 "\n"
@@ -386,23 +396,23 @@ msgstr ""
 "För att acceptera standardvärdet, tryck Return. För att ange ett\n"
 "tomt fält, skriv ordet \"none\".\n"
 
-#: src/yppasswd.c:808
+#: src/yppasswd.c:854
 msgid "Name"
 msgstr "Namn"
 
-#: src/yppasswd.c:812
+#: src/yppasswd.c:858
 msgid "Location"
 msgstr "Plats"
 
-#: src/yppasswd.c:816
+#: src/yppasswd.c:862
 msgid "Office Phone"
 msgstr "Arbetstelefon"
 
-#: src/yppasswd.c:820
+#: src/yppasswd.c:866
 msgid "Home Phone"
 msgstr "Hemtelefon"
 
-#: src/yppasswd.c:834
+#: src/yppasswd.c:880
 #, c-format
 msgid ""
 "\n"
@@ -415,15 +425,15 @@ msgstr ""
 "För att acceptera standardvärdet, tryck Return. För att använda\n"
 "systemets standardskal, skriv in ordet \"none\".\n"
 
-#: src/yppasswd.c:839
+#: src/yppasswd.c:885
 msgid "Login shell"
 msgstr "Inloggningsskal"
 
-#: src/yppasswd.c:861
+#: src/yppasswd.c:907
 msgid "Error while changing the NIS password."
 msgstr "Fel vid ändring av NIS-lösenordet."
 
-#: src/yppasswd.c:863
+#: src/yppasswd.c:909
 #, c-format
 msgid ""
 "\n"
@@ -434,7 +444,7 @@ msgstr ""
 "NIS-lösenordet kan inte ändrats på %s.\n"
 "\n"
 
-#: src/yppasswd.c:867
+#: src/yppasswd.c:913
 #, c-format
 msgid ""
 "\n"
@@ -445,11 +455,11 @@ msgstr ""
 "NIS-lösenordet har ändrats på %s.\n"
 "\n"
 
-#: src/yppasswd.c:876
+#: src/yppasswd.c:922
 msgid "Error while changing the GECOS information."
 msgstr "Fel vid ändring av GECOS-informationen."
 
-#: src/yppasswd.c:878
+#: src/yppasswd.c:924
 #, c-format
 msgid ""
 "\n"
@@ -460,7 +470,7 @@ msgstr ""
 "GECOS-informationen har inte ändrats på %s.\n"
 "\n"
 
-#: src/yppasswd.c:883
+#: src/yppasswd.c:929
 #, c-format
 msgid ""
 "\n"
@@ -471,11 +481,11 @@ msgstr ""
 "GECOS-informationen har ändrats på %s.\n"
 "\n"
 
-#: src/yppasswd.c:892
+#: src/yppasswd.c:938
 msgid "Error while changing the login shell."
 msgstr "Fel vid ändring av inloggningsskalet."
 
-#: src/yppasswd.c:894
+#: src/yppasswd.c:940
 #, c-format
 msgid ""
 "\n"
@@ -486,7 +496,7 @@ msgstr ""
 "Inloggningsskalet har inte ändrats på %s.\n"
 "\n"
 
-#: src/yppasswd.c:899
+#: src/yppasswd.c:945
 #, c-format
 msgid ""
 "\n"
@@ -497,11 +507,11 @@ msgstr ""
 "Inloggningsskalet har ändrats på %s.\n"
 "\n"
 
-#: src/yppasswd.c:907
+#: src/yppasswd.c:953
 msgid "Error while changing the NIS account information."
 msgstr "Fel vid ändring av NIS-kontoinformationen."
 
-#: src/yppasswd.c:910
+#: src/yppasswd.c:956
 #, c-format
 msgid ""
 "\n"
@@ -512,7 +522,7 @@ msgstr ""
 "NIS-kontoinformationen har inte ändrats på %s.\n"
 "\n"
 
-#: src/yppasswd.c:915
+#: src/yppasswd.c:961
 #, c-format
 msgid ""
 "\n"
@@ -539,61 +549,66 @@ msgstr ""
 msgid "  -h host        Ask ypserv process at 'host'\n"
 msgstr "  -h värd        Fråga ypserv-processen på \"värd\"\n"
 
-#: src/yppoll.c:209
+#: src/yppoll.c:182
+#, fuzzy, c-format
+msgid "Domain not bound\n"
+msgstr "Domänen inte bunden"
+
+#: src/yppoll.c:217
 #, fuzzy, c-format
 msgid "Error getting NIS server (%i)\n"
 msgstr "Kunde inte få NIS-server"
 
-#: src/yppoll.c:217
+#: src/yppoll.c:225
 #, c-format
 msgid "Cannot contact %s, no NIS server running or wrong protocol?\n"
 msgstr ""
 
-#: src/yppoll.c:235
+#: src/yppoll.c:243
 #, c-format
 msgid "Can't create connection to %s.\n"
 msgstr "Kan inte etablera anslutning till %s.\n"
 
-#: src/yppoll.c:237 src/ypset.c:144 src/ypset.c:192
+#: src/yppoll.c:245 src/ypset.c:144 src/ypset.c:192
 msgid "Reason"
 msgstr "Anledning"
 
-#: src/yppoll.c:243
+#: src/yppoll.c:251
 #, c-format
 msgid "Domain %s is not supported by %s.\n"
 msgstr "Domänen %s stöds inte av %s.\n"
 
-#: src/yppoll.c:272
+#: src/yppoll.c:280
 msgid "Can't get any map parameter information.\n"
 msgstr "Kan inte få någon information om kartparameter.\n"
 
-#: src/yppoll.c:274
+#: src/yppoll.c:282
 #, c-format
 msgid "Domain %s is supported.\n"
 msgstr "Domänen %s stöds.\n"
 
-#: src/yppoll.c:278
+#: src/yppoll.c:286
 #, c-format
 msgid "Can't get order number for map %s.\n"
 msgstr "Kan inte få ordningsnumret för kartan %s.\n"
 
-#: src/yppoll.c:279 src/yppoll.c:293
+#: src/yppoll.c:287 src/yppoll.c:301
 #, c-format
 msgid "\tReason: %s\n"
 msgstr "\tAnledning: %s\n"
 
 # Vad är detta?
-#: src/yppoll.c:286
+#: src/yppoll.c:294
 #, c-format
 msgid "Map %s has order number %ld. [%s]\n"
 msgstr "Kartan %s har ordningsnummer %ld. [%s]\n"
 
-#: src/yppoll.c:292
+#: src/yppoll.c:300
 #, c-format
 msgid "Can't get master for map %s.\n"
 msgstr "Kan inte få master för kartan %s.\n"
 
-#: src/yppoll.c:296
+#: src/yppoll.c:304
 #, c-format
 msgid "The master server is %s.\n"
 msgstr "Masterservern är %s.\n"
@@ -831,9 +846,6 @@ msgstr "Kan inte få kartlista för domänen %s. Anledning: %s\n"
 
 #~ msgid "Internal ypbind error"
 #~ msgstr "Internt ypbind-fel"
-
-#~ msgid "Domain not bound"
-#~ msgstr "Domänen inte bunden"
 
 #~ msgid "System resource allocation failure"
 #~ msgstr "Fel vid allokering av systemresurser"

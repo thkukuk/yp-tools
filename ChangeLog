@@ -1,5 +1,7 @@
 2016-03-02  Thorsten Kukuk  <kukuk@thkukuk.de>
 
+	* release version 4.1
+
 	* src/yppasswd.c (getnismaster): Replace getrpcport with rpcb_getaddr.
 
 2016-02-26  Thorsten Kukuk  <kukuk@thkukuk.de>
