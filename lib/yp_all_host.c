@@ -103,6 +103,10 @@ yp_all_host (const char *indomain, const char *inmap,
   enum clnt_stat result;
   CLIENT *clnt;
   long status = 0;
+#if !defined(HAVE_TIRPC)
+  int clnt_sock;
+  struct sockaddr_in clnt_sin;
+#endif
 
   if (hostname == NULL || hostname[0] == '\0' ||
       indomain == NULL || indomain[0] == '\0' ||
@@ -111,9 +115,28 @@ yp_all_host (const char *indomain, const char *inmap,
 
   res = YPERR_YPERR;
 
+#if defined(HAVE_TIRPC)
   clnt = clnt_create_timed (hostname, YPPROG, YPVERS, "tcp", NULL);
   if (clnt == NULL)
     return YPERR_PMAP;
+#else
+  clnt_sock = RPC_ANYSOCK;
+
+  if (inet_aton (hostname, &clnt_sin.sin_addr) == 0)
+    {
+      struct hostent *host  = gethostbyname (hostname);
+      if (!host)
+        return YPERR_BADARGS;
+      memcpy (&clnt_sin.sin_addr, host->h_addr_list[0],
+              sizeof (clnt_sin.sin_addr));
+    }
+  clnt_sin.sin_family = AF_INET;
+
+  clnt_sin.sin_port = 0;
+  clnt = clnttcp_create (&clnt_sin, YPPROG, YPVERS, &clnt_sock, 0, 0);
+  if (clnt == NULL)
+    return YPERR_PMAP;
+#endif
 
   req.domain = (char *) indomain;
   req.map = (char *) inmap;
