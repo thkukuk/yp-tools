@@ -5,3 +5,6 @@ This package contains ypcat, ypmatch, ypset, ypwhich, yppasswd,
 domainname, nisdomainname and ypdomainname. It is a complete
 rewrite of the old yp-tools 1.4.x package. It fixes a lot of bugs
 and problems with the old version.
+
+yp-tools 4.x has full NIS IPv6 support if compiled and linked against
+libnsl >= 1.0.1 and libtirpc >= 1.0.1
