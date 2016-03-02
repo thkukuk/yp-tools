@@ -148,6 +148,13 @@ getnismaster (char *domainname, const char *progname)
 {
   char *master;
   int port, err;
+#if defined(HAVE_TIRPC)
+  struct netconfig *nconf;
+  struct netbuf svcaddr;
+  char addrbuf[INET6_ADDRSTRLEN];
+  void *handle;
+  int found;
+#endif
 
   if ((err = yp_master (domainname, "passwd.byname", &master)) != 0)
     {
@@ -155,7 +162,46 @@ getnismaster (char *domainname, const char *progname)
                progname, yperr_string (err));
       return NULL;
     }
+
+#if defined(HAVE_TIRPC)
+  svcaddr.len = 0;
+  svcaddr.maxlen = sizeof (addrbuf);
+  svcaddr.buf = addrbuf;
+  port = 0;
+  found = 0;
+
+  handle = setnetconfig();
+  while ((nconf = getnetconfig(handle)) != NULL)
+    {
+      if (!strcmp(nconf->nc_proto, "udp"))
+	{
+	  if (rpcb_getaddr(YPPASSWDPROG, YPPASSWDPROC_UPDATE,
+			   nconf, &svcaddr, master))
+	    {
+	      port = taddr2port (nconf, &svcaddr);
+	      endnetconfig (handle);
+	      found=1;
+	      break;
+	    }
+
+	  if (rpc_createerr.cf_stat != RPC_UNKNOWNHOST)
+	    {
+	      clnt_pcreateerror (master);
+	      fprintf (stderr, _("%s: rpcb_getaddr (%s) failed!\n"), progname, master);
+	      return NULL;
+	    }
+	}
+    }
+
+  if (!found)
+    {
+      fprintf (stderr, _("Cannot find suitable transport for protocol 'udp'\n"));
+      return NULL;
+    }
+
+#else
   port = getrpcport (master, YPPASSWDPROG, YPPASSWDPROC_UPDATE, IPPROTO_UDP);
+#endif
   if (port == 0)
     {
       fprintf (stderr,
