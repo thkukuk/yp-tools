@@ -1,4 +1,4 @@
-/* Copyright (C) 2014 Thorsten Kukuk
+/* Copyright (C) 2014, 2016 Thorsten Kukuk
    This file is part of the yp-tools.
    Author: Thorsten Kukuk <kukuk@suse.de>
 
@@ -39,6 +39,10 @@
 # define BINDINGDIR "/var/yp/binding"
 #endif
 
+#if !defined(HAVE_YPBIND3)
+#define ypbind2_resp ypbind_resp
+#endif
+
 /* Name and version of program.  */
 /* Print the version information.  */
 static void
@@ -49,7 +53,7 @@ print_version (void)
 Copyright (C) %s Thorsten Kukuk.\n\
 This is free software; see the source for copying conditions.  There is NO\n\
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\
-"), "2014");
+"), "2016");
   /* fprintf (stdout, _("Written by %s.\n"), "Thorsten Kukuk"); */
 }
 
@@ -86,6 +90,7 @@ print_error (void)
            program, program);
 }
 
+#if defined(HAVE_YPBIND3)
 static void
 dump_nconf (struct netconfig *nconf, char *prefix)
 {
@@ -97,6 +102,7 @@ dump_nconf (struct netconfig *nconf, char *prefix)
   printf ("%snc_device: '%s'\n", prefix, nconf->nc_device);
   printf ("%snc_nlookups: %lu\n", prefix, nconf->nc_nlookups);
 }
+#endif
 
 static void
 dump_binding (const char *dir, const char *domain, int version)
@@ -105,6 +111,7 @@ dump_binding (const char *dir, const char *domain, int version)
 
   snprintf (path, sizeof (path), "%s/%s.%u", dir, domain, version);
 
+#if defined(HAVE_YPBIND3)
   if (version == 3)
     {
       FILE *in = fopen (path, "rce");
@@ -152,6 +159,7 @@ dump_binding (const char *dir, const char *domain, int version)
 	fprintf (stderr, _("Error opening %s: %m\n"), path);
     }
   else
+#endif
     {
       int fd;
 

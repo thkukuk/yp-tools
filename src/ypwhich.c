@@ -1,4 +1,4 @@
-/* Copyright (C) 1998, 1999, 2001, 2014 Thorsten Kukuk
+/* Copyright (C) 1998, 1999, 2001, 2014, 2016 Thorsten Kukuk
    This file is part of the yp-tools.
    Author: Thorsten Kukuk <kukuk@suse.de>
 
@@ -37,6 +37,11 @@
 /* from ypbind-mt/ypbind.h */
 #define YPBINDPROC_OLDDOMAIN 1
 extern int yp_maplist (const char *, struct ypmaplist **);
+
+#if !defined(HAVE_YPBIND3)
+#define ypbind2_resp  ypbind_resp
+#define xdr_ypbind2_resp xdr_ypbind_resp
+#endif
 
 #ifndef _
 #define _(String) gettext (String)
@@ -185,6 +190,7 @@ print_bindhost (char *hostname, char *domain, int vers)
 	  printf ("%s\n", straddr);
 	}
     }
+#if defined(HAVE_YPBIND3)
   else /* YPBINDVERS >= 3 || -1 */
     {
       struct ypbind3_resp yp3_r;
@@ -269,6 +275,15 @@ print_bindhost (char *hostname, char *domain, int vers)
 	  return 1;
 	}
     }
+#else
+  else
+    {
+      fprintf (stderr, _("Error: unsupported version (%i) from ypbind on '%s'\n"),
+	       vers, hostname);
+      return 1;
+    }
+#endif
+
   return 0;
 }
 

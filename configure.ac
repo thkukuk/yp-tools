@@ -73,7 +73,14 @@ if test "${YPPASSWD_IS_DEPRECATED}" = "1"; then
 fi
 
 dnl Checks for libraries.
-PKG_CHECK_MODULES([NSL], [libnsl], [], [AC_CHECK_LIB([nsl],[yp_match],[LIBNSL_LIBS="-lnsl"],[LIBNSL_LIBS=""])])
+old_CFLAGS=$CFLAGS
+old_LIBS=$LIBS
+PKG_CHECK_MODULES([NSL], [libnsl], [], [AC_CHECK_LIB([nsl],[yp_match],[NSL_LIBS="-lnsl"],[NSL_LIBS=""])])
+CFLAGS="$CFLAGS $NSL_CFLAGS"
+LIBS="$LIBS $NSL_LIBS"
+AC_CHECK_TYPE([ypbind3_binding],[AC_DEFINE([HAVE_YPBIND3],1,[Define to 1 if struct ypbind3_binding exists.])],[],[#include <rpcsvc/yp_prot.h>])
+CFLAGS="$old_CFLAGS"
+LIBS="$old_LIBS"
 PKG_CHECK_MODULES([TIRPC], [libtirpc], [], [TIRPC_LIBS=""])
 if test -n "$TIRPC_LIBS"; then
   AC_DEFINE(HAVE_TIRPC, 1, [Define to 1 if TIRPC is available])

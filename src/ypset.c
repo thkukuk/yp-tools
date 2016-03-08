@@ -33,6 +33,12 @@
 #include <rpcsvc/ypclnt.h>
 #include <rpcsvc/yp_prot.h>
 
+#if !defined(HAVE_YPBIND3)
+#define ypbind2_setdom ypbind_setdom
+#define YPBINDVERS_2 YPBINDVERS
+#define xdr_ypbind2_setdom xdr_ypbind_setdom
+#endif
+
 #include "internal.h"
 
 #ifndef _
@@ -149,6 +155,7 @@ bind_tohost_v2 (const char *hostname, char *domainname, char *new_server)
   return 0;
 }
 
+#if defined(HAVE_YPBIND3)
 /* bind to a special host and set a new NIS server */
 static int
 bind_tohost_v3 (const char *hostname, char *domainname, char *new_server)
@@ -161,14 +168,7 @@ bind_tohost_v3 (const char *hostname, char *domainname, char *new_server)
   client = clnt_create (hostname, YPBINDPROG, YPBINDVERS, "udp");
   /* if V3 protocol does not work, try v2 as fallback */
   if (client == NULL)
-    bind_tohost_v2 (hostname, domainname, new_server);
-#if 0
-    {
-      fprintf (stderr, _("can't yp_bind: Reason: %s\n"),
-               yperr_string (YPERR_YPBIND));
-      return YPERR_YPBIND;
-    }
-#endif
+    return YPERR_YPBIND;
 
   memset (&ypsd, '\0', sizeof (ypsd));
   ypsd.ypsetdom_domain = domainname;
@@ -196,7 +196,7 @@ bind_tohost_v3 (const char *hostname, char *domainname, char *new_server)
   clnt_destroy (client);
   return 0;
 }
-
+#endif
 
 int
 main (int argc, char **argv)
@@ -273,8 +273,11 @@ main (int argc, char **argv)
       if (hostname == NULL)
 	hostname = "localhost";
 
+#if defined(HAVE_YPBIND3)
       if (bind_tohost_v3 (hostname, domainname, new_server))
-	return 1;
+#endif
+	if (bind_tohost_v2 (hostname, domainname, new_server))
+	  return 1;
     }
 
   return 0;

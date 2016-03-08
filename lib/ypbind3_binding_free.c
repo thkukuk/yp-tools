@@ -1,4 +1,4 @@
-/* Copyright (C) 2014 Thorsten Kukuk
+/* Copyright (C) 2014, 2016 Thorsten Kukuk
    Author: Thorsten Kukuk <kukuk@suse.de>
 
    This library is free software: you can redistribute it and/or
@@ -17,6 +17,8 @@
 #include "config.h"
 #endif
 
+#if defined(HAVE_YPBIND3)
+
 #include <rpcsvc/yp_prot.h>
 #include "internal.h"
 
@@ -33,3 +35,5 @@ __ypbind3_binding_free (struct ypbind3_binding *ypb)
   freenetconfigent (ypb->ypbind_nconf);
   free (ypb);
 }
+
+#endif

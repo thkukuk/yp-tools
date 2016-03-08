@@ -25,7 +25,6 @@
 #define valdat_val dptr
 #define valdat_len dsize
 
-#include <pwd.h>
 #include <crypt.h>
 #include <ctype.h>
 #include <getopt.h>
@@ -148,7 +147,7 @@ getnismaster (char *domainname, const char *progname)
 {
   char *master;
   int port, err;
-#if defined(HAVE_TIRPC)
+#if defined(HAVE_TIRPC) && defined(HAVE_YPBIND3)
   struct netconfig *nconf;
   struct netbuf svcaddr;
   char addrbuf[INET6_ADDRSTRLEN];
@@ -163,7 +162,7 @@ getnismaster (char *domainname, const char *progname)
       return NULL;
     }
 
-#if defined(HAVE_TIRPC)
+#if defined(HAVE_TIRPC) && defined(HAVE_YPBIND3)
   svcaddr.len = 0;
   svcaddr.maxlen = sizeof (addrbuf);
   svcaddr.buf = addrbuf;
@@ -403,25 +402,25 @@ getfield (char *gecos, char *field, int size)
 #define SHA_512 6
 
 static int
-get_hash_id (const char *passwd)
+get_hash_id (const char *password)
 {
   int hash_id = DES;
-  if (strncmp(passwd, "$1$", 3) == 0)
+  if (strncmp(password, "$1$", 3) == 0)
     hash_id = MD5;
-  else if (strncmp(passwd, "$5$", 3) == 0)
+  else if (strncmp(password, "$5$", 3) == 0)
     hash_id = SHA_256;
-  else if (strncmp(passwd, "$6$", 3) == 0)
+  else if (strncmp(password, "$6$", 3) == 0)
     hash_id = SHA_512;
   return hash_id;
 }
 
 static int
-get_passwd_len (const char *passwd)
+get_passwd_len (const char *password)
 {
   static const char *allowed_chars =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789./";
-  int passwdlen = strlen (passwd);
-  int hash_id = get_hash_id (passwd);
+  int passwdlen = strlen (password);
+  int hash_id = get_hash_id (password);
 
   /* Some systems (HPU/X) store the password aging info after
    * the password (with a comma to separate it). To support
@@ -432,10 +431,10 @@ get_passwd_len (const char *passwd)
    * for first invalid char after the 38 ones.
    */
   if (passwdlen > 13 && (hash_id == DES || hash_id == MD5))
-      passwdlen = 13 + strspn (passwd + 13, allowed_chars);
+      passwdlen = 13 + strspn (password + 13, allowed_chars);
 
   if (passwdlen > 38 && (hash_id == SHA_256 || hash_id == SHA_512))
-      passwdlen = 38 + strspn (passwd + 38, allowed_chars);
+      passwdlen = 38 + strspn (password + 38, allowed_chars);
 
   return passwdlen;
 }
@@ -681,7 +680,7 @@ main (int argc, char **argv)
 
   if (user != NULL)
     {
-      if (pwd->pw_uid != uid && uid != 0)
+      if ((uid_t)pwd->pw_uid != uid && uid != 0)
         {
           fprintf (stderr,
 	    _("%s: Only root may change account information for others\n"),
@@ -706,12 +705,12 @@ main (int argc, char **argv)
 
   /* Get old password */
   if ((pwd->pw_passwd != NULL && strlen (pwd->pw_passwd) > 0) ||
-      (pwd->pw_uid != uid))
+      ((uid_t)pwd->pw_uid != uid))
     {
       char prompt[130];
       char *hashpass, *cp;
 
-      if (pwd->pw_uid != uid)
+      if ((uid_t)pwd->pw_uid != uid)
         snprintf (prompt, sizeof (prompt), _("Please enter root password:"));
       else
         snprintf (prompt, sizeof (prompt), _("Please enter %spassword:"),

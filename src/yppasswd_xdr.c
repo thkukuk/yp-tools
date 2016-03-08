@@ -15,7 +15,10 @@
    along with this program; if not, write to the Free Software Foundation,
    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
 
-#include <pwd.h>
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include <rpcsvc/yppasswd.h>
 
 bool_t
@@ -25,9 +28,9 @@ xdr_passwd (XDR *xdrs, struct passwd *objp)
     return FALSE;
   if (!xdr_string (xdrs, &objp->pw_passwd, ~0))
     return FALSE;
-  if (!xdr_uint32_t (xdrs, &objp->pw_uid))
+  if (!xdr_int32_t (xdrs, &objp->pw_uid))
     return FALSE;
-  if (!xdr_uint32_t (xdrs, &objp->pw_gid))
+  if (!xdr_int32_t (xdrs, &objp->pw_gid))
     return FALSE;
   if (!xdr_string (xdrs, &objp->pw_gecos, ~0))
     return FALSE;

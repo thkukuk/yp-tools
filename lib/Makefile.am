@@ -19,5 +19,5 @@ noinst_LIBRARIES = libyptools.a
 
 libyptools_a_SOURCES = nicknames.c yp_all_host.c ypbind3_binding_dup.c ypbind3_binding_free.c host2ypbind3_binding.c
 
-noinst_PROGRAMS=xdrfile-test
+check_PROGRAMS=xdrfile-test
 xdrfile_test_LDADD = libyptools.a @NSL_LIBS@ @TIRPC_LIBS@

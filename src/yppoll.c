@@ -37,6 +37,10 @@
 #define _(String) gettext (String)
 #endif
 
+#if !defined(HAVE_YPBIND3)
+#define ypbind2_resp ypbind_resp
+#endif
+
 /* Name and version of program.  */
 /* Print the version information.  */
 static void
@@ -47,7 +51,7 @@ print_version (void)
 Copyright (C) %s Thorsten Kukuk.\n\
 This is free software; see the source for copying conditions.  There is NO\n\
 warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\
-"), "2014");
+"), "2016");
   /* fprintf (stdout, _("Written by %s.\n"), "Thorsten Kukuk"); */
 }
 
@@ -165,7 +169,9 @@ main (int argc, char **argv)
   if (!hostname)
     {
       int ret;
+#if defined(HAVE_YPBIND3)
       struct ypbind3_resp yp3_r;
+
       memset (&yp3_r, 0, sizeof (struct ypbind3_resp));
 
       /* ask local ypbind for NIS server */
@@ -184,6 +190,7 @@ main (int argc, char **argv)
 	    }
 	}
       else if (ret == RPC_PROGVERSMISMATCH)
+#endif
 	{
 	  /* Looks like ypbind does not support V3 yet, fallback
 	     to V2 */
@@ -191,11 +198,19 @@ main (int argc, char **argv)
 	  memset (&yp2_r, 0, sizeof (struct ypbind2_resp));
 
 	  /* ask local ypbind for NIS server */
+#if defined (HAVE_YPBIND3)
 	  ret = rpc_call ("localhost", YPBINDPROG, YPBINDVERS_2,
 			  YPBINDPROC_DOMAIN,
 			  (xdrproc_t) xdr_domainname, (caddr_t) &domainname,
 			  (xdrproc_t) xdr_ypbind2_resp, (caddr_t) &yp2_r,
 			  "udp");
+#else
+	  ret = rpc_call ("localhost", YPBINDPROG, YPBINDVERS,
+			  YPBINDPROC_DOMAIN,
+			  (xdrproc_t) xdr_domainname, (caddr_t) &domainname,
+			  (xdrproc_t) xdr_ypbind_resp, (caddr_t) &yp2_r,
+			  "udp");
+#endif
 	  if (ret == RPC_SUCCESS)
 	    {
 	      static char straddr[INET_ADDRSTRLEN];

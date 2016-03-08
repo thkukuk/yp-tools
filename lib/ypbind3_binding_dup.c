@@ -1,4 +1,4 @@
-/* Copyright (C) 2014 Thorsten Kukuk
+/* Copyright (C) 2014, 2016 Thorsten Kukuk
    Author: Thorsten Kukuk <kukuk@suse.de>
 
    This library is free software: you can redistribute it and/or
@@ -16,6 +16,8 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
+
+#if defined(HAVE_YPBIND3)
 
 #include <rpcsvc/yp_prot.h>
 #include "internal.h"
@@ -96,3 +98,5 @@ __ypbind3_binding_dup (struct ypbind3_binding *src)
   return dst;
 #undef copy_str
 }
+
+#endif

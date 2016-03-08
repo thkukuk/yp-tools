@@ -1,3 +1,18 @@
+2016-03-08  Thorsten Kukuk  <kukuk@thkukuk.de>
+
+	* src/yppasswd_xdr.c (xdr_passwd): sunrpc uses different
+	types than tirpc, adjust xdr calls.
+
+	* configure.ac: Check for struct ypbind3_binding.
+	* lib/ypbind3_binding_dup.c: Use only if ypbind3_binding exists.
+	* lib/ypbind3_binding_free.c: Likewise.
+	* lib/host2ypbind3_binding.c: Likewise.
+	* src/ypwhich.c: Enable ypbind3 support only if exists.
+	* src/yppasswd.c: Likewise.
+	* src/yppoll.c (main): Likewise.
+	* src/ypset.c: Likewise.
+	* src/yp_dump_binding.c: Likewise.
+
 2016-03-02  Thorsten Kukuk  <kukuk@thkukuk.de>
 
 	* release version 4.1
