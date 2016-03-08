@@ -1,5 +1,7 @@
 2016-03-08  Thorsten Kukuk  <kukuk@thkukuk.de>
 
+	* release version 4.2
+
 	* src/yppasswd_xdr.c (xdr_passwd): sunrpc uses different
 	types than tirpc, adjust xdr calls.
 
