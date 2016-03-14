@@ -22,7 +22,6 @@
 
 #include <errno.h>
 #include <fcntl.h>
-#include <netdb.h>
 #include <string.h>
 #include <unistd.h>
 #include <rpc/rpc.h>
