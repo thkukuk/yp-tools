@@ -75,16 +75,24 @@ fi
 dnl Checks for libraries.
 old_CFLAGS=$CFLAGS
 old_LIBS=$LIBS
-PKG_CHECK_MODULES([NSL], [libnsl], [], [AC_CHECK_LIB([nsl],[yp_match],[NSL_LIBS="-lnsl"],[NSL_LIBS=""])])
-CFLAGS="$CFLAGS $NSL_CFLAGS"
-LIBS="$LIBS $NSL_LIBS"
-AC_CHECK_TYPE([ypbind3_binding],[AC_DEFINE([HAVE_YPBIND3],1,[Define to 1 if struct ypbind3_binding exists.])],[],[#include <rpcsvc/yp_prot.h>])
-CFLAGS="$old_CFLAGS"
-LIBS="$old_LIBS"
 PKG_CHECK_MODULES([TIRPC], [libtirpc], [], [TIRPC_LIBS=""])
 if test -n "$TIRPC_LIBS"; then
   AC_DEFINE(HAVE_TIRPC, 1, [Define to 1 if TIRPC is available])
 fi
+PKG_CHECK_MODULES([NSL], [libnsl], [], [AC_CHECK_LIB([nsl],[yp_match],[NSL_LIBS="-lnsl"],[NSL_LIBS=""])])
+
+dnl Add tirpc and nsl header files to standard search paths
+CFLAGS="$CFLAGS $TIRPC_CFLAGS $NSL_CFLAGS"
+LIBS="$LIBS $TIRPC_LIBS $NSL_LIBS"
+AC_CHECK_TYPE([ypbind3_binding],[AC_DEFINE([HAVE_YPBIND3],1,[Define to 1 if struct ypbind3_binding exists.])],[],[#include <rpcsvc/yp_prot.h>])
+
+dnl Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS(getopt.h rpc/clnt_soc.h)
+
+# Reset CFLAGS and LIBS
+CFLAGS="$old_CFLAGS"
+LIBS="$old_LIBS"
 AC_CHECK_LIB(crypt,crypt,LIBCRYPT="-lcrypt",LIBCRYPT="")
 AC_SUBST(LIBCRYPT)
 
@@ -93,10 +101,6 @@ if test "${USE_CRACKLIB}" = "1"; then
   AC_CHECK_LIB(crack, FascistCheck, LIBCRACK="-lcrack",LIBCRACK="")
   AC_SUBST(LIBCRACK)
 fi
-
-dnl Checks for header files.
-AC_HEADER_STDC
-AC_CHECK_HEADERS(getopt.h rpc/clnt_soc.h)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 AC_C_CONST
