@@ -24,6 +24,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include <unistd.h>
+#include <netdb.h>
 #include <rpc/rpc.h>
 #include <arpa/inet.h>
 #include <rpcsvc/ypclnt.h>
