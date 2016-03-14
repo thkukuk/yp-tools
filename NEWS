@@ -4,6 +4,9 @@ Copyright (C) 1998-2016 Thorsten Kukuk
 
 Please send bug reports, questions and suggestions to <kukuk@linux-nis.org>.
 
+Version 4.2.1
+* Fix configure checks if sunrpc code in glibc is marked as deprecated
+
 Version 4.2
 * Fix building with old glibc
 * Fix bug in fallback, if ypbind does not speak v3 protocol

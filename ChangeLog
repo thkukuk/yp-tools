@@ -1,5 +1,7 @@
 2016-03-14  Thorsten Kukuk  <kukuk@thkukuk.de>
 
+	* release version 4.2.1
+
 	* configure.ac: Change order of tests.
 	* lib/yp_all_host.c: Remove not needed netdb.h include.
 
