@@ -1,5 +1,10 @@
 2016-03-14  Thorsten Kukuk  <kukuk@thkukuk.de>
 
+	* release version 4.2.2
+
+	* lib/yp_all_host.c: Revert last change.
+	* src/yppoll.c: Use callrpc instead of rpc_call.
+
 	* release version 4.2.1
 
 	* configure.ac: Change order of tests.

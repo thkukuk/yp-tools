@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: yp-tools 4.2.1\n"
+"Project-Id-Version: yp-tools 4.2.2\n"
 "Report-Msgid-Bugs-To: kukuk@linux-nis.org\n"
-"POT-Creation-Date: 2016-03-14 15:24+0100\n"
+"POT-Creation-Date: 2016-03-14 16:39+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -496,60 +496,60 @@ msgstr ""
 msgid "Domain not bound\n"
 msgstr ""
 
-#: src/yppoll.c:232
+#: src/yppoll.c:231
 #, c-format
 msgid "Error getting NIS server (%i)\n"
 msgstr ""
 
-#: src/yppoll.c:240
+#: src/yppoll.c:239
 #, c-format
 msgid "Cannot contact %s, no NIS server running or wrong protocol?\n"
 msgstr ""
 
-#: src/yppoll.c:258
+#: src/yppoll.c:257
 #, c-format
 msgid "Can't create connection to %s.\n"
 msgstr ""
 
-#: src/yppoll.c:260 src/ypset.c:150 src/ypset.c:192
+#: src/yppoll.c:259 src/ypset.c:150 src/ypset.c:192
 msgid "Reason"
 msgstr ""
 
-#: src/yppoll.c:266
+#: src/yppoll.c:265
 #, c-format
 msgid "Domain %s is not supported by %s.\n"
 msgstr ""
 
-#: src/yppoll.c:295
+#: src/yppoll.c:294
 msgid "Can't get any map parameter information.\n"
 msgstr ""
 
-#: src/yppoll.c:297
+#: src/yppoll.c:296
 #, c-format
 msgid "Domain %s is supported.\n"
 msgstr ""
 
-#: src/yppoll.c:301
+#: src/yppoll.c:300
 #, c-format
 msgid "Can't get order number for map %s.\n"
 msgstr ""
 
-#: src/yppoll.c:302 src/yppoll.c:316
+#: src/yppoll.c:301 src/yppoll.c:315
 #, c-format
 msgid "\tReason: %s\n"
 msgstr ""
 
-#: src/yppoll.c:309
+#: src/yppoll.c:308
 #, c-format
 msgid "Map %s has order number %ld. [%s]\n"
 msgstr ""
 
-#: src/yppoll.c:315
+#: src/yppoll.c:314
 #, c-format
 msgid "Can't get master for map %s.\n"
 msgstr ""
 
-#: src/yppoll.c:319
+#: src/yppoll.c:318
 #, c-format
 msgid "The master server is %s.\n"
 msgstr ""

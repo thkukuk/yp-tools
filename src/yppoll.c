@@ -205,11 +205,10 @@ main (int argc, char **argv)
 			  (xdrproc_t) xdr_ypbind2_resp, (caddr_t) &yp2_r,
 			  "udp");
 #else
-	  ret = rpc_call ("localhost", YPBINDPROG, YPBINDVERS,
+	  ret = callrpc ("localhost", YPBINDPROG, YPBINDVERS,
 			  YPBINDPROC_DOMAIN,
 			  (xdrproc_t) xdr_domainname, (caddr_t) &domainname,
-			  (xdrproc_t) xdr_ypbind_resp, (caddr_t) &yp2_r,
-			  "udp");
+			 (xdrproc_t) xdr_ypbind_resp, (caddr_t) &yp2_r);
 #endif
 	  if (ret == RPC_SUCCESS)
 	    {
