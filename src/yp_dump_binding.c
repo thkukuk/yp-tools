@@ -26,6 +26,7 @@
 #include <libintl.h>
 #include <locale.h>
 #include <getopt.h>
+#include <string.h>
 #include <sys/stat.h>
 #include <arpa/inet.h>
 #include <rpcsvc/ypclnt.h>
