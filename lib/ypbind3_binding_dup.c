@@ -19,6 +19,7 @@
 
 #if defined(HAVE_YPBIND3)
 
+#include <string.h>
 #include <rpcsvc/yp_prot.h>
 #include "internal.h"
 
