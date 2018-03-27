@@ -1,4 +1,4 @@
-/* Copyright (C) 2001, 2002, 2013, 2014 Thorsten Kukuk
+/* Copyright (C) 2001, 2002, 2013, 2014, 2018 Thorsten Kukuk
    This file is part of the yp-tools.
    Author: Thorsten Kukuk <kukuk@suse.de>
 
@@ -36,6 +36,13 @@
 
 #ifndef _
 #define _(String) gettext (String)
+#endif
+
+#if !defined(HAVE_YPBIND3)
+#define ypbind2_resp ypbind_resp
+#define xdr_ypbind2_resp xdr_ypbind_resp
+#define ypbind2_error ypbind_respbody.ypbind_error
+#define ypbind2_addr ypbind_respbody.ypbind_bindinfo.ypbind_binding_addr
 #endif
 
 extern int yp_maplist (const char *, struct ypmaplist **);
@@ -93,6 +100,8 @@ print_error (void)
 	   program, program);
 }
 
+#if defined(HAVE_YPBIND3)
+
 static void
 dump_nconf (struct netconfig *nconf, char *prefix)
 {
@@ -129,6 +138,7 @@ ypbind3_binding_dump (struct ypbind3_binding *ypb3)
   printf ("ypbind_hi_vers: %lu\n", (u_long) ypb3->ypbind_hi_vers);
   printf ("ypbind_lo_vers: %lu\n", (u_long) ypb3->ypbind_lo_vers);
 }
+#endif
 
 /* bind to a special host and print the name ypbind running on this host
    is bound to */
@@ -136,7 +146,9 @@ static int
 print_bindhost (const char *domain, const char *hostname, int vers)
 {
   struct ypbind2_resp yp_r2;
+#if defined(HAVE_YPBIND3)
   struct ypbind3_resp yp_r3;
+#endif
   struct timeval tv;
   CLIENT *client;
   int ret;
@@ -155,17 +167,24 @@ print_bindhost (const char *domain, const char *hostname, int vers)
     }
 
   memset (&yp_r2, 0, sizeof (yp_r2));
+#if defined(HAVE_YPBIND3)
   memset (&yp_r3, 0, sizeof (yp_r3));
+#endif
   tv.tv_sec = 15;
   tv.tv_usec = 0;
+
+#if defined(HAVE_YPBIND3)
   if (vers == 1 || vers == 2)
+#endif
     ret = clnt_call (client, YPBINDPROC_DOMAIN, (xdrproc_t) xdr_domainname,
                      (caddr_t) &domain, (xdrproc_t) xdr_ypbind2_resp,
                      (caddr_t) &yp_r2, tv);
+#if defined(HAVE_YPBIND3)
   else
     ret = clnt_call (client, YPBINDPROC_DOMAIN, (xdrproc_t) xdr_domainname,
                      (caddr_t) &domain, (xdrproc_t) xdr_ypbind3_resp,
                      (caddr_t) &yp_r3, tv);
+#endif
 
   if (ret != RPC_SUCCESS)
     {
@@ -190,6 +209,7 @@ print_bindhost (const char *domain, const char *hostname, int vers)
 	  if (!be_quiet)
 	    printf (_("Used NIS server: %s\n"), inet_ntoa (yp_r2.ypbind2_addr));
 	}
+#if defined(HAVE_YPBIND3)
       else
         {
           if (yp_r3.ypbind_status != YPBIND_SUCC_VAL)
@@ -203,6 +223,7 @@ print_bindhost (const char *domain, const char *hostname, int vers)
             if (!be_quiet)
 	      ypbind3_binding_dump (yp_r3.ypbind3_bindinfo);
         }
+#endif
   }
   clnt_destroy (client);
 
@@ -351,10 +372,12 @@ main (int argc, char **argv)
     printf (_("Use Protocol V2: "));
   if (print_bindhost (domainname, hostname, 2))
     fprintf (stderr, _("ypbind procotcol v2 test failed\n"));
+#if defined(HAVE_YPBIND3)
   if (!be_quiet)
     printf (_("Use Protocol V3:\n"));
   if (print_bindhost (domainname, hostname, 3))
     fprintf (stderr, _("ypbind procotcol v3 test failed\n"));
+#endif
 
   if (!be_quiet)
     printf ("\nTest 3: yp_match\n");
