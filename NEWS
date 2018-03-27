@@ -4,6 +4,10 @@ Copyright (C) 1998-2016 Thorsten Kukuk
 
 Please send bug reports, questions and suggestions to <kukuk@linux-nis.org>.
 
+Version 4.2.3
+* Adjustements for newer gcc versions
+* Re-add yptest
+
 Version 4.2.2
 * Revert removal of netdb.h
 * yppoll: Replace IPv4 only code with IPv6 functions

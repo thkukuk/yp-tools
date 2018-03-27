@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT(yp-tools, 4.2.2, kukuk@linux-nis.org)
+AC_INIT(yp-tools, 4.2.3, kukuk@linux-nis.org)
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([src/ypcat.c])
 AM_CONFIG_HEADER(config.h)
@@ -55,8 +55,7 @@ AC_PROG_CC
 AC_GNU_SOURCE
 AM_PROG_CC_C_O
 dnl If we're using gcc, we want warning flags
-dnl test -n "$GCC" && WARNFLAGS="-Wall"
-test -n "$GCC" && WARNFLAGS="-W -Wall -Wbad-function-cast -Wcast-align -Winline -Wnested-externs -Wshadow -Wmissing-declarations -Wmissing-prototypes -Wstrict-prototypes -Wundef -Werror"
+test -n "$GCC" && WARNFLAGS="-Wall"
 AC_SUBST(WARNFLAGS)
 AC_PROG_CPP
 AC_ISC_POSIX

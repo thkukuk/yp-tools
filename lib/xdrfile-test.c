@@ -14,6 +14,12 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>. */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
+#if defined(HAVE_YPBIND3)
+
 #include <errno.h>
 #include <unistd.h>
 #include <string.h>
@@ -128,3 +134,13 @@ main (void)
 
    return 0;
 }
+
+#else /* defined(HAVE_YPBIND3) */
+
+int
+main (void)
+{
+   return 77;
+}
+
+#endif

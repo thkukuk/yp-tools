@@ -6,9 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: yp-tools 4.2.2\n"
+"Project-Id-Version: yp-tools 4.2.3\n"
 "Report-Msgid-Bugs-To: kukuk@linux-nis.org\n"
-"POT-Creation-Date: 2016-03-14 16:39+0100\n"
+"POT-Creation-Date: 2018-03-27 15:42+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,7 +33,7 @@ msgid "Use \"%s\"\tfor map \"%s\"\n"
 msgstr ""
 
 #: src/domainname.c:45 src/ypcat.c:42 src/ypmatch.c:43 src/yppasswd.c:67
-#: src/yppoll.c:50 src/ypset.c:54 src/yptest.c:51 src/ypwhich.c:59
+#: src/yppoll.c:50 src/ypset.c:54 src/yptest.c:58 src/ypwhich.c:59
 #, c-format
 msgid ""
 "Copyright (C) %s Thorsten Kukuk.\n"
@@ -54,19 +54,19 @@ msgstr ""
 
 #: src/domainname.c:65 src/domainname.c:78 src/ypcat.c:72 src/ypmatch.c:70
 #: src/yppasswd.c:102 src/yppasswd.c:113 src/yppasswd.c:125 src/yppoll.c:75
-#: src/ypset.c:77 src/yptest.c:81 src/ypwhich.c:89
+#: src/ypset.c:77 src/yptest.c:88 src/ypwhich.c:89
 msgid "  -?, --help     Give this help list\n"
 msgstr ""
 
 #: src/domainname.c:66 src/domainname.c:79 src/ypcat.c:73 src/ypmatch.c:71
 #: src/yppasswd.c:103 src/yppasswd.c:114 src/yppasswd.c:126 src/yppoll.c:76
-#: src/ypset.c:78 src/yptest.c:82 src/ypwhich.c:90
+#: src/ypset.c:78 src/yptest.c:89 src/ypwhich.c:90
 msgid "      --usage    Give a short usage message\n"
 msgstr ""
 
 #: src/domainname.c:67 src/domainname.c:80 src/ypcat.c:74 src/ypmatch.c:72
 #: src/yppasswd.c:104 src/yppasswd.c:115 src/yppasswd.c:127 src/yppoll.c:77
-#: src/ypset.c:79 src/yptest.c:83 src/ypwhich.c:91
+#: src/ypset.c:79 src/yptest.c:90 src/ypwhich.c:91
 msgid "      --version  Print program version\n"
 msgstr ""
 
@@ -78,12 +78,12 @@ msgid ""
 msgstr ""
 
 #: src/domainname.c:88 src/ypcat.c:83 src/ypmatch.c:82 src/yppasswd.c:141
-#: src/yppoll.c:87 src/ypset.c:89 src/yptest.c:92 src/ypwhich.c:101
+#: src/yppoll.c:87 src/ypset.c:89 src/yptest.c:99 src/ypwhich.c:101
 #, c-format
 msgid "Try `%s --help' or `%s --usage' for more information.\n"
 msgstr ""
 
-#: src/ypcat.c:47 src/yptest.c:56
+#: src/ypcat.c:47 src/yptest.c:63
 #, c-format
 msgid "Written by %s.\n"
 msgstr ""
@@ -99,11 +99,11 @@ msgid ""
 msgstr ""
 
 #: src/ypcat.c:63 src/ypmatch.c:64 src/yppoll.c:73 src/ypset.c:74
-#: src/yptest.c:72 src/ypwhich.c:80
+#: src/yptest.c:79 src/ypwhich.c:80
 msgid "  -d domain      Use 'domain' instead of the default domain\n"
 msgstr ""
 
-#: src/ypcat.c:65 src/yptest.c:74
+#: src/ypcat.c:65 src/yptest.c:81
 msgid "  -h hostname    Query ypserv on 'hostname' instead the current one\n"
 msgstr ""
 
@@ -578,7 +578,7 @@ msgstr ""
 msgid "can't find IPv4 address for %s\n"
 msgstr ""
 
-#: src/ypset.c:136 src/yptest.c:184 src/yptest.c:198
+#: src/ypset.c:136 src/yptest.c:203 src/yptest.c:218
 #, c-format
 msgid "can't yp_bind: Reason: %s\n"
 msgstr ""
@@ -588,114 +588,114 @@ msgstr ""
 msgid "Cannot ypset for domain %s on host %s.\n"
 msgstr ""
 
-#: src/yptest.c:62
+#: src/yptest.c:69
 msgid "Usage: yptest [-q] [-d domain] [-h hostname] [-m map] [-u user]\n"
 msgstr ""
 
-#: src/yptest.c:70
+#: src/yptest.c:77
 msgid ""
 "yptest - call different NIS routines to test configuration\n"
 "\n"
 msgstr ""
 
-#: src/yptest.c:76
+#: src/yptest.c:83
 msgid "  -m map         Use this existing map for tests\n"
 msgstr ""
 
-#: src/yptest.c:77
+#: src/yptest.c:84
 msgid "  -u user        Use the existing NIS user 'user' for tests\n"
 msgstr ""
 
-#: src/yptest.c:79
+#: src/yptest.c:86
 msgid "  -q             Be quiet, don't print messages\n"
 msgstr ""
 
-#: src/yptest.c:191
+#: src/yptest.c:210
 #, c-format
 msgid "Used NIS server: %s\n"
 msgstr ""
 
-#: src/yptest.c:326
+#: src/yptest.c:347
 msgid "ERROR: domainname is not set!\n"
 msgstr ""
 
-#: src/yptest.c:331
+#: src/yptest.c:352
 msgid "WARNING: domainname is not set!\n"
 msgstr ""
 
-#: src/yptest.c:335
+#: src/yptest.c:356
 #, c-format
 msgid "Configured domainname is \"%s\"\n"
 msgstr ""
 
-#: src/yptest.c:340
+#: src/yptest.c:361
 #, c-format
 msgid "Domainname which will be used due the test: \"%s\"\n"
 msgstr ""
 
-#: src/yptest.c:347
+#: src/yptest.c:368
 #, c-format
 msgid "Use Protocol V1: "
 msgstr ""
 
-#: src/yptest.c:349
+#: src/yptest.c:370
 #, c-format
 msgid "ypbind procotcol v1 test failed\n"
 msgstr ""
 
-#: src/yptest.c:351
+#: src/yptest.c:372
 #, c-format
 msgid "Use Protocol V2: "
 msgstr ""
 
-#: src/yptest.c:353
+#: src/yptest.c:374
 #, c-format
 msgid "ypbind procotcol v2 test failed\n"
 msgstr ""
 
-#: src/yptest.c:355
+#: src/yptest.c:377
 #, c-format
 msgid "Use Protocol V3:\n"
 msgstr ""
 
-#: src/yptest.c:357
+#: src/yptest.c:379
 #, c-format
 msgid "ypbind procotcol v3 test failed\n"
 msgstr ""
 
-#: src/yptest.c:371 src/yptest.c:391 src/yptest.c:418 src/yptest.c:441
-#: src/yptest.c:461 src/yptest.c:487 src/yptest.c:509
+#: src/yptest.c:394 src/yptest.c:414 src/yptest.c:441 src/yptest.c:464
+#: src/yptest.c:484 src/yptest.c:510 src/yptest.c:532
 #, c-format
 msgid "ERROR: No running ypbind\n"
 msgstr ""
 
-#: src/yptest.c:375
+#: src/yptest.c:398
 #, c-format
 msgid "WARNING: %s (Map %s, key %s)\n"
 msgstr ""
 
-#: src/yptest.c:395 src/yptest.c:424 src/yptest.c:445 src/yptest.c:465
-#: src/yptest.c:513
+#: src/yptest.c:418 src/yptest.c:447 src/yptest.c:468 src/yptest.c:488
+#: src/yptest.c:536
 #, c-format
 msgid "WARNING: %s (Map %s)\n"
 msgstr ""
 
-#: src/yptest.c:404
+#: src/yptest.c:427
 #, c-format
 msgid "-- skipped --\n"
 msgstr ""
 
-#: src/yptest.c:491
+#: src/yptest.c:514
 #, c-format
 msgid "WARNING: %s\n"
 msgstr ""
 
-#: src/yptest.c:521
+#: src/yptest.c:544
 #, c-format
 msgid "All tests passed\n"
 msgstr ""
 
-#: src/yptest.c:523
+#: src/yptest.c:546
 #, c-format
 msgid "%d tests failed\n"
 msgstr ""
