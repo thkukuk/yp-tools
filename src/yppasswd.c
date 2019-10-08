@@ -281,6 +281,11 @@ ypgetpw (char *master, char *domainname, char *name, int uid)
   CLIENT *clnt;
 
   clnt = clnt_create (master, YPPROG, YPVERS, "udp");
+
+  /* clnt_create can return NULL in some cases */
+  if (clnt == NULL)
+	return NULL;
+
   clnt->cl_auth = authunix_create_default ();
 
   if (name == NULL)
